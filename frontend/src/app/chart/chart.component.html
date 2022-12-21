@@ -1,0 +1,7 @@
+<div class="container" *ngFor="let element of this.customCharts">
+<p *ngIf="element.chartTitle">{{element.chartTitle }}</p>
+<div id="divChart">
+    <canvas id="chartDiv{{element.id}}"></canvas>
+</div>
+</div>
+
