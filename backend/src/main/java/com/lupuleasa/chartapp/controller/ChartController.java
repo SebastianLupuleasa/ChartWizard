@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin
 public class ChartController {
 
     @Autowired
@@ -35,4 +34,5 @@ public class ChartController {
     public void deleteChart(@PathVariable("id") Integer id){
         service.deleteChart(id);
     }
+
 }

@@ -2,7 +2,6 @@ package com.lupuleasa.chartapp.entity;
 
 import jakarta.persistence.*;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
@@ -26,6 +25,10 @@ public class Chart {
     @OneToMany()
     @Column(name = "chartDatasets")
     private List<ChartDataset> chartDatasets;
+
+//    @ManyToOne
+//    @JoinColumn(name = "userId")
+//    private ChartUser chartOwner;
 
     public Chart(Long id, String chartTitle, String chartType, List<String> chartLabels, List<ChartDataset> chartDatasets) {
         this.id = id;
