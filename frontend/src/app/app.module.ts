@@ -11,6 +11,10 @@ import { FooterComponent } from './footer/footer.component';
 import { SideNavComponent } from './side-nav/side-nav.component';
 import { MainNavComponent } from './main-nav/main-nav.component';
 import { HttpClientModule } from '@angular/common/http';
+import { LoginComponent } from './login/login.component';
+import { AdminComponent } from './admin/admin.component';
+import { RegisterComponent } from './register/register.component';
+import { ForgotComponent } from './forgot/forgot.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +24,10 @@ import { HttpClientModule } from '@angular/common/http';
     FooterComponent,
     SideNavComponent,
     MainNavComponent,
+    LoginComponent,
+    AdminComponent,
+    RegisterComponent,
+    ForgotComponent,
   ],
   imports: [
     BrowserModule,

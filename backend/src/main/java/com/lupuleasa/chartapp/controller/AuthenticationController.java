@@ -19,8 +19,6 @@ public class AuthenticationController {
 
     private final JwtUserRepository jwtUserRepository;
 
-    private final JsonObjectAuthenticationFilter authenticationFilter;
-
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody JwtUser jwtUser) {
        jwtUserRepository.save(jwtUser);
