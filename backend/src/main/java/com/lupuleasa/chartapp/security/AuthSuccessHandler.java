@@ -1,6 +1,7 @@
 package com.lupuleasa.chartapp.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.lupuleasa.chartapp.exception.ChartAppGenericException;
 import com.lupuleasa.chartapp.entity.JwtUser;
 import com.lupuleasa.chartapp.service.JwtUserService;
@@ -8,8 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.json.JSONObject;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -38,8 +38,13 @@ public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         String token = jwtUtils.createJwt(user.getEmail());
         response.addHeader("Authorization", "Bearer " + token);
         response.addHeader("Content-Type", "application/json");
-        response.getWriter().write("{\"token\": \""+ token +"\"}");
-        response.getWriter().print("\"{\"UuId\": \""+ user.getUuid() +"\"}");
+        JSONObject responseBody = new JSONObject();
+        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        String jsonUser = ow.writeValueAsString(user);
+        responseBody.put("token", token);
+        responseBody.put("user", jsonUser);
+        response.getWriter().write(String.valueOf(responseBody));
+
     }
 
 }

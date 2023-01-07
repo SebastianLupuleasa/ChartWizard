@@ -38,11 +38,10 @@ public class JwtSecurityConfig {
                 .and()
                 .csrf()
                 .disable()
-                .authorizeHttpRequests((auth) -> {
+                 .authorizeHttpRequests((auth) -> {
                     try {
                         auth
-                                .requestMatchers("/c").hasRole("USER")
-                                .requestMatchers("/charts").hasRole("ADMIN")
+
                                 .anyRequest().permitAll()
                                 .and()
                                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

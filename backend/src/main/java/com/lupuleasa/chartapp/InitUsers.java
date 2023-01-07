@@ -29,6 +29,16 @@ public class InitUsers implements CommandLineRunner {
             u.setEnabled(true);
             jwtUserService.save(u);
         }
+        if (jwtUserService.findJwtUserByEmail("pure@test.com").isEmpty()) {
+            JwtUser u = jwtUserService.save(JwtUser.builder()
+                    .username("pureAdmin")
+                    .email("pure@test.com")
+                    .password(passwordEncoder.encode("test123"))
+                    .role(Set.of(Role.ROLE_ADMIN))
+                    .build());
+            u.setEnabled(true);
+            jwtUserService.save(u);
+        }
         if (jwtUserService.findJwtUserByEmail("user@test.com").isEmpty()) {
             JwtUser u = jwtUserService.save(JwtUser.builder()
                     .username("User")
