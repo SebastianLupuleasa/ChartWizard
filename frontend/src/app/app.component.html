@@ -1,0 +1,19 @@
+
+    <body class="sb-nav-fixed">
+      <app-main-nav></app-main-nav>
+         <div id="layoutSidenav" *ngIf="sidebarToggle">
+               <app-side-nav></app-side-nav>
+                 <div id="layoutSidenav_content">
+                <main>
+                 <router-outlet></router-outlet>
+             </main>
+          </div>           
+       </div>
+          <div id="layoutSidenav_content" class="sidenavContentContainer" *ngIf="!sidebarToggle">
+         <main>
+          <router-outlet></router-outlet>
+        
+        </main>
+        </div>
+
+     </body>

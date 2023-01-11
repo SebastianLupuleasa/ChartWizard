@@ -8,10 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @EqualsAndHashCode(of = "uuid")
 @Getter
@@ -24,6 +21,7 @@ public class JwtUser implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long id;
 
     @Builder.Default
@@ -46,6 +44,10 @@ public class JwtUser implements UserDetails {
     @Column
     @Builder.Default
     private boolean enabled = false;
+
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id",referencedColumnName = "user_id")
+    private List<Chart> charts;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

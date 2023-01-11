@@ -1,0 +1,86 @@
+<form [formGroup]="chartForm" (ngSubmit)="addChart()">
+
+    <mat-form-field>
+        <mat-label>Chart Title</mat-label>
+        <input type="text" matInput formControlName="chartTitle"
+               placeholder="Chart title">
+     </mat-form-field>
+      <mat-form-field>
+        <mat-label>Chart Type</mat-label>
+        <mat-select matInput formControlName="chartType" >
+          <mat-option value="line">line</mat-option>
+          <mat-option value="bar">bar</mat-option>
+          <mat-option value="pie">pie</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <div formArrayName="chartLabels">
+      <mat-accordion class="example-headers-align" multi>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Chart Labels
+            </mat-panel-title>
+            </mat-expansion-panel-header>
+         <div *ngFor="let label of labels.controls; let i=index">
+          <div [formGroupName]="i">
+            <mat-form-field>
+              <mat-label>Label</mat-label>
+              <input type="text" matInput formControlName="label"
+              placeholder="Label"> 
+            </mat-form-field>
+          </div>
+         </div>
+
+         <div>
+          <button mat-raised-button color="primary" type="button" (click)="addLabel()">Add label</button>
+          </div>
+      
+        </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+     
+
+      <div formArrayName="chartDatasets">
+        <mat-accordion class="example-headers-align" multi>
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Chart Datasets
+              </mat-panel-title>
+              </mat-expansion-panel-header>
+           <div *ngFor="let dataset of datasets.controls; let i=index">
+            <div [formGroupName]="i">
+              <mat-form-field>
+                <mat-label>Label</mat-label>
+                <input type="text" matInput formControlName="label"
+                placeholder="Label"> 
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Background Color</mat-label>
+                <input type="color" matInput formControlName="backgroundColor"/>
+                </mat-form-field>
+                <mat-form-field>
+                  <mat-label>Border Color</mat-label>
+                  <input type="color" matInput formControlName="borderColor"/>
+              </mat-form-field>
+              <mat-form-field class="example-full-width">
+                <mat-label>Dataset Values (write values separated by ";")</mat-label>
+                <input type="text" matInput formControlName="datasetValues"
+                placeholder="Dataset Values"> 
+              </mat-form-field>
+            </div>
+           </div>
+  
+           <div>
+            <button mat-raised-button color="primary" type="button" (click)="addDataset()">Add Dataset</button>
+            </div>
+        
+          </mat-expansion-panel>
+          </mat-accordion>
+        </div>
+
+      <div>
+      <button mat-raised-button color="primary">Create Chart</button>
+      </div>
+</form>

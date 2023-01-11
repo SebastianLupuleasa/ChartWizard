@@ -26,16 +26,16 @@ public class Chart {
     @Column(name = "chartDatasets")
     private List<ChartDataset> chartDatasets;
 
-//    @ManyToOne
-//    @JoinColumn(name = "userId")
-//    private ChartUser chartOwner;
+    @Column(name = "user_id")
+    private Long userId;
 
-    public Chart(Long id, String chartTitle, String chartType, List<String> chartLabels, List<ChartDataset> chartDatasets) {
+    public Chart(Long id, String chartTitle, String chartType, List<String> chartLabels, List<ChartDataset> chartDatasets, Long userId) {
         this.id = id;
         this.chartTitle = chartTitle;
         this.chartType = chartType;
         this.chartLabels = chartLabels;
         this.chartDatasets = chartDatasets;
+        this.userId = userId;
     }
 
     public Chart() {
@@ -80,4 +80,11 @@ public class Chart {
         this.chartLabels = chartLabels;
     }
 
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 }

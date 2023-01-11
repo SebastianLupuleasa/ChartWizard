@@ -1,0 +1,22 @@
+#divChart {
+  display: block;
+  width: 25%;
+  border: 2px solid black;
+  margin: 2%;
+  margin-left: 5%;
+   }
+
+.containerCharts p {
+    color:black;
+    text-align: center;
+    font-size: xx-large;
+    font-weight: bold;
+    background-color: aliceblue;
+    border: 2px solid black;
+    }
+
+  .containerCharts {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
