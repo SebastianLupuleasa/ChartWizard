@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpBackend, HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UserAuthService } from './user-auth.service';
 
@@ -11,14 +11,18 @@ export class UserService {
 
   requestHeader = new HttpHeaders({"No-Auth":"True"});
 
-  constructor(private httpclient: HttpClient, private userAuthService:UserAuthService) {}
+  private httpClient: HttpClient;
+
+  constructor(private httpclient: HttpClient, private userAuthService:UserAuthService, private httpBackend: HttpBackend) {
+    this.httpClient = new HttpClient(httpBackend);
+  }
 
   public login(loginData: any) {
     return this.httpclient.post(this.PATH_OF_API + "/login", loginData, {headers: this.requestHeader});
   }
 
   public register(registerData: any) {
-    return this.httpclient.post(this.PATH_OF_API + "/register", registerData, {headers: this.requestHeader});
+    return this.httpClient.post(this.PATH_OF_API + "/auth/register", registerData, {headers: this.requestHeader});
   }
 
   public roleMatch(allowedRoles: string): boolean {

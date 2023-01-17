@@ -43,7 +43,7 @@ public class JwtSecurityConfig {
                  .authorizeHttpRequests((auth) -> {
                     try {
                         auth
-                                .requestMatchers("/auth/refresh")
+                                .requestMatchers("/auth/**","/**")
                                 .permitAll().and().authorizeHttpRequests()
                                 .anyRequest().hasAnyRole("ADMIN","USER")
                                 .and()

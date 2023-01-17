@@ -14,15 +14,9 @@ export class RegisterComponent {
 
    register(registerForm: NgForm) {
     this.userService.register(registerForm.value).subscribe(
-      (response: any) => {
-      
-        if(JSON.parse(response["user"])["role"].indexOf("ROLE_ADMIN") > -1) {
-          this.router.navigate(['charts']);
-        } else {
-          this.router.navigate(['home']);
-        }
-  
-      },
+      () => {      
+        this.router.navigate(['login']);
+       },
       (error) => {
         console.log(error);
       }

@@ -20,7 +20,7 @@ public class Chart {
     private String chartType;
 
     @Column(name = "chartAnimation")
-    private String chartAnimation;
+    private String chartAnimation = "none";
 
     @ElementCollection
     @Column(name = "chartLabels")

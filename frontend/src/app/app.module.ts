@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { HomeComponent } from './home/home.component';
 import { ChartComponent } from './chart/chart.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { SideNavComponent } from './side-nav/side-nav.component';
@@ -29,12 +28,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MAT_COLOR_FORMATS, NgxMatColorPickerModule, NGX_MAT_COLOR_FORMATS } from '@angular-material-components/color-picker';
 import { CustomComponent } from './custom/custom.component';
-import { CreateMenuComponent } from './create-menu/create-menu.component';
+import { UserInfoComponent } from './user-info/user-info.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
     ChartComponent,
     SideNavComponent,
     MainNavComponent,
@@ -45,7 +43,7 @@ import { CreateMenuComponent } from './create-menu/create-menu.component';
     ForbiddenComponent,
     CreateComponent,
     CustomComponent,
-    CreateMenuComponent,
+    UserInfoComponent,
     ],
   imports: [
     BrowserModule,

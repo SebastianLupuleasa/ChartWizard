@@ -49,7 +49,7 @@ public class JwtUser implements UserDetails {
 
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id",referencedColumnName = "user_id")
-    private List<Chart> charts;
+    private List<Chart> charts = new ArrayList<>();
 
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     @JsonIgnore

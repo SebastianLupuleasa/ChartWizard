@@ -70,17 +70,73 @@ export class ChartComponent implements OnInit, AfterViewChecked {
       this.customCharts.forEach(element => {
       Chart.register(...registerables);
 
-      let chartDatasets: { label: string; backgroundColor: string; borderColor: string; data: number[]; }[] = [];
+      let chartDatasets: { label: string; backgroundColor: string; borderColor: string; data: number[]; fill?:boolean, pointBackgroundColor?: string,  pointBorderColor?: string, pointHoverBackgroundColor?: string, pointHoverBorderColor?: string }[] = [];
 
-      element.chartDatasets.forEach(element => {
-       chartDatasets.push(  {
+      if(element.chartType === 'radar')
+{
+       element.chartDatasets.forEach(element => {
+        let color = this.hexToRgb(element.backgroundColor);
+        chartDatasets.push(  {
           label: element.label,
-          backgroundColor: element.backgroundColor,
+          backgroundColor: "rgba("+color?.r+", " + color?.g + ", "+ color?.b +", 0.2)",
           borderColor: element.borderColor,
           data: element.datasetValues,
+          fill: true,
+          pointBackgroundColor: element.backgroundColor,
+          pointBorderColor: '#fff',
+          pointHoverBackgroundColor: '#fff',
+          pointHoverBorderColor: element.backgroundColor
         });
       });
+    }
+else if(element.chartType === 'bubble')
+{
+ element.chartDatasets.forEach(element => {
 
+    let bubbleData : any[] = []; 
+   
+    for(let i=0; i<element.datasetValues.length; i+=3)
+    {
+      bubbleData.push({x:element.datasetValues[i], y:element.datasetValues[i+1], r:element.datasetValues[i+2]});
+    }
+
+    chartDatasets.push(  {
+       label: element.label,
+       backgroundColor: element.backgroundColor,
+       borderColor: element.borderColor,
+       data: bubbleData,
+     });
+   });
+}
+else if(element.chartType === 'scatter')
+{
+ element.chartDatasets.forEach(element => {
+
+    let bubbleData : any[] = []; 
+   
+    for(let i=0; i<element.datasetValues.length; i+=2)
+    {
+      bubbleData.push({x:element.datasetValues[i], y:element.datasetValues[i+1]});
+    }
+
+    chartDatasets.push(  {
+       label: element.label,
+       backgroundColor: element.backgroundColor,
+       borderColor: element.borderColor,
+       data: bubbleData,
+     });
+   });
+}
+else {
+  element.chartDatasets.forEach(element => {
+    chartDatasets.push(  {
+       label: element.label,
+       backgroundColor: element.backgroundColor,
+       borderColor: element.borderColor,
+       data: element.datasetValues,
+     });
+   });
+}
       const data = {
         labels: element.chartLabels,
         datasets: chartDatasets,
@@ -133,8 +189,8 @@ export class ChartComponent implements OnInit, AfterViewChecked {
       }
 
     let config: ChartConfiguration;
-
-    if(element.animation === 'none' || element.animation === '')
+   
+    if(element.animation === 'none' || element.animation === '' || element.animation === null || element.animation === undefined )
     {
     config = {
         type: chartType,
@@ -172,7 +228,6 @@ export class ChartComponent implements OnInit, AfterViewChecked {
 
   downloadChart( elemntId: string) : void {
 
-    console.log(elemntId);
     let canvas = document.getElementById(elemntId) as HTMLCanvasElement;;
     let img    = canvas.toDataURL("image/png");
     let imgDownload = document.createElement('a');
@@ -181,5 +236,14 @@ export class ChartComponent implements OnInit, AfterViewChecked {
     document.body.appendChild(imgDownload);
     imgDownload.click();
     document.body.removeChild(imgDownload);
+  }
+
+  hexToRgb(hex: any) {
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16)
+    } : null;
   }
 }
