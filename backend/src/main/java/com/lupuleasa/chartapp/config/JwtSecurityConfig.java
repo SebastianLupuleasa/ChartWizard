@@ -21,7 +21,9 @@ public class JwtSecurityConfig {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
     private final AuthSuccessHandler authSuccessHandler;
+
     private final JwtUserDetailsService jwtUserDetailsService;
     private final String secret;
 
@@ -41,8 +43,9 @@ public class JwtSecurityConfig {
                  .authorizeHttpRequests((auth) -> {
                     try {
                         auth
-
-                                .anyRequest().permitAll()
+                                .requestMatchers("/auth/refresh")
+                                .permitAll().and().authorizeHttpRequests()
+                                .anyRequest().hasAnyRole("ADMIN","USER")
                                 .and()
                                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                                 .and()

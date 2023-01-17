@@ -20,13 +20,18 @@ public class ChartController {
         return new ResponseEntity<>(service.getCharts(),HttpStatus.OK);
     }
 
+    @GetMapping("/custom")
+    public ResponseEntity<List<Chart>> getUserCharts(@RequestParam long userId){
+      return new ResponseEntity<>(service.getChartsById(userId),HttpStatus.OK);
+    }
+
     @PostMapping("/charts/add")
-    public void addFriend(@RequestBody Chart chart){
+    public void addChart(@RequestBody Chart chart){
         service.addChart(chart);
     }
 
     @PutMapping("/charts/edit/{id}")
-    public void updateFriend(@PathVariable("id") Integer id, @RequestBody Chart chart){
+    public void updateChart(@PathVariable("id") Integer id, @RequestBody Chart chart){
         service.updateChart(chart);
     }
 

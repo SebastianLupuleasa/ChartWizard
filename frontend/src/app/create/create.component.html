@@ -11,6 +11,11 @@
           <mat-option value="line">line</mat-option>
           <mat-option value="bar">bar</mat-option>
           <mat-option value="pie">pie</mat-option>
+          <mat-option value="doughnut">doughnut</mat-option>
+          <mat-option value="polarArea">polarArea</mat-option>
+          <mat-option value="radar">radar</mat-option>
+          <mat-option value="bubble">bubble</mat-option>
+          <mat-option value="scatter">scatter</mat-option>
         </mat-select>
       </mat-form-field>
 
@@ -56,14 +61,25 @@
                 <input type="text" matInput formControlName="label"
                 placeholder="Label"> 
               </mat-form-field>
-              <mat-form-field>
-                <mat-label>Background Color</mat-label>
-                <input type="color" matInput formControlName="backgroundColor"/>
-                </mat-form-field>
-                <mat-form-field>
-                  <mat-label>Border Color</mat-label>
-                  <input type="color" matInput formControlName="borderColor"/>
+
+              <div>
+              <h2>Color picker:</h2>
+              <input id="backgroundColorInput" type="color" (change)="setBackGroundTextValue()"> 
+              <h4 id="backgroundColorText"></h4>
+             </div>
+
+              <mat-form-field id="backgroundFormField">
+                <mat-label>Background Color (write values separated by ";")</mat-label>
+                <input type="text" matInput formControlName="backgroundColor"/>
               </mat-form-field>
+
+              <div></div>
+
+              <mat-form-field>
+                  <mat-label>Border Color (write values separated by ";")</mat-label>
+                  <input type="text" matInput formControlName="borderColor"/>
+              </mat-form-field>
+              
               <mat-form-field class="example-full-width">
                 <mat-label>Dataset Values (write values separated by ";")</mat-label>
                 <input type="text" matInput formControlName="datasetValues"

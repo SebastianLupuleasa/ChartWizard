@@ -22,6 +22,7 @@ login(loginForm: NgForm) {
     (response: any) => {
       this.userAuthService.setRoles(JSON.parse(response["user"])["role"]);
       this.userAuthService.setToken(response["token"]);
+      this.userAuthService.setRefreshToken(response["refreshToken"]);
 
       this.userAuthService.setUsername(JSON.parse(response["user"])["username"]);
       this.userAuthService.setUserId(JSON.parse(response["user"])["id"]);

@@ -28,6 +28,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MAT_COLOR_FORMATS, NgxMatColorPickerModule, NGX_MAT_COLOR_FORMATS } from '@angular-material-components/color-picker';
+import { CustomComponent } from './custom/custom.component';
+import { CreateMenuComponent } from './create-menu/create-menu.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +44,8 @@ import { MAT_COLOR_FORMATS, NgxMatColorPickerModule, NGX_MAT_COLOR_FORMATS } fro
     ForgotComponent,
     ForbiddenComponent,
     CreateComponent,
+    CustomComponent,
+    CreateMenuComponent,
     ],
   imports: [
     BrowserModule,

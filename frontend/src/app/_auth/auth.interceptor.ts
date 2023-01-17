@@ -1,14 +1,19 @@
-import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from "@angular/common/http";
+import { HttpBackend, HttpClient, HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from "@angular/common/http";
 import { IfStmt } from "@angular/compiler";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
-import { catchError, Observable, throwError } from "rxjs";
+import { catchError, Observable, switchMap, throwError } from "rxjs";
 import { UserAuthService } from "../_services/user-auth.service";
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
     
-    constructor(private userAuthService:UserAuthService, private router:Router) {
+    private httpClient: HttpClient;
+
+    PATH_OF_API = "http://localhost:9001";
+
+    constructor(private userAuthService:UserAuthService, private router:Router, private httpBackend: HttpBackend) {
+        this.httpClient = new HttpClient(httpBackend);
     }
   
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -28,8 +33,19 @@ export class AuthInterceptor implements HttpInterceptor {
         console.log(err.status);
         if(err.status == 401)
           {
-        this.router.navigate(["/login"]);
-          }
+            this.httpClient.post(this.PATH_OF_API+"/auth/refresh",{refreshToken:this.userAuthService.getRefreshToken()}).subscribe(
+                ((res: any) => {
+    
+                this.userAuthService.setToken(res["token"]);
+
+                req = this.addToken(req,this.userAuthService.getToken());
+                
+                return next.handle(req);
+    
+                })           
+            );
+            window.location.reload();
+         }
         else if(err.status === 403){
             this.router.navigate(["/forbidden"]);
         }

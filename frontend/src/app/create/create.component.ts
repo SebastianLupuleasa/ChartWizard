@@ -38,9 +38,9 @@ get datasets() {
       ),
       chartDatasets: this.fb.array([this.fb.group({
         label: [''],
-        backgroundColor: ['#000000'],
-        borderColor: ['#000000'],
-        datasetValues: ['']  
+        backgroundColor: [''],
+        borderColor: [''],
+        datasetValues: [''],       
       },)]),
     });
   }
@@ -62,19 +62,20 @@ get datasets() {
 
     interface TransformedChartDataset {
       label: string;
-      backgroundColor: string;
-      borderColor: string;
+      backgroundColor: string[];
+      borderColor: string[];
       datasetValues: string[];
     }
 
     let chartDatasetArray : TransformedChartDataset[] = [];
 
     this.chartForm.getRawValue()["chartDatasets"].forEach(function(dataset : ChartDataset){
+      console.log(dataset.backgroundColor);
       chartDatasetArray.push(
         {
           label:dataset.label,
-          backgroundColor:dataset.backgroundColor,
-          borderColor:dataset.borderColor,
+          backgroundColor:dataset.backgroundColor.split(";"),
+          borderColor:dataset.borderColor.split(";"),
           datasetValues: dataset.datasetValues.split(";")
         }
       );
@@ -86,10 +87,8 @@ get datasets() {
     })
     
     let chart = {chartTitle:this.chartForm.getRawValue()["chartTitle"], chartType:this.chartForm.getRawValue()["chartType"], chartLabels:chartLabelArray,chartDatasets:chartDatasetArray,userId:this.userAuthService.getUserId()};
-
-   console.log(chart);
-this.httpclient.post(this.PATH_OF_API + "/charts/add",chart,{'headers':this.headers}).subscribe((res) => {
-  console.log(res);});
+   this.httpclient.post(this.PATH_OF_API + "/charts/add",chart,{'headers':this.headers}).subscribe((res) => {
+ });
   }
 
   addLabel() {
@@ -100,10 +99,19 @@ this.httpclient.post(this.PATH_OF_API + "/charts/add",chart,{'headers':this.head
   {
     this.datasets.push(this.fb.group({
       label: [''],
-      backgroundColor: ['#000000'],
-      borderColor: ['#000000'],
+      backgroundColor: [''],
+      borderColor: [''],
       datasetValues:  ['']      
     },));
+  }
+
+  setBackGroundTextValue() {
+      
+    let colorInput = <HTMLInputElement> document.getElementById("backgroundColorInput");
+    let colorText = document.getElementById("backgroundColorText");
+
+    colorText!.innerText= colorInput.value;
+   
   }
 
 }

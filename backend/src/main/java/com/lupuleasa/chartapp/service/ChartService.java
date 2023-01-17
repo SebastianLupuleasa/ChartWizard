@@ -7,6 +7,7 @@ import com.lupuleasa.chartapp.repository.ChartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -20,6 +21,10 @@ public class ChartService {
 
     public List<Chart> getCharts(){
         return repository.findAll();
+    }
+
+    public List<Chart> getChartsById(long userId){
+        return repository.findAllById(userId);
     }
 
     public void addChart(Chart chart){

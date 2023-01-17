@@ -1,6 +1,7 @@
 package com.lupuleasa.chartapp.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.lupuleasa.chartapp.security.domain.LoginCredentials;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,6 +19,7 @@ public class JsonObjectAuthenticationFilter extends UsernamePasswordAuthenticati
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) {
         try {
+            objectMapper.registerModule(new JavaTimeModule());
             BufferedReader reader = request.getReader();
             StringBuilder sb = new StringBuilder();
             String line;

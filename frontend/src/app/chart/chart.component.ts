@@ -43,6 +43,7 @@ export interface Dataset {
 export class ChartComponent implements OnInit, AfterViewChecked {
   customCharts: MyChart[] = [];
   chart!: Chart;
+  PATH_URL: string = "http://localhost:9001/";
 
   constructor(private httpClient: HttpClient) {}
 
@@ -57,7 +58,7 @@ export class ChartComponent implements OnInit, AfterViewChecked {
   getChart() {
 
     this.httpClient
-      .get<any>('http://localhost:9001/charts')
+      .get<any>(this.PATH_URL + 'charts')
       .subscribe((response) => {
         this.customCharts = response;
       });
@@ -104,9 +105,33 @@ export class ChartComponent implements OnInit, AfterViewChecked {
         case 'pie':
           chartType = 'pie';
           break;
+
+        case 'bar':
+          chartType = 'bar';
+          break;
+        
+        case 'doughnut':
+          chartType = 'doughnut';
+          break;
+        
+        case 'polarArea':
+          chartType = 'polarArea';
+          break;
+
+        case 'radar':
+          chartType = 'radar';
+          break;
+        
+        case 'bubble':
+          chartType = 'bubble';
+          break;
+        
+        case 'scatter':
+          chartType = 'scatter';
+          break;
       }
 
-      const config: ChartConfiguration = {
+    const config: ChartConfiguration = {
         type: chartType,
         data: data,
         options: options,
@@ -119,5 +144,18 @@ export class ChartComponent implements OnInit, AfterViewChecked {
       this.chart = new Chart(chartItem, config);
     }
       );}
+  }
+
+  downloadChart( elemntId: string) : void {
+
+    console.log(elemntId);
+    let canvas = document.getElementById(elemntId) as HTMLCanvasElement;;
+    let img    = canvas.toDataURL("image/png");
+    let imgDownload = document.createElement('a');
+    imgDownload.href = img;
+    imgDownload.download = elemntId+".png";
+    document.body.appendChild(imgDownload);
+    imgDownload.click();
+    document.body.removeChild(imgDownload);
   }
 }

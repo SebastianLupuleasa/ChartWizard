@@ -1,6 +1,8 @@
 package com.lupuleasa.chartapp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lupuleasa.chartapp.enums.Role;
+import com.lupuleasa.chartapp.security.domain.RefreshToken;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,7 +24,7 @@ public class JwtUser implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private Long id;
+    private long id;
 
     @Builder.Default
     private String uuid = UUID.randomUUID().toString();
@@ -48,6 +50,10 @@ public class JwtUser implements UserDetails {
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id",referencedColumnName = "user_id")
     private List<Chart> charts;
+
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private RefreshToken refreshToken;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
