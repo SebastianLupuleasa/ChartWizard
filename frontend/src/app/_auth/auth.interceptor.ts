@@ -44,7 +44,6 @@ export class AuthInterceptor implements HttpInterceptor {
     
                 })           
             );
-            window.location.reload();
          }
         else if(err.status === 403){
             this.router.navigate(["/forbidden"]);

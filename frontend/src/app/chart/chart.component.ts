@@ -25,6 +25,7 @@ export interface MyChart {
   chartLabels: string[];
   chartDatasets: Dataset[],
   user: number;
+  animation: string;
 }
 
 export interface Dataset {
@@ -131,12 +132,35 @@ export class ChartComponent implements OnInit, AfterViewChecked {
           break;
       }
 
-    const config: ChartConfiguration = {
+    let config: ChartConfiguration;
+
+    if(element.animation === 'none' || element.animation === '')
+    {
+    config = {
         type: chartType,
         data: data,
-        options: options,
+        options: {},
       };
+    }
+    else {
 
+      let chartAnimation : any = element.animation;
+
+      config = {
+        type: chartType,
+        data: data,
+        options:   {animations: {
+          tension: {
+            duration: 1000,
+            easing: chartAnimation,
+            from: 1,
+            to: 0,
+            loop: true
+          }
+        },}
+
+      };    
+    }
       const chartItem: ChartItem = document.getElementById(
         "chartDiv"+element.id
       ) as ChartItem;

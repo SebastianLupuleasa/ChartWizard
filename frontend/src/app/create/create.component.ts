@@ -34,6 +34,7 @@ get datasets() {
     this.chartForm = this.fb.group({
       chartTitle: [''],
       chartType: [''],
+      chartAnimation: [''],
       chartLabels: this.fb.array([this.fb.group({label: ['']}), this.fb.group({label: ['']})]
       ),
       chartDatasets: this.fb.array([this.fb.group({
@@ -86,7 +87,7 @@ get datasets() {
       chartLabelArray.push(label.label);
     })
     
-    let chart = {chartTitle:this.chartForm.getRawValue()["chartTitle"], chartType:this.chartForm.getRawValue()["chartType"], chartLabels:chartLabelArray,chartDatasets:chartDatasetArray,userId:this.userAuthService.getUserId()};
+    let chart = {chartTitle:this.chartForm.getRawValue()["chartTitle"], chartType:this.chartForm.getRawValue()["chartType"], chartAnimation:this.chartForm.getRawValue()["chartAnimation"], chartLabels:chartLabelArray,chartDatasets:chartDatasetArray,userId:this.userAuthService.getUserId()};
    this.httpclient.post(this.PATH_OF_API + "/charts/add",chart,{'headers':this.headers}).subscribe((res) => {
  });
   }

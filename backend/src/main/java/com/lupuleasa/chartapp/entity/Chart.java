@@ -18,6 +18,10 @@ public class Chart {
 
     @Column(name = "chartType")
     private String chartType;
+
+    @Column(name = "chartAnimation")
+    private String chartAnimation;
+
     @ElementCollection
     @Column(name = "chartLabels")
     private List<String> chartLabels;
@@ -29,10 +33,11 @@ public class Chart {
     @Column(name = "user_id")
     private long userId;
 
-    public Chart(long id, String chartTitle, String chartType, List<String> chartLabels, List<ChartDataset> chartDatasets, long userId) {
+    public Chart(long id, String chartTitle, String chartType, String chartAnimation, List<String> chartLabels, List<ChartDataset> chartDatasets, long userId) {
         this.id = id;
         this.chartTitle = chartTitle;
         this.chartType = chartType;
+        this.chartAnimation = chartAnimation;
         this.chartLabels = chartLabels;
         this.chartDatasets = chartDatasets;
         this.userId = userId;
@@ -86,5 +91,13 @@ public class Chart {
 
     public void setUserId(long userId) {
         this.userId = userId;
+    }
+
+    public String getChartAnimation() {
+        return chartAnimation;
+    }
+
+    public void setChartAnimation(String chartAnimation) {
+        this.chartAnimation = chartAnimation;
     }
 }
