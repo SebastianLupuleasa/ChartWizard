@@ -1,5 +1,7 @@
 package com.lupuleasa.chartapp.service;
 
+import com.lupuleasa.chartapp.dto.JwtUserDto;
+import com.lupuleasa.chartapp.enums.Role;
 import com.lupuleasa.chartapp.exception.ChartAppGenericException;
 import com.lupuleasa.chartapp.entity.JwtUser;
 import com.lupuleasa.chartapp.repository.JwtUserRepository;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -37,5 +40,23 @@ public class JwtUserService {
 
     public void deleteUser(long userId) {
         jwtUserRepository.deleteById(userId);
+    }
+
+    public void editUser(JwtUserDto jwtUser) {
+        Optional<JwtUser> oldUser = jwtUserRepository.findJwtUserById(jwtUser.getId());
+        if(oldUser.isPresent()){
+        oldUser.get().setEmail(jwtUser.getEmail());
+        oldUser.get().setUsername(jwtUser.getUsername());
+        oldUser.get().setEnabled(jwtUser.isEnabled());
+        if(jwtUser.getRole().equals("Admin")){
+            oldUser.get().getRole().add(Role.ROLE_ADMIN);
+            oldUser.get().getRole().add(Role.ROLE_USER);
+        }
+        else{
+            oldUser.get().getRole().remove(Role.ROLE_ADMIN);
+            oldUser.get().getRole().add(Role.ROLE_USER);
+        }
+        jwtUserRepository.save(oldUser.get());
+        }
     }
 }

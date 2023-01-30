@@ -228,7 +228,7 @@ else {
       chartId:Number(elementId)
     }})
     .subscribe((response) => {
-      this.customCharts = response;
+      window.location.reload();
     });
   }
 

@@ -1,5 +1,6 @@
 package com.lupuleasa.chartapp.controller;
 
+import com.lupuleasa.chartapp.dto.JwtUserDto;
 import com.lupuleasa.chartapp.entity.Chart;
 import com.lupuleasa.chartapp.entity.JwtUser;
 import com.lupuleasa.chartapp.service.JwtUserService;
@@ -21,6 +22,12 @@ public class JwtUserController {
     @GetMapping()
     public ResponseEntity<List<JwtUser>> getUsers(){
         return new ResponseEntity<>(jwtUserService.getJwtUsers(), HttpStatus.OK);
+    }
+
+    @PostMapping("/edit")
+    public ResponseEntity<JwtUserDto> editUser(@RequestBody JwtUserDto jwtUser){
+        jwtUserService.editUser(jwtUser);
+        return new ResponseEntity<>(jwtUser,HttpStatus.OK);
     }
 
     @DeleteMapping("/delete")

@@ -23,7 +23,7 @@
                 <td class="table-info">{{ element.role }}</td>
                 <td class="table-info">{{ element.enabled }}</td>
                 <td class="table-info">
-                <button class="btn btn-warning">Edit</button>
+                <a class="btn btn-warning" routerLink="edit" [state]="element">Edit</a>
                 </td>
               </ng-template>
 
@@ -35,7 +35,7 @@
             <td>{{ element.role }}</td>
             <td>{{ element.enabled }}</td>
             <td>
-            <button class="btn btn-warning">Edit</button>
+            <a class="btn btn-warning" routerLink="edit" [state]="element">Edit</a>
             <button class="btn btn-danger" (click)="deleteUser(element.id)">Delete</button>
             </td>
         </ng-template>

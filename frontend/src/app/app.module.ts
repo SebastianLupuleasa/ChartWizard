@@ -32,6 +32,7 @@ import { ManageUsersComponent } from './manage-users/manage-users.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ChartCreatedSuccessComponent } from './chart-created-success/chart-created-success.component';
 import { EditUserComponent } from './edit-user/edit-user.component';
+import { UserEditedSuccessComponent } from './user-edited-success/user-edited-success.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { EditUserComponent } from './edit-user/edit-user.component';
     ManageUsersComponent,
     ChartCreatedSuccessComponent,
     EditUserComponent,
+    UserEditedSuccessComponent,
     ],
   imports: [
     BrowserModule,

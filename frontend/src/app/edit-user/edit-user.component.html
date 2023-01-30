@@ -1,17 +1,20 @@
-<form #loginForm="ngForm">
-    <div class="form-floating mb-3">
-        <input id="uuid" type="text" placeholder="Uuid" ngModel name="text"/>
-    </div>
-    <div class="form-floating mb-3">
-        <input id="username" type="text" placeholder="Username" ngModel name="text"/>
-    </div>
-    <div class="form-floating mb-3">
-        <input id="Email" type="email" placeholder="Email" ngModel name="text"/>
-    </div>
+<form [formGroup]="userForm" (ngSubmit)="editUser()">
+    
+     <mat-form-field>
+        <mat-label>Username</mat-label>
+        <input type="text" matInput formControlName="username"
+               placeholder="Username">
+     </mat-form-field>
+ 
+    <mat-form-field>
+            <mat-label>Email</mat-label>
+            <input type="text" matInput formControlName="email"
+                placeholder="Email">
+    </mat-form-field>
 
     <mat-form-field>
-        <mat-label>Chart Animation</mat-label>
-        <mat-select matInput formControlName="chartAnimation" >
+        <mat-label>User Role</mat-label>
+        <mat-select matInput formControlName="role">
           <mat-option value="User">User</mat-option>
           <mat-option value="Admin">Admin</mat-option>
         </mat-select>
@@ -21,14 +24,14 @@
 
     <mat-form-field>
         <mat-label>Enabled</mat-label>
-        <mat-select matInput formControlName="chartAnimation" >
+        <mat-select matInput formControlName="enabled" value="{{ this.editedUser.enabled }}" >
           <mat-option value="true">true</mat-option>
           <mat-option value="false">false</mat-option>
         </mat-select>
     </mat-form-field>
 
     <div>
-        <button mat-raised-button class="btn btn-warning">Edit</button>
+        <button mat-raised-button class="btn btn-warning editUserButton">Edit</button>
     </div>
       
 </form>

@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, FormArray } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { ChartCreatedSuccessComponent } from '../chart-created-success/chart-created-success.component';
 import { Dataset } from '../chart/chart.component';
 import { UserAuthService } from '../_services/user-auth.service';
@@ -21,7 +22,7 @@ export class CreateComponent implements OnInit {
 
   chartForm!: FormGroup;
 
-  constructor(private fb: FormBuilder,private userAuthService:UserAuthService, private httpclient: HttpClient, public dialog: MatDialog) { }
+  constructor(private router: Router,private fb: FormBuilder,private userAuthService:UserAuthService, private httpclient: HttpClient, public dialog: MatDialog) { }
 
 get labels() {
   return this.chartForm.get('chartLabels') as FormArray;
@@ -93,6 +94,7 @@ get datasets() {
    this.httpclient.post(this.PATH_OF_API + "/charts/add",chart,{'headers':this.headers}).subscribe((res) => {
 
     this.dialog.open(ChartCreatedSuccessComponent);
+    this.router.navigate(['custom']);
 
  });
   }
