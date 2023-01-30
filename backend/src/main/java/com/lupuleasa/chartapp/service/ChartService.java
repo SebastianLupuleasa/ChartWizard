@@ -24,7 +24,7 @@ public class ChartService {
     }
 
     public List<Chart> getChartsById(long userId){
-        return repository.findAllById(userId);
+        return repository.findAllByUserId(userId);
     }
 
     public void addChart(Chart chart){

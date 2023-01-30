@@ -7,15 +7,15 @@ import { ForbiddenComponent } from './forbidden/forbidden.component';
 import { AuthGuard } from './_auth/auth.guard';
 import { CreateComponent } from './create/create.component';
 import { CustomComponent } from './custom/custom.component';
-import { UserInfoComponent } from './user-info/user-info.component';
+import { ManageUsersComponent } from './manage-users/manage-users.component';
 
 const routes: Routes = [
   {path: 'charts', component: ChartComponent, canActivate:[AuthGuard], data:{roles:"ROLE_ADMIN"}},
   {path: 'create', component: CreateComponent, canActivate:[AuthGuard], data:{roles:"ROLE_ADMIN"}},
   {path: 'custom', component: CustomComponent, canActivate:[AuthGuard], data:{roles:"ROLE_ADMIN"}},
+  {path: 'manageUsers', component: ManageUsersComponent, canActivate:[AuthGuard], data:{roles:"ROLE_ADMIN"}},
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
-  {path: 'user', component: UserInfoComponent},
   {path: 'forbidden', component: ForbiddenComponent},
   {path: '', component: ChartComponent, canActivate:[AuthGuard], data:{roles:"ROLE_ADMIN"}}
 ];

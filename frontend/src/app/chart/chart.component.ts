@@ -22,6 +22,7 @@ export interface MyChart {
   id: number;
   chartTitle: string;
   chartType: string;
+  chartAnimation: string;
   chartLabels: string[];
   chartDatasets: Dataset[],
   user: number;
@@ -45,6 +46,7 @@ export class ChartComponent implements OnInit, AfterViewChecked {
   customCharts: MyChart[] = [];
   chart!: Chart;
   PATH_URL: string = "http://localhost:9001/";
+  chartsFound: string = "No charts were found!";
 
   constructor(private httpClient: HttpClient) {}
 
@@ -67,6 +69,7 @@ export class ChartComponent implements OnInit, AfterViewChecked {
 
   createChart(): void {
     if (!this.chart && this.customCharts.length > 0) {
+      this.chartsFound="";
       this.customCharts.forEach(element => {
       Chart.register(...registerables);
 
@@ -189,8 +192,8 @@ else {
       }
 
     let config: ChartConfiguration;
-   
-    if(element.animation === 'none' || element.animation === '' || element.animation === null || element.animation === undefined )
+    
+    if(element.chartAnimation === 'none' || element.chartAnimation === '' || element.chartAnimation === null || element.chartAnimation === undefined )
     {
     config = {
         type: chartType,
@@ -226,13 +229,13 @@ else {
       );}
   }
 
-  downloadChart( elemntId: string) : void {
+  downloadChart( elementId: string) : void {
 
-    let canvas = document.getElementById(elemntId) as HTMLCanvasElement;;
+    let canvas = document.getElementById(elementId) as HTMLCanvasElement;;
     let img    = canvas.toDataURL("image/png");
     let imgDownload = document.createElement('a');
     imgDownload.href = img;
-    imgDownload.download = elemntId+".png";
+    imgDownload.download = elementId+".png";
     document.body.appendChild(imgDownload);
     imgDownload.click();
     document.body.removeChild(imgDownload);

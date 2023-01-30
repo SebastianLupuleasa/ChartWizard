@@ -28,7 +28,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MAT_COLOR_FORMATS, NgxMatColorPickerModule, NGX_MAT_COLOR_FORMATS } from '@angular-material-components/color-picker';
 import { CustomComponent } from './custom/custom.component';
-import { UserInfoComponent } from './user-info/user-info.component';
+import { ManageUsersComponent } from './manage-users/manage-users.component';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { ChartCreatedSuccessComponent } from './chart-created-success/chart-created-success.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +45,8 @@ import { UserInfoComponent } from './user-info/user-info.component';
     ForbiddenComponent,
     CreateComponent,
     CustomComponent,
-    UserInfoComponent,
+    ManageUsersComponent,
+    ChartCreatedSuccessComponent,
     ],
   imports: [
     BrowserModule,
@@ -62,6 +65,7 @@ import { UserInfoComponent } from './user-info/user-info.component';
     MatInputModule,
     MatExpansionModule,
     NgxMatColorPickerModule,
+    MatDialogModule
    ],
   providers: [
     { provide: MAT_COLOR_FORMATS, useValue: NGX_MAT_COLOR_FORMATS },

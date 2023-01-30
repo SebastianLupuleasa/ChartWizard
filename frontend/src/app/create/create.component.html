@@ -84,7 +84,14 @@
         </mat-expansion-panel>
         </mat-accordion>
       </div>
-     
+
+
+      <div class="colorPickerDiv">
+        <h2>Color picker:</h2>
+        <input id="backgroundColorInput" type="color" (change)="setBackGroundTextValue()"> 
+        <h4 id="backgroundColorText"></h4>
+       </div>
+   
 
       <div formArrayName="chartDatasets">
         <mat-accordion class="example-headers-align" multi>
@@ -102,18 +109,10 @@
                 placeholder="Label"> 
               </mat-form-field>
 
-              <div>
-              <h2>Color picker:</h2>
-              <input id="backgroundColorInput" type="color" (change)="setBackGroundTextValue()"> 
-              <h4 id="backgroundColorText"></h4>
-             </div>
-
               <mat-form-field id="backgroundFormField">
                 <mat-label>Background Color (write values separated by ";")</mat-label>
                 <input type="text" matInput formControlName="backgroundColor"/>
               </mat-form-field>
-
-              <div></div>
 
               <mat-form-field>
                   <mat-label>Border Color (write values separated by ";")</mat-label>
@@ -137,6 +136,6 @@
         </div>
 
       <div>
-      <button mat-raised-button color="primary">Create Chart</button>
+      <button mat-raised-button class="createChartButton btn btn-primary" color="primary">Create Chart</button>
       </div>
 </form>

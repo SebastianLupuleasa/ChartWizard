@@ -16,15 +16,11 @@
           Create Chart
        </a>
 
-       <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
-        <div class="sb-nav-link-icon"><i class="fa fa-upload" aria-hidden="true"></i></div>
-         Import Chart
-    </a>
+        <a *ngIf="containsAdmin" class="nav-link collapsed" routerLink="/manageUsers" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
+                <div class="sb-nav-link-icon"><i class="fa fa-file-text-o" aria-hidden="true"></i></div>
+                Manage Users
+        </a>
 
-       <a class="nav-link collapsed" href="/user" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
-              <div class="sb-nav-link-icon"><i class="fa fa-file-text-o" aria-hidden="true"></i></div>
-              User Info
-          </a>
      </div>
   </div>
   <div class="sb-sidenav-footer">

@@ -26,8 +26,9 @@ public class ChartController {
     }
 
     @PostMapping("/charts/add")
-    public void addChart(@RequestBody Chart chart){
+    public ResponseEntity<Chart> addChart(@RequestBody Chart chart){
         service.addChart(chart);
+        return new ResponseEntity<>(chart,HttpStatus.OK);
     }
 
     @PutMapping("/charts/edit/{id}")
@@ -35,9 +36,9 @@ public class ChartController {
         service.updateChart(chart);
     }
 
-    @DeleteMapping("/charts/delete/{id}")
-    public void deleteChart(@PathVariable("id") Integer id){
-        service.deleteChart(id);
+    @DeleteMapping("/charts/delete")
+    public void deleteChart(@RequestParam Integer chartId){
+        service.deleteChart(chartId);
     }
 
 }

@@ -1,7 +1,12 @@
+<h1>{{ chartsFound }}</h1>
 <div class="containerCharts" >
     <div id="divChart" *ngFor="let element of this.customCharts">
-        <p *ngIf="element.chartTitle">{{element.chartTitle }}</p>
+        <p *ngIf="element.chartTitle">{{element.chartTitle}}</p>
         <canvas id="chartDiv{{element.id}}"></canvas>
+        <button class="fa fa-download" aria-hidden="true" (click)="downloadChart('chartDiv'+element.id)"></button>
+        <button class="fa fa-trash" aria-hidden="true" (click)="deleteChart(element.id)"></button>
     </div>
-    </div>  
+    </div>
+    
+    
     

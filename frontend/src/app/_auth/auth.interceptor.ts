@@ -30,8 +30,8 @@ export class AuthInterceptor implements HttpInterceptor {
         catchError(
         (err:any) => {
         
-        console.log(err.status);
-        if(err.status == 401)
+        console.log(err);
+        if(err.status == 401 || err.status == 500)
           {
             this.httpClient.post(this.PATH_OF_API+"/auth/refresh",{refreshToken:this.userAuthService.getRefreshToken()}).subscribe(
                 ((res: any) => {
