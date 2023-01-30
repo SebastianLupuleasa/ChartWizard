@@ -35,4 +35,7 @@ public class JwtUserService {
                 .orElseThrow(() -> new ChartAppGenericException("User not found by username!"));
     }
 
+    public void deleteUser(long userId) {
+        jwtUserRepository.deleteById(userId);
+    }
 }

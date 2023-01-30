@@ -26,10 +26,10 @@ export class ManageUsersComponent {
   constructor(private httpClient: HttpClient, private userAuthService: UserAuthService) {}
 
   ngOnInit(): void {
-    this.getChart();
+    this.getUsers();
   }
 
-  getChart() {
+  getUsers() {
     this.httpClient
       .get<any>(this.PATH_URL + 'users/')
       .subscribe((response) => {
@@ -38,5 +38,17 @@ export class ManageUsersComponent {
           this.jwtUsersFound = "No users were found!";
         }
       });
+  }
+
+  deleteUser(userId: number){
+    console.log("dessert");
+    this.httpClient
+    .delete<any>(this.PATH_URL + 'users/delete',{params: {
+      userId:Number(userId)
+    }})
+    .subscribe((response) => {
+      this.getUsers();
+    });
+
   }
 }

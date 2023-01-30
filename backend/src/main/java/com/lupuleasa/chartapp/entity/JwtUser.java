@@ -49,12 +49,12 @@ public class JwtUser implements UserDetails {
     @ColumnDefault("false")
     private boolean enabled = false;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(cascade=CascadeType.REMOVE,fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id",referencedColumnName = "user_id")
     @JsonIgnore
     private List<Chart> charts = new ArrayList<>();
 
-    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToOne(cascade=CascadeType.REMOVE,mappedBy = "user", fetch = FetchType.LAZY)
     @JsonIgnore
     private RefreshToken refreshToken;
 

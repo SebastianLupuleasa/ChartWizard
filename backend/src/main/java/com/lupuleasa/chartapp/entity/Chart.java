@@ -26,7 +26,7 @@ public class Chart {
     @Column(name = "chartLabels")
     private List<String> chartLabels;
 
-    @OneToMany()
+    @OneToMany(cascade=CascadeType.REMOVE)
     @Column(name = "chartDatasets")
     private List<ChartDataset> chartDatasets;
 
