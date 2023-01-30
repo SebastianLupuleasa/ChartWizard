@@ -31,6 +31,7 @@ import { CustomComponent } from './custom/custom.component';
 import { ManageUsersComponent } from './manage-users/manage-users.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ChartCreatedSuccessComponent } from './chart-created-success/chart-created-success.component';
+import { EditUserComponent } from './edit-user/edit-user.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { ChartCreatedSuccessComponent } from './chart-created-success/chart-crea
     CustomComponent,
     ManageUsersComponent,
     ChartCreatedSuccessComponent,
+    EditUserComponent,
     ],
   imports: [
     BrowserModule,

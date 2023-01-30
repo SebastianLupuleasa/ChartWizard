@@ -25,6 +25,7 @@ public class InitUsers implements CommandLineRunner {
                     .email("admin@test.com")
                     .password(passwordEncoder.encode("test123"))
                     .role(Set.of(Role.ROLE_ADMIN, Role.ROLE_USER))
+                    .enabled(true)
                     .build());
             u.setEnabled(true);
             jwtUserService.save(u);
@@ -35,6 +36,7 @@ public class InitUsers implements CommandLineRunner {
                     .email("pure@test.com")
                     .password(passwordEncoder.encode("test123"))
                     .role(Set.of(Role.ROLE_ADMIN))
+                    .enabled(true)
                     .build());
             u.setEnabled(true);
             jwtUserService.save(u);
@@ -45,6 +47,7 @@ public class InitUsers implements CommandLineRunner {
                     .email("user@test.com")
                     .password(passwordEncoder.encode("test123"))
                     .role(Set.of(Role.ROLE_USER))
+                    .enabled(true)
                     .build());
             u.setEnabled(true);
             jwtUserService.save(u);

@@ -20,7 +20,7 @@ export class CustomComponent implements OnInit, AfterViewChecked {
   PATH_URL: string = "http://localhost:9001/";
   customCharts: MyChart[] = [];
   chart!: Chart;
-  chartsFound: string = "No charts were found!";
+  chartsFound: string = "";
 
   constructor(private httpClient: HttpClient, private userAuthService: UserAuthService) {}
 
@@ -40,12 +40,15 @@ export class CustomComponent implements OnInit, AfterViewChecked {
       }})
       .subscribe((response) => {
         this.customCharts = response;
+        if(this.customCharts.length === 0){
+          this.chartsFound = "No charts were found!";
+        }
       });
   }
 
   createChart(): void {
     if (!this.chart && this.customCharts.length > 0) {
-      
+
       this.chartsFound = "";
       this.customCharts.forEach(element => {
       Chart.register(...registerables);

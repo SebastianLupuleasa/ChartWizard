@@ -46,7 +46,7 @@ export class ChartComponent implements OnInit, AfterViewChecked {
   customCharts: MyChart[] = [];
   chart!: Chart;
   PATH_URL: string = "http://localhost:9001/";
-  chartsFound: string = "No charts were found!";
+  chartsFound: string = "";
 
   constructor(private httpClient: HttpClient) {}
 
@@ -64,6 +64,9 @@ export class ChartComponent implements OnInit, AfterViewChecked {
       .get<any>(this.PATH_URL + 'charts')
       .subscribe((response) => {
         this.customCharts = response;
+        if(this.customCharts.length === 0){
+          this.chartsFound = "No charts were found!";
+        }
       });
   }
 

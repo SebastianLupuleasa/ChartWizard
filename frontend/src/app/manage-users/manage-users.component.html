@@ -1,1 +1,46 @@
-<p>manage-users works!</p>
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Uuid</th>
+        <th scope="col">Username</th>
+        <th scope="col">Email</th>
+        <th scope="col">Roles</th>
+        <th scope="col">Enabled</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr id="divUser" *ngFor="let element of this.jwtUsers">
+
+            <div *ngIf="this.userId === element.id; then loggedUser else otherUser"></div>
+
+            <ng-template  #loggedUser>
+                <th class="table-info" scope="row">{{ element.id }}</th>
+                <td class="table-info">{{ element.uuid }}</td>
+                <td class="table-info">{{ element.username }}</td>
+                <td class="table-info">{{ element.email }}</td>
+                <td class="table-info">{{ element.role }}</td>
+                <td class="table-info">{{ element.enabled }}</td>
+                <td class="table-info">
+                <button class="btn btn-warning">Edit</button>
+                </td>
+              </ng-template>
+
+            <ng-template #otherUser>
+            <th scope="row">{{ element.id }}</th>
+            <td>{{ element.uuid }}</td>
+            <td>{{ element.username }}</td>
+            <td>{{ element.email }}</td>
+            <td>{{ element.role }}</td>
+            <td>{{ element.enabled }}</td>
+            <td>
+            <button class="btn btn-warning">Edit</button>
+            <button class="btn btn-danger">Delete</button>
+            </td>
+        </ng-template>
+        </tr>
+    </tbody>
+  </table>
+
+ 

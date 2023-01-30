@@ -31,11 +31,6 @@ public class ChartController {
         return new ResponseEntity<>(chart,HttpStatus.OK);
     }
 
-    @PutMapping("/charts/edit/{id}")
-    public void updateChart(@PathVariable("id") Integer id, @RequestBody Chart chart){
-        service.updateChart(chart);
-    }
-
     @DeleteMapping("/charts/delete")
     public void deleteChart(@RequestParam Integer chartId){
         service.deleteChart(chartId);

@@ -6,6 +6,7 @@ import com.lupuleasa.chartapp.security.domain.RefreshToken;
 import jakarta.persistence.*;
 import lombok.*;
 
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -43,8 +44,9 @@ public class JwtUser implements UserDetails {
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<Role> role = new HashSet<>();
 
-    @Column
+    @Column()
     @Builder.Default
+    @ColumnDefault("false")
     private boolean enabled = false;
 
     @OneToMany(fetch = FetchType.LAZY)

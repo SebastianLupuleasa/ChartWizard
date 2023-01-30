@@ -5,6 +5,8 @@ import com.lupuleasa.chartapp.entity.JwtUser;
 import com.lupuleasa.chartapp.repository.JwtUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -12,6 +14,8 @@ import java.util.Optional;
 public class JwtUserService {
 
     private final JwtUserRepository jwtUserRepository;
+
+    public List<JwtUser> getJwtUsers() { return jwtUserRepository.findAll();}
 
     public JwtUser save(JwtUser user) {
         return jwtUserRepository.save(user);

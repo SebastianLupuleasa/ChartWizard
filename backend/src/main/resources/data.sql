@@ -1,4 +1,4 @@
-insert into jwt_user(user_id) values (99);
+insert into jwt_user(user_id,uuid,username,email) values (99,'n/a','username','email@email.com');
 
 insert into chart(chart_id,chart_title,chart_type,user_id) values (99,'My fabulous line chart.','line',99);
 
