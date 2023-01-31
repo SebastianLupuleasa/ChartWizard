@@ -1,0 +1,159 @@
+<h1>Mixed Chart Creator</h1>
+<form [formGroup]="chartForm" (ngSubmit)="addChart()">
+
+    <mat-accordion class="example-headers-align" multi>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Chart Info
+          </mat-panel-title>
+          </mat-expansion-panel-header>
+      <mat-form-field>
+          <mat-label>Chart Title</mat-label>
+          <input type="text" matInput formControlName="chartTitle"
+                 placeholder="Chart title">
+       </mat-form-field>
+      </mat-expansion-panel>
+    </mat-accordion>
+        
+  
+        <div formArrayName="chartLabels">
+        <mat-accordion class="example-headers-align" multi>
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Chart Labels
+              </mat-panel-title>
+              </mat-expansion-panel-header>
+           <div *ngFor="let label of labels.controls; let i=index">
+            <div [formGroupName]="i">
+              <mat-form-field>
+                <mat-label>Label</mat-label>
+                <input type="text" matInput formControlName="label"
+                placeholder="Label"> 
+              </mat-form-field>
+            </div>
+           </div>
+  
+           <div>
+            <button mat-raised-button color="primary" type="button" (click)="addLabel()">Add label</button>
+            </div>
+        
+          </mat-expansion-panel>
+          </mat-accordion>
+        </div>
+  
+        
+        <div>
+          <mat-accordion class="example-headers-align" multi>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                 First Chart Dataset
+                </mat-panel-title>
+                </mat-expansion-panel-header>
+                
+                <mat-form-field>
+                  <mat-label>Label</mat-label>
+                  <input type="text" matInput formControlName="datasetLabel"
+                  placeholder="Label"> 
+                </mat-form-field>
+
+                <mat-form-field>
+                    <mat-label>Chart Type</mat-label>
+                    <mat-select matInput formControlName="datasetType" >
+                      <mat-option value="line">line</mat-option>
+                      <mat-option value="bar">bar</mat-option>
+                      <mat-option value="pie">pie</mat-option>
+                      <mat-option value="doughnut">doughnut</mat-option>
+                      <mat-option value="polarArea">polarArea</mat-option>
+                      </mat-select>
+                  </mat-form-field>
+  
+                <div id="backgroundColorExtender" (change)="calculateBackgroundColor()">
+                  <h4>Background Color</h4>
+                  <button mat-raised-button color="primary" type="button" (click)="addBackgroundColor()">Add</button>
+                  <input name="backgroundColorPicker" type="color">       
+              </div>
+             
+                <input type="text" matInput formControlName="backgroundColor" readonly="true" [style.visibility]="'hidden'"/>
+                
+               <div id="borderColorExtender" (change)="calculateBorderColor()">
+                  <h4>Border Color</h4>
+                  <button mat-raised-button color="primary" type="button" (click)="addBorderColor()">Add</button>
+                  <input name="borderColorPicker" type="color">       
+              </div>
+    
+               <input type="text" matInput formControlName="borderColor" readonly="true" readonly="true" [style.visibility]="'hidden'"/>
+                     
+               <div id="datasetValueExtender" (change)="calculateDatasetValue()">
+                <h4>Dataset Values</h4>
+                <button mat-raised-button color="primary" type="button" (click)="addDatasetValue()">Add</button>
+                <input name="datasetValuePicker" type="number">
+              </div>
+              
+            <input type="text" matInput formControlName="datasetValues" placeholder="Dataset Values" readonly="true" [style.visibility]="'hidden'"> 
+                                  
+            </mat-expansion-panel>
+            </mat-accordion>
+          </div>
+
+          <div>
+            <mat-accordion class="example-headers-align" multi>
+              <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                   Second Chart Dataset
+                  </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  
+                  <mat-form-field>
+                    <mat-label>Label</mat-label>
+                    <input type="text" matInput formControlName="secondDatasetLabel"
+                    placeholder="Label"> 
+                  </mat-form-field>
+  
+                  <mat-form-field>
+                      <mat-label>Chart Type</mat-label>
+                      <mat-select matInput formControlName="secondDatasetType" >
+                        <mat-option value="line">line</mat-option>
+                        <mat-option value="bar">bar</mat-option>
+                        <mat-option value="pie">pie</mat-option>
+                        <mat-option value="doughnut">doughnut</mat-option>
+                        <mat-option value="polarArea">polarArea</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+    
+                  <div id="backgroundSecondColorExtender" (change)="calculateSecondBackgroundColor()">
+                    <h4>Background Color</h4>
+                    <button mat-raised-button color="primary" type="button" (click)="addSecondBackgroundColor()">Add</button>
+                    <input name="backgroundSecondColorPicker" type="color">       
+                </div>
+               
+                  <input type="text" matInput formControlName="secondBackgroundColor" readonly="true" [style.visibility]="'hidden'"/>
+                  
+                 <div id="borderSecondColorExtender" (change)="calculateSecondBorderColor()">
+                    <h4>Border Color</h4>
+                    <button mat-raised-button color="primary" type="button" (click)="addSecondBorderColor()">Add</button>
+                    <input name="borderSecondColorPicker" type="color">       
+                </div>
+      
+                 <input type="text" matInput formControlName="secondBorderColor" readonly="true" [style.visibility]="'hidden'"/>
+                       
+                 <div id="datasetSecondValueExtender" (change)="calculateSecondDatasetValue()">
+                  <h4>Dataset Values</h4>
+                  <button mat-raised-button color="primary" type="button" (click)="addSecondDatasetValue()">Add</button>
+                  <input name="datasetSecondValuePicker" type="number">
+                </div>
+                
+              <input type="text" matInput formControlName="secondDatasetValues" placeholder="Dataset Values" readonly="true" [style.visibility]="'hidden'"> 
+                                    
+              </mat-expansion-panel>
+              </mat-accordion>
+            </div>
+  
+        <div>
+        <button mat-raised-button class="createChartButton btn btn-primary" color="primary">Create Chart</button>
+        </div>
+  </form>
+  

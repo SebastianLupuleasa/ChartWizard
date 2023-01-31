@@ -48,18 +48,18 @@ export class CustomComponent implements OnInit, AfterViewChecked {
 
   createChart(): void {
     if (!this.chart && this.customCharts.length > 0) {
-
-      this.chartsFound = "";
+      this.chartsFound="";
       this.customCharts.forEach(element => {
       Chart.register(...registerables);
 
-      let chartDatasets: { label: string; backgroundColor: string; borderColor: string; data: number[]; fill?:boolean, pointBackgroundColor?: string,  pointBorderColor?: string, pointHoverBackgroundColor?: string, pointHoverBorderColor?: string }[] = [];
+      let chartDatasets: {type: any,label: string; backgroundColor: string; borderColor: string; data: number[]; fill?:boolean, pointBackgroundColor?: string,  pointBorderColor?: string, pointHoverBackgroundColor?: string, pointHoverBorderColor?: string }[] = [];
 
-      if(element.chartType === 'radar')
+        if(element.chartType === 'radar')
 {
        element.chartDatasets.forEach(element => {
         let color = this.hexToRgb(element.backgroundColor);
         chartDatasets.push(  {
+          type: element.type,
           label: element.label,
           backgroundColor: "rgba("+color?.r+", " + color?.g + ", "+ color?.b +", 0.2)",
           borderColor: element.borderColor,
@@ -84,6 +84,7 @@ else if(element.chartType === 'bubble')
     }
 
     chartDatasets.push(  {
+       type: element.type,
        label: element.label,
        backgroundColor: element.backgroundColor,
        borderColor: element.borderColor,
@@ -95,24 +96,26 @@ else if(element.chartType === 'scatter')
 {
  element.chartDatasets.forEach(element => {
 
-    let bubbleData : any[] = []; 
+    let scatterData : any[] = []; 
    
     for(let i=0; i<element.datasetValues.length; i+=2)
     {
-      bubbleData.push({x:element.datasetValues[i], y:element.datasetValues[i+1]});
+      scatterData.push({x:element.datasetValues[i], y:element.datasetValues[i+1]});
     }
 
     chartDatasets.push(  {
+       type: element.type,
        label: element.label,
        backgroundColor: element.backgroundColor,
        borderColor: element.borderColor,
-       data: bubbleData,
+       data: scatterData,
      });
    });
 }
 else {
   element.chartDatasets.forEach(element => {
     chartDatasets.push(  {
+       type: element.type,
        label: element.label,
        backgroundColor: element.backgroundColor,
        borderColor: element.borderColor,
@@ -208,7 +211,6 @@ else {
     }
       );}
   }
-
   downloadChart( elementId: string) : void {
 
     let canvas = document.getElementById(elementId) as HTMLCanvasElement;;

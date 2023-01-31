@@ -1,18 +1,17 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, FormControl, FormArray } from '@angular/forms';
+import { FormGroup, FormBuilder, FormArray, FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ChartCreatedSuccessComponent } from '../chart-created-success/chart-created-success.component';
-import { Dataset } from '../chart/chart.component';
 import { UserAuthService } from '../_services/user-auth.service';
 
 @Component({
-  selector: 'app-create',
-  templateUrl: './create.component.html',
-  styleUrls: ['./create.component.scss']
+  selector: 'app-mixed-charts',
+  templateUrl: './mixed-charts.component.html',
+  styleUrls: ['./mixed-charts.component.scss']
 })
-export class CreateComponent implements OnInit {
+export class MixedChartsComponent implements OnInit {
 
   headers = { 'content-type': 'application/json'}  
 
@@ -40,17 +39,36 @@ get datasetValues() {
   return this.chartForm.get('datasetValues') as FormControl;
 }
 
+get datasetSecondBackground() {
+  return this.chartForm.get('secondBackgroundColor') as FormControl;
+}
+
+get datasetSecondBorder() {
+  return this.chartForm.get('secondBorderColor') as FormControl;
+}
+
+get datasetSecondValues() {
+  return this.chartForm.get('secondDatasetValues') as FormControl;
+}
+
+
 
   ngOnInit(): void {
     this.chartForm = this.fb.group({
       chartTitle: [''],
-      chartType: [''],
-      chartAnimation: [''],
+      chartType: ['line'],
+      chartAnimation: ['none'],
       chartLabels: this.fb.array([this.fb.group({label: ['']}), this.fb.group({label: ['']})]),
       backgroundColor: ['#000000'],
       borderColor: ['#000000'],
       datasetLabel: [''],
-      datasetValues: ['']
+      datasetValues: [''],
+      datasetType: [''],
+      secondBackgroundColor: ['#000000'],
+      secondBorderColor: ['#000000'],
+      secondDatasetLabel: [''],
+      secondDatasetValues: [''],
+      secondDatasetType: [''],
     });
   }
 
@@ -64,6 +82,7 @@ get datasetValues() {
 
     interface TransformedChartDataset {
       label: string;
+      type: string;
       backgroundColor: string[];
       borderColor: string[];
       datasetValues: string[];
@@ -73,11 +92,22 @@ get datasetValues() {
     
       chartDatasetArray.push(
         {
+          label:this.chartForm.getRawValue()["secondDatasetLabel"],
+          type:this.chartForm.getRawValue()["secondDatasetType"],
+          backgroundColor:this.chartForm.getRawValue()["secondBackgroundColor"].split(";"),
+          borderColor:this.chartForm.getRawValue()["secondBorderColor"].split(";"),
+          datasetValues: this.chartForm.getRawValue()["secondDatasetValues"].split(";"),
+        }        
+      );
+
+      chartDatasetArray.push(
+        {
           label:this.chartForm.getRawValue()["datasetLabel"],
+          type:this.chartForm.getRawValue()["datasetType"],
           backgroundColor:this.chartForm.getRawValue()["backgroundColor"].split(";"),
           borderColor:this.chartForm.getRawValue()["borderColor"].split(";"),
           datasetValues: this.chartForm.getRawValue()["datasetValues"].split(";"),
-        }
+        }        
       );
         
 
@@ -155,6 +185,66 @@ get datasetValues() {
 
     for(let i=0; i<datasetValueList.length; i++){
     this.datasetValues.setValue(this.datasetValues.getRawValue()+datasetValueList[i].value+";");
+    }
+  }
+
+  addSecondBackgroundColor() {
+    let backgroundColorExtender = document.getElementById("backgroundSecondColorExtender");
+    var input = document.createElement("input");
+    input.type="color";
+    input.name="backgroundSecondColorPicker";
+    backgroundColorExtender?.appendChild(input);   
+    
+    this.calculateSecondBackgroundColor();
+  }
+
+  calculateSecondBackgroundColor() {
+    let colorPickerList = document.getElementsByName("backgroundSecondColorPicker") as NodeListOf<HTMLInputElement>;
+       
+    this.datasetSecondBackground.setValue("");
+
+    for(let i=0; i<colorPickerList.length; i++){
+    this.datasetSecondBackground.setValue(this.datasetSecondBackground.getRawValue()+colorPickerList[i].value+";");
+    }
+  }
+
+  addSecondBorderColor() {
+    let backgroundColorExtender = document.getElementById("borderSecondColorExtender");
+    var input = document.createElement("input");
+    input.type="color";
+    input.name="borderSecondColorPicker";
+    backgroundColorExtender?.appendChild(input);   
+    
+    this.calculateSecondBorderColor();
+  }
+
+  calculateSecondBorderColor() {
+    let colorPickerList = document.getElementsByName("borderSecondColorPicker") as NodeListOf<HTMLInputElement>;
+       
+    this.datasetSecondBorder.setValue("");
+
+    for(let i=0; i<colorPickerList.length; i++){
+    this.datasetSecondBorder.setValue(this.datasetSecondBorder.getRawValue()+colorPickerList[i].value+";");
+    }
+  }
+
+  addSecondDatasetValue() {
+    let backgroundColorExtender = document.getElementById("datasetSecondValueExtender");
+    var input = document.createElement("input");
+    input.type="number";
+    input.name="datasetSecondValuePicker";
+    backgroundColorExtender?.appendChild(input);   
+    
+    this.calculateSecondDatasetValue();
+  }
+
+  calculateSecondDatasetValue() {
+    let datasetValueList = document.getElementsByName("datasetSecondValuePicker") as NodeListOf<HTMLInputElement>;
+       
+    this.datasetSecondValues.setValue("");
+
+    for(let i=0; i<datasetValueList.length; i++){
+    this.datasetSecondValues.setValue(this.datasetSecondValues.getRawValue()+datasetValueList[i].value+";");
     }
   }
 

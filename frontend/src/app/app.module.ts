@@ -33,6 +33,8 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ChartCreatedSuccessComponent } from './chart-created-success/chart-created-success.component';
 import { EditUserComponent } from './edit-user/edit-user.component';
 import { UserEditedSuccessComponent } from './user-edited-success/user-edited-success.component';
+import { MixedChartsComponent } from './mixed-charts/mixed-charts.component';
+import { ChartSelectMenuComponent } from './chart-select-menu/chart-select-menu.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +53,8 @@ import { UserEditedSuccessComponent } from './user-edited-success/user-edited-su
     ChartCreatedSuccessComponent,
     EditUserComponent,
     UserEditedSuccessComponent,
+    MixedChartsComponent,
+    ChartSelectMenuComponent,
     ],
   imports: [
     BrowserModule,
