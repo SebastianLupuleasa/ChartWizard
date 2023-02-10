@@ -1,11 +1,9 @@
 package com.lupuleasa.chartapp.controller;
 
 import com.lupuleasa.chartapp.dto.JwtUserDto;
-import com.lupuleasa.chartapp.entity.Chart;
 import com.lupuleasa.chartapp.entity.JwtUser;
 import com.lupuleasa.chartapp.service.JwtUserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,8 +29,9 @@ public class JwtUserController {
     }
 
     @DeleteMapping("/delete")
-    public void deleteChart(@RequestParam long userId){
+    public ResponseEntity<String> deleteUser(@RequestParam long userId){
         jwtUserService.deleteUser(userId);
+        return new ResponseEntity<>("The user was successfully deleted!",HttpStatus.OK);
     }
 
 }

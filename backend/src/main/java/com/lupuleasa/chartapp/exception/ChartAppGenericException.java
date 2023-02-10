@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 public class ChartAppGenericException extends Exception {
 
-    private String exceptionMessage;
+    private final String exceptionMessage;
 
     public ChartAppGenericException(String exceptionMessage) {
         this.exceptionMessage = exceptionMessage;

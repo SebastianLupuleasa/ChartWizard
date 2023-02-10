@@ -32,8 +32,9 @@ public class ChartController {
     }
 
     @DeleteMapping("/charts/delete")
-    public void deleteChart(@RequestParam Integer chartId){
+    public ResponseEntity<String> deleteChart(@RequestParam Integer chartId){
         service.deleteChart(chartId);
+        return new ResponseEntity<>("Chart was successfully deleted!",HttpStatus.OK);
     }
 
 }

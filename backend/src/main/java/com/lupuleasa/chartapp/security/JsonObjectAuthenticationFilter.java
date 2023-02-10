@@ -21,13 +21,13 @@ public class JsonObjectAuthenticationFilter extends UsernamePasswordAuthenticati
         try {
             objectMapper.registerModule(new JavaTimeModule());
             BufferedReader reader = request.getReader();
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             String line;
             while ((line = reader.readLine()) != null) {
                 sb.append(line);
             }
             LoginCredentials authRequest = objectMapper.readValue(sb.toString(), LoginCredentials.class);
-            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
+            var token = new UsernamePasswordAuthenticationToken(
                     authRequest.getEmail(), authRequest.getPassword()
             );
             setDetails(request, token);

@@ -4,6 +4,7 @@ import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -14,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="ChartDataset")
-public class ChartDataset {
+public class ChartDataset implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

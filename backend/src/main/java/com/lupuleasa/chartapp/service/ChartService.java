@@ -1,13 +1,11 @@
 package com.lupuleasa.chartapp.service;
 
 import com.lupuleasa.chartapp.entity.Chart;
-import com.lupuleasa.chartapp.entity.ChartDataset;
 import com.lupuleasa.chartapp.repository.ChartDatasetRepository;
 import com.lupuleasa.chartapp.repository.ChartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Service

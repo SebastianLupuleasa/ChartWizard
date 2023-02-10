@@ -2,11 +2,12 @@ package com.lupuleasa.chartapp.entity;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name="Chart")
-public class Chart {
+public class Chart implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -38,7 +38,10 @@ public class RefreshTokenService {
     public String getTokenByUser(JwtUser user)
     {
         var refreshToken =refreshTokenRepository.findRefreshTokenByUser(user);
-        return refreshToken.get().getToken();
+        if(refreshToken.isPresent()){
+        return refreshToken.get().getToken();}
+
+       return "";
     }
 
     public JwtResponseDto refreshToken(JwtRefreshRequestDto refreshRequestDto) {

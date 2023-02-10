@@ -12,7 +12,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
-import java.util.Optional;
 
 import static com.lupuleasa.chartapp.enums.Role.ROLE_USER;
 
@@ -39,7 +38,7 @@ public class AuthController {
        jwtUser.setPassword(passwordEncoder.encode(jwtUser.getPassword()));
        jwtUserRepository.save(jwtUser);
 
-        return new ResponseEntity<>("User got saved in the database!", HttpStatus.OK);
+       return new ResponseEntity<>("User got saved in the database!", HttpStatus.OK);
     }
 
 }

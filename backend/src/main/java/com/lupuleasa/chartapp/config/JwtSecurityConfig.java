@@ -40,7 +40,7 @@ public class JwtSecurityConfig {
                 .and()
                 .csrf()
                 .disable()
-                 .authorizeHttpRequests((auth) -> {
+                 .authorizeHttpRequests(auth -> {
                     try {
                         auth
                                 .requestMatchers("/auth/**","/**")
@@ -64,8 +64,8 @@ public class JwtSecurityConfig {
     }
 
     @Bean
-    public JsonObjectAuthenticationFilter authenticationFilter() throws Exception {
-        JsonObjectAuthenticationFilter filter = new JsonObjectAuthenticationFilter();
+    public JsonObjectAuthenticationFilter authenticationFilter() {
+        var filter = new JsonObjectAuthenticationFilter();
         filter.setAuthenticationSuccessHandler(authSuccessHandler);
         filter.setAuthenticationManager(authenticationManager);
         return filter;

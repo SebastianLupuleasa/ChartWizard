@@ -40,7 +40,7 @@ public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         }
         String token = jwtUtils.createJwt(user.getEmail());
         String refreshToken;
-        if (!refreshTokenService.isTokenAlreadyCreated(user)) {
+        if (Boolean.TRUE.equals(!refreshTokenService.isTokenAlreadyCreated(user))) {
              refreshToken = refreshTokenService.createToken(user);
         }
         else {
@@ -48,9 +48,9 @@ public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         }
         response.addHeader("Authorization", "Bearer " + token);
         response.addHeader("Content-Type", "application/json");
-        JSONObject responseBody = new JSONObject();
+        var responseBody = new JSONObject();
         ObjectWriter ow = new ObjectMapper().registerModule(new JavaTimeModule()).writer().withDefaultPrettyPrinter();
-        String jsonUser = ow.writeValueAsString(user);
+        var jsonUser = ow.writeValueAsString(user);
         responseBody.put("token", token);
         responseBody.put("refreshToken",refreshToken);
         responseBody.put("user", jsonUser);
