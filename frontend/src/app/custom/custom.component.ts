@@ -229,7 +229,10 @@ else {
     .delete<any>(this.PATH_URL + 'charts/delete',{params: {
       chartId:Number(elementId)
     }})
-    .subscribe((response) => {
+    .subscribe(data => {
+      window.location.reload();
+    },
+   (err: any) => {
       window.location.reload();
     });
   }

@@ -2,6 +2,7 @@ package com.lupuleasa.chartapp.service;
 
 import com.lupuleasa.chartapp.exception.ChartAppGenericException;
 import com.lupuleasa.chartapp.entity.JwtUser;
+import com.lupuleasa.chartapp.exception.ChartAppRuntimeException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,7 +22,7 @@ public class JwtUserDetailsService implements UserDetailsService {
         try {
             user = jwtUserService.getJwtUserByEmail(email);
         } catch (ChartAppGenericException e) {
-            throw new RuntimeException(e);
+            throw new ChartAppRuntimeException(e.getExceptionMessage());
         }
 
         return new User(user.getUsername(), user.getPassword(), user.isEnabled(), true, true, true, user.getAuthorities());

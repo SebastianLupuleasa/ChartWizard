@@ -11,7 +11,6 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LoginComponent } from './login/login.component';
 import { AdminComponent } from './admin/admin.component';
 import { RegisterComponent } from './register/register.component';
-import { ForgotComponent } from './forgot/forgot.component';
 import { AppRoutingModule } from './app-routing.module';
 import { ForbiddenComponent } from './forbidden/forbidden.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -35,6 +34,8 @@ import { EditUserComponent } from './edit-user/edit-user.component';
 import { UserEditedSuccessComponent } from './user-edited-success/user-edited-success.component';
 import { MixedChartsComponent } from './mixed-charts/mixed-charts.component';
 import { ChartSelectMenuComponent } from './chart-select-menu/chart-select-menu.component';
+import { EditChartComponent } from './edit-chart/edit-chart.component';
+import { ChatEditedSuccessComponent } from './chat-edited-success/chat-edited-success.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,6 @@ import { ChartSelectMenuComponent } from './chart-select-menu/chart-select-menu.
     LoginComponent,
     AdminComponent,
     RegisterComponent,
-    ForgotComponent,
     ForbiddenComponent,
     CreateComponent,
     CustomComponent,
@@ -55,6 +55,8 @@ import { ChartSelectMenuComponent } from './chart-select-menu/chart-select-menu.
     UserEditedSuccessComponent,
     MixedChartsComponent,
     ChartSelectMenuComponent,
+    EditChartComponent,
+    ChatEditedSuccessComponent,
     ],
   imports: [
     BrowserModule,

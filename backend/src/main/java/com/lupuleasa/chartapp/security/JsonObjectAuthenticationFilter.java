@@ -2,6 +2,7 @@ package com.lupuleasa.chartapp.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.lupuleasa.chartapp.exception.ChartAppRuntimeException;
 import com.lupuleasa.chartapp.security.domain.LoginCredentials;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -33,7 +34,7 @@ public class JsonObjectAuthenticationFilter extends UsernamePasswordAuthenticati
             setDetails(request, token);
             return this.getAuthenticationManager().authenticate(token);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new ChartAppRuntimeException(e.getMessage());
         }
     }
 

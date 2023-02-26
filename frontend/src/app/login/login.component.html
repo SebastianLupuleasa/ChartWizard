@@ -10,16 +10,37 @@
                                     <div class="card-body">
                                         <form #loginForm="ngForm" (ngSubmit)="login(loginForm)" >
                                             <div class="form-floating mb-3">
-                                                <input class="form-control" id="email" type="email" placeholder="name@example.com" ngModel name="email"/>
+                                                <input email #emailInput="ngModel" required minlength="6" maxlength="99" class="form-control" id="email" type="email" placeholder="name@example.com" ngModel name="email"/>
                                                 <label for="inputEmail">Email address</label>
+                                                <div class="alert alert-danger" *ngIf="emailInput.errors?.['email'] && !loginForm.pristine">
+                                                    <p class="formError">Email needs to have a valid format!</p>
+                                                </div>
+                                                <div class="alert alert-danger" *ngIf="emailInput.errors?.['required'] && !loginForm.pristine">
+                                                    <p class="formError">Email is required!</p>
+                                                </div>
+                                                <div class="alert alert-danger" *ngIf="emailInput.errors?.['minlength']">
+                                                    <p class="formError">The length of the email should be higher than 6!</p>
+                                                </div>
+                                                <div class="alert alert-danger" *ngIf="emailInput.errors?.['maxlength']">
+                                                    <p class="formError">The length of the email should be lower than 99!</p>
+                                                </div>
                                             </div>
                                             <div class="form-floating mb-3">
-                                                <input class="form-control" id="password" type="password" placeholder="Password" ngModel name="password"/>
+                                                <input #passwordInput="ngModel" required minlength="4" maxlength="99" class="form-control" id="password" type="password" placeholder="Password" ngModel name="password"/>
                                                 <label for="inputPassword">Password</label>
+                                                <div class="alert alert-danger" *ngIf="passwordInput.errors?.['required'] && !loginForm.pristine">
+                                                    <p class="formError">Password is required!</p>
+                                                </div>
+                                                <div class="alert alert-danger" *ngIf="passwordInput.errors?.['minlength']">
+                                                    <p class="formError">The length of the password should be higher than 4!</p>
+                                                </div>
+                                                <div class="alert alert-danger" *ngIf="passwordInput.errors?.['maxlength']">
+                                                    <p class="formError">The length of the password should be lower than 99!</p>
+                                                </div>
                                             </div>
                                         <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
-                                                <a class="small" routerLink="/forgot">Forgot Password?</a>
-                                                <input type="submit" class="btn btn-primary"  value="Login" />
+                                                <a></a>
+                                                <input [disabled] ="loginForm.invalid" type="submit" class="btn btn-primary" value="Login"/>
                                             </div>
                                         </form>
                                     </div>

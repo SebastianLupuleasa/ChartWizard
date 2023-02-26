@@ -1,7 +1,6 @@
 package com.lupuleasa.chartapp.controller;
 
 import com.lupuleasa.chartapp.dto.JwtUserDto;
-import com.lupuleasa.chartapp.entity.JwtUser;
 import com.lupuleasa.chartapp.service.JwtUserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

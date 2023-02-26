@@ -4,6 +4,7 @@ import com.lupuleasa.chartapp.dto.JwtUserDto;
 import com.lupuleasa.chartapp.enums.Role;
 import com.lupuleasa.chartapp.exception.ChartAppGenericException;
 import com.lupuleasa.chartapp.entity.JwtUser;
+import com.lupuleasa.chartapp.exception.ChartAppRuntimeException;
 import com.lupuleasa.chartapp.repository.JwtUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,9 +33,9 @@ public class JwtUserService {
                 .orElseThrow(() -> new ChartAppGenericException("User not found by email!"));
     }
 
-    public JwtUser getJwtUserByUsername(String username) throws ChartAppGenericException {
+    public JwtUser getJwtUserByUsername(String username) throws ChartAppRuntimeException {
         return jwtUserRepository.findJwtUserByUsername(username)
-                .orElseThrow(() -> new ChartAppGenericException("User not found by username!"));
+                .orElseThrow(() -> new ChartAppRuntimeException("User not found by username!"));
     }
 
     public void deleteUser(long userId) {

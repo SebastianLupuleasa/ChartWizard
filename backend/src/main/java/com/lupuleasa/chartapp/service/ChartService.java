@@ -30,10 +30,6 @@ public class ChartService {
         repository.save(chart);
     }
 
-    public void updateChart(Chart chart){
-        repository.save(chart);
-    }
-
     public void deleteChart(Integer id){
         repository.deleteById(id);
     }

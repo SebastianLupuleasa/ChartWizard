@@ -40,5 +40,4 @@ public class AuthController {
 
        return new ResponseEntity<>("User got saved in the database!", HttpStatus.OK);
     }
-
 }

@@ -3,7 +3,6 @@ package com.lupuleasa.chartapp.security;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.lupuleasa.chartapp.exception.ChartAppGenericException;
 import com.lupuleasa.chartapp.entity.JwtUser;
 import com.lupuleasa.chartapp.service.JwtUserService;
 import com.lupuleasa.chartapp.service.RefreshTokenService;
@@ -33,11 +32,7 @@ public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
                                         Authentication authentication) throws IOException {
         UserDetails principal = (UserDetails) authentication.getPrincipal();
         JwtUser user = null;
-        try {
-            user = jwtUserService.getJwtUserByUsername(principal.getUsername());
-        } catch (ChartAppGenericException e) {
-            throw new RuntimeException(e);
-        }
+        user = jwtUserService.getJwtUserByUsername(principal.getUsername());
         String token = jwtUtils.createJwt(user.getEmail());
         String refreshToken;
         if (Boolean.TRUE.equals(!refreshTokenService.isTokenAlreadyCreated(user))) {

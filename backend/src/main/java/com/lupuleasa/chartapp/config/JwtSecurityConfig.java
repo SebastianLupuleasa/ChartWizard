@@ -1,5 +1,6 @@
 package com.lupuleasa.chartapp.config;
 
+import com.lupuleasa.chartapp.exception.ChartAppRuntimeException;
 import com.lupuleasa.chartapp.security.AuthSuccessHandler;
 import com.lupuleasa.chartapp.security.JsonObjectAuthenticationFilter;
 import com.lupuleasa.chartapp.security.JwtAuthorizationFilter;
@@ -56,7 +57,7 @@ public class JwtSecurityConfig {
                                 .exceptionHandling()
                                 .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
                     } catch (Exception e) {
-                        throw new RuntimeException(e);
+                        throw new ChartAppRuntimeException(e.getMessage());
                     }
                 })
                 .httpBasic(Customizer.withDefaults());

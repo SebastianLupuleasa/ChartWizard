@@ -1,6 +1,7 @@
 package com.lupuleasa.chartapp.service;
 
 import com.lupuleasa.chartapp.entity.JwtUser;
+import com.lupuleasa.chartapp.exception.ChartAppRuntimeException;
 import com.lupuleasa.chartapp.repository.RefreshTokenRepository;
 import com.lupuleasa.chartapp.security.JwtUtils;
 import com.lupuleasa.chartapp.security.domain.JwtRefreshRequestDto;
@@ -47,12 +48,12 @@ public class RefreshTokenService {
     public JwtResponseDto refreshToken(JwtRefreshRequestDto refreshRequestDto) {
         var tokenOpt = refreshTokenRepository.findRefreshTokenByToken((refreshRequestDto.getRefreshToken()));
         if(tokenOpt.isEmpty()){
-            throw new RuntimeException("Refresh token %s not found!".formatted(refreshRequestDto.getRefreshToken()));
+            throw new ChartAppRuntimeException("Refresh token %s not found!".formatted(refreshRequestDto.getRefreshToken()));
         }
         var token = tokenOpt.get();
         if(isTokenExpired(token.getExpiration())){
             refreshTokenRepository.delete(token);
-            throw new RuntimeException("Refresh token %s was expired!".formatted(refreshRequestDto.getRefreshToken()));
+            throw new ChartAppRuntimeException("Refresh token %s was expired!".formatted(refreshRequestDto.getRefreshToken()));
         }
         String jwt = jwtUtils.createJwt(token.getUser().getEmail());
         updateToken(token);

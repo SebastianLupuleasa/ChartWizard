@@ -11,30 +11,66 @@
                                         <form #registerForm="ngForm" (ngSubmit)="register(registerForm)">
                                             <div class="row mb-3">
                                               <div class="form-floating mb-3">
-                                                <input class="form-control" id="username" type="text" placeholder="username" ngModel name="username" />
+                                                <input #usernameInput="ngModel" required minlength="4" maxlength="99" class="form-control" id="username" type="text" placeholder="username" ngModel name="username" />
                                                 <label for="username">Username</label>
+                                                <div class="alert alert-danger" *ngIf="usernameInput.errors?.['required'] && !registerForm.pristine">
+                                                    <p class="formError">Username is required!</p>
+                                                </div>
+                                                <div class="alert alert-danger" *ngIf="usernameInput.errors?.['minlength']">
+                                                    <p class="formError">The length of the username should be higher than 4!</p>
+                                                </div>
+                                                <div class="alert alert-danger" *ngIf="usernameInput.errors?.['maxlength']">
+                                                    <p class="formError">The length of the username should be lower than 99!</p>
+                                                </div>
                                             </div>
                                             </div>
                                             <div class="form-floating mb-3">
-                                                <input class="form-control" id="email" type="email" placeholder="name@example.com" ngModel name="email" />
+                                                <input email #emailInput="ngModel" required minlength="6" maxlength="99" class="form-control" id="email" type="email" placeholder="name@example.com" ngModel name="email" />
                                                 <label for="email">Email address</label>
+                                                <div class="alert alert-danger" *ngIf="emailInput.errors?.['email'] && !registerForm.pristine">
+                                                    <p class="formError">Email needs to have a valid format!</p>
+                                                </div>
+                                                <div class="alert alert-danger" *ngIf="emailInput.errors?.['required'] && !registerForm.pristine">
+                                                    <p class="formError">Email is required!</p>
+                                                </div>
+                                                <div class="alert alert-danger" *ngIf="emailInput.errors?.['minlength']">
+                                                    <p class="formError">The length of the email should be higher than 6!</p>
+                                                </div>
+                                                <div class="alert alert-danger" *ngIf="emailInput.errors?.['maxlength']">
+                                                    <p class="formError">The length of the email should be lower than 99!</p>
+                                                </div>
                                             </div>
                                             <div class="row mb-3">
                                                 <div class="col-md-6">
                                                     <div class="form-floating mb-3 mb-md-0">
-                                                        <input class="form-control" id="password" type="password" placeholder="Create a password" ngModel name="password"/>
+                                                        <input #passwordInput="ngModel" required minlength="4" maxlength="99" class="form-control" id="password" type="password" placeholder="Create a password" ngModel name="password"/>
                                                         <label for="password">Password</label>
+                                                        <div class="alert alert-danger" *ngIf="passwordInput.errors?.['required'] && !registerForm.pristine">
+                                                            <p class="formError">Password is required!</p>
+                                                        </div>
+                                                        <div class="alert alert-danger" *ngIf="passwordInput.errors?.['minlength']">
+                                                            <p class="formError">The length of the password should be higher than 4!</p>
+                                                        </div>
+                                                        <div class="alert alert-danger" *ngIf="passwordInput.errors?.['maxlength']">
+                                                            <p class="formError">The length of the password should be lower than 99!</p>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-floating mb-3 mb-md-0">
-                                                        <input class="form-control" id="passwordConfirm" type="password" placeholder="Confirm password" ngModel name="passwordConfirm" />
+                                                        <input #confirmInput="ngModel" required validateEqual="passwordInput" class="form-control" id="passwordConfirm" type="password" placeholder="Confirm password" ngModel name="passwordConfirm" />
                                                         <label for="passwordConfirm">Confirm Password</label>
-                                                    </div>
+                                                        <div class="alert alert-danger" *ngIf="confirmInput.errors?.['required'] && !registerForm.pristine">
+                                                            <p class="formError">Password is required!</p>
+                                                        </div>
+                                                        <div class="alert alert-danger" *ngIf="confirmInput.value !== passwordInput.value">
+                                                            <p class="formError">Password mismatch!</p>
+                                                        </div>
+                                                 </div>
                                                 </div>
                                             </div>
                                             <div class="mt-4 mb-0">
-                                                <div class="d-grid"><input type="submit" class="btn btn-primary btn-block" value="Create Account"></div>
+                                                <div class="d-grid"><input [disabled] ="registerForm.invalid || confirmInput.value !== passwordInput.value" type="submit" class="btn btn-primary btn-block" value="Create Account"></div>
                                             </div>
                                         </form>
                                     </div>

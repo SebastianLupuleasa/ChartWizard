@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ForgotComponent } from './forgot.component';
+import { EditChartComponent } from './edit-chart.component';
 
-describe('ForgotComponent', () => {
-  let component: ForgotComponent;
-  let fixture: ComponentFixture<ForgotComponent>;
+describe('EditChartComponent', () => {
+  let component: EditChartComponent;
+  let fixture: ComponentFixture<EditChartComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ForgotComponent ]
+      declarations: [ EditChartComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ForgotComponent);
+    fixture = TestBed.createComponent(EditChartComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

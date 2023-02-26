@@ -5,6 +5,7 @@
         <canvas id="chartDiv{{element.id}}"></canvas>
         <button class="fa fa-download" aria-hidden="true" (click)="downloadChart('chartDiv'+element.id)"></button>
         <button class="fa fa-trash" aria-hidden="true" (click)="deleteChart(element.id)"></button>
+        <button class="fa fa-cog" aria-hidden="true" routerLink="edit" [state]="element"></button>
     </div>
     </div>
     

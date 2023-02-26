@@ -11,6 +11,7 @@ import { ManageUsersComponent } from './manage-users/manage-users.component';
 import { EditUserComponent } from './edit-user/edit-user.component';
 import { MixedChartsComponent } from './mixed-charts/mixed-charts.component';
 import { ChartSelectMenuComponent } from './chart-select-menu/chart-select-menu.component';
+import { EditChartComponent } from './edit-chart/edit-chart.component';
 
 const routes: Routes = [
   {path: 'charts', component: ChartComponent, canActivate:[AuthGuard], data:{roles:"ROLE_ADMIN"}},
@@ -18,6 +19,7 @@ const routes: Routes = [
   {path: 'simple', component: CreateComponent, canActivate:[AuthGuard], data:{roles:"ROLE_ADMIN"}},
   {path: 'mixed', component: MixedChartsComponent, canActivate:[AuthGuard], data:{roles:"ROLE_ADMIN"}},
   {path: 'custom', component: CustomComponent, canActivate:[AuthGuard], data:{roles:"ROLE_ADMIN"}},
+  {path: 'custom/edit', component: EditChartComponent, canActivate:[AuthGuard], data:{roles:"ROLE_ADMIN"}},
   {path: 'manage', component: ManageUsersComponent, canActivate:[AuthGuard], data:{roles:"ROLE_ADMIN"}},
   {path: 'manage/edit', component: EditUserComponent, canActivate:[AuthGuard], data:{roles:"ROLE_ADMIN"}},
   {path: 'login', component: LoginComponent},

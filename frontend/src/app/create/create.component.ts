@@ -4,7 +4,6 @@ import { FormGroup, FormBuilder, FormControl, FormArray } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ChartCreatedSuccessComponent } from '../chart-created-success/chart-created-success.component';
-import { Dataset } from '../chart/chart.component';
 import { UserAuthService } from '../_services/user-auth.service';
 
 @Component({
@@ -44,8 +43,8 @@ get datasetValues() {
   ngOnInit(): void {
     this.chartForm = this.fb.group({
       chartTitle: [''],
-      chartType: [''],
-      chartAnimation: [''],
+      chartType: ['line'],
+      chartAnimation: ['none'],
       chartLabels: this.fb.array([this.fb.group({label: ['']}), this.fb.group({label: ['']})]),
       backgroundColor: ['#000000'],
       borderColor: ['#000000'],
