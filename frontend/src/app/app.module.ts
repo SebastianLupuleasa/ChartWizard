@@ -36,6 +36,8 @@ import { MixedChartsComponent } from './mixed-charts/mixed-charts.component';
 import { ChartSelectMenuComponent } from './chart-select-menu/chart-select-menu.component';
 import { EditChartComponent } from './edit-chart/edit-chart.component';
 import { ChatEditedSuccessComponent } from './chat-edited-success/chat-edited-success.component';
+import { ImportChartComponent } from './import-chart/import-chart.component';
+import { ChartImportSuccessComponent } from './chart-import-success/chart-import-success.component';
 
 @NgModule({
   declarations: [
@@ -57,6 +59,8 @@ import { ChatEditedSuccessComponent } from './chat-edited-success/chat-edited-su
     ChartSelectMenuComponent,
     EditChartComponent,
     ChatEditedSuccessComponent,
+    ImportChartComponent,
+    ChartImportSuccessComponent,
     ],
   imports: [
     BrowserModule,

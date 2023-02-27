@@ -3,9 +3,12 @@ package com.lupuleasa.chartapp.entity;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.SortNatural;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -31,13 +34,16 @@ public class ChartDataset implements Serializable {
 
     @ElementCollection
     @Column(name = "backgroundColor")
+    @OrderColumn
     private List<String> backgroundColor;
 
     @ElementCollection
     @Column(name = "borderColor")
+    @OrderColumn
     private List<String> borderColor;
 
     @ElementCollection
     @Column(name = "datasetValues")
+    @OrderColumn
     private List<BigDecimal> datasetValues;
 }
