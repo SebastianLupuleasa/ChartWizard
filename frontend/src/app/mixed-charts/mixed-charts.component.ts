@@ -59,13 +59,13 @@ get datasetSecondValues() {
       chartType: ['line'],
       chartAnimation: ['none'],
       chartLabels: this.fb.array([this.fb.group({label: ['']}), this.fb.group({label: ['']})]),
-      backgroundColor: ['#000000'],
-      borderColor: ['#000000'],
+      backgroundColor: [''],
+      borderColor: [''],
       datasetLabel: [''],
       datasetValues: [''],
       datasetType: [''],
-      secondBackgroundColor: ['#000000'],
-      secondBorderColor: ['#000000'],
+      secondBackgroundColor: [''],
+      secondBorderColor: [''],
       secondDatasetLabel: [''],
       secondDatasetValues: [''],
       secondDatasetType: [''],
@@ -90,22 +90,39 @@ get datasetSecondValues() {
 
     let chartDatasetArray : TransformedChartDataset[] = [];
     
+     
+    let backgroundColor = this.chartForm.getRawValue()["secondBackgroundColor"].split(";");
+
+    backgroundColor.pop();
+
+    let borderColor = this.chartForm.getRawValue()["secondBorderColor"].split(";");
+
+    borderColor.pop();
+
       chartDatasetArray.push(
         {
           label:this.chartForm.getRawValue()["secondDatasetLabel"],
           type:this.chartForm.getRawValue()["secondDatasetType"],
-          backgroundColor:this.chartForm.getRawValue()["secondBackgroundColor"].split(";"),
-          borderColor:this.chartForm.getRawValue()["secondBorderColor"].split(";"),
+          backgroundColor:backgroundColor,
+          borderColor:borderColor,
           datasetValues: this.chartForm.getRawValue()["secondDatasetValues"].split(";"),
         }        
       );
+
+      backgroundColor = this.chartForm.getRawValue()["backgroundColor"].split(";");
+
+      backgroundColor.pop();
+ 
+      borderColor = this.chartForm.getRawValue()["borderColor"].split(";");
+ 
+      borderColor.pop();
 
       chartDatasetArray.push(
         {
           label:this.chartForm.getRawValue()["datasetLabel"],
           type:this.chartForm.getRawValue()["datasetType"],
-          backgroundColor:this.chartForm.getRawValue()["backgroundColor"].split(";"),
-          borderColor:this.chartForm.getRawValue()["borderColor"].split(";"),
+          backgroundColor:backgroundColor,
+          borderColor:borderColor,
           datasetValues: this.chartForm.getRawValue()["datasetValues"].split(";"),
         }        
       );

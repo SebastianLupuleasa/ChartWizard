@@ -46,8 +46,8 @@ get datasetValues() {
       chartType: ['line'],
       chartAnimation: ['none'],
       chartLabels: this.fb.array([this.fb.group({label: ['']}), this.fb.group({label: ['']})]),
-      backgroundColor: ['#000000'],
-      borderColor: ['#000000'],
+      backgroundColor: [''],
+      borderColor: [''],
       datasetLabel: [''],
       datasetValues: ['']
     });
@@ -70,11 +70,19 @@ get datasetValues() {
 
     let chartDatasetArray : TransformedChartDataset[] = [];
     
+     let backgroundColor = this.chartForm.getRawValue()["backgroundColor"].split(";");
+
+     backgroundColor.pop();
+
+     let borderColor = this.chartForm.getRawValue()["borderColor"].split(";");
+
+     borderColor.pop();
+
       chartDatasetArray.push(
         {
           label:this.chartForm.getRawValue()["datasetLabel"],
-          backgroundColor:this.chartForm.getRawValue()["backgroundColor"].split(";"),
-          borderColor:this.chartForm.getRawValue()["borderColor"].split(";"),
+          backgroundColor:backgroundColor,
+          borderColor:borderColor,
           datasetValues: this.chartForm.getRawValue()["datasetValues"].split(";"),
         }
       );
