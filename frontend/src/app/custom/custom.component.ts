@@ -1,5 +1,4 @@
 import { AfterViewChecked, Component, OnInit } from '@angular/core';
-import { MyChart } from '../chart/chart.component';
 import {
   Chart,
   ChartConfiguration,
@@ -10,6 +9,27 @@ import {
 import { HttpClient} from '@angular/common/http';
 import { UserAuthService } from '../_services/user-auth.service';
 import { ngxCsv } from 'ngx-csv';
+import { Router } from '@angular/router';
+
+export interface MyChart {
+  id: number;
+  chartTitle: string;
+  chartType: string;
+  chartAnimation: string;
+  chartLabels: string[];
+  chartDatasets: Dataset[],
+  user: number;
+  animation: string;
+}
+
+export interface Dataset {
+  id: number;
+  label: string;
+  type:string;
+  backgroundColor: string;
+  borderColor: string;
+  datasetValues: number[];
+}
 
 @Component({
   selector: 'app-custom',
@@ -23,7 +43,7 @@ export class CustomComponent implements OnInit, AfterViewChecked {
   chart!: Chart;
   chartsFound: string = "";
 
-  constructor(private httpClient: HttpClient, private userAuthService: UserAuthService) {}
+  constructor(private httpClient: HttpClient, private userAuthService: UserAuthService, private router: Router) {}
 
   ngAfterViewChecked(): void {
     this.createChart();
@@ -284,4 +304,12 @@ else {
       b: parseInt(result[3], 16)
     } : null;
   }
+
+  openLink(element: MyChart){
+
+    this.router.navigate(['/fullscreen']);
+  
+    localStorage.setItem("fullscreenChart", JSON.stringify(element));
+  
+    }
 }

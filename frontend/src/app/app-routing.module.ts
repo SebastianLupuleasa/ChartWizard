@@ -1,5 +1,4 @@
 import { RegisterComponent } from './register/register.component';
-import { ChartComponent } from './chart/chart.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
@@ -13,9 +12,9 @@ import { MixedChartsComponent } from './mixed-charts/mixed-charts.component';
 import { ChartSelectMenuComponent } from './chart-select-menu/chart-select-menu.component';
 import { EditChartComponent } from './edit-chart/edit-chart.component';
 import { ImportChartComponent } from './import-chart/import-chart.component';
+import { FullscreenChartComponent } from './fullscreen-chart/fullscreen-chart.component';
 
 const routes: Routes = [
-  {path: 'charts', component: ChartComponent, canActivate:[AuthGuard], data:{roles:"ROLE_ADMIN"}},
   {path: 'create', component: ChartSelectMenuComponent, canActivate:[AuthGuard], data:{roles:"ROLE_ADMIN"}},
   {path: 'simple', component: CreateComponent, canActivate:[AuthGuard], data:{roles:"ROLE_ADMIN"}},
   {path: 'mixed', component: MixedChartsComponent, canActivate:[AuthGuard], data:{roles:"ROLE_ADMIN"}},
@@ -27,7 +26,8 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'forbidden', component: ForbiddenComponent},
-  {path: '', component: ChartComponent, canActivate:[AuthGuard], data:{roles:"ROLE_ADMIN"}}
+  {path: 'fullscreen', component: FullscreenChartComponent},
+  {path: '', component: CustomComponent, canActivate:[AuthGuard], data:{roles:"ROLE_ADMIN"}}
 ];
 
 @NgModule({

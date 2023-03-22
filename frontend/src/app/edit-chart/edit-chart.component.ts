@@ -3,9 +3,8 @@ import { Component } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Chart } from 'chart.js';
-import { MyChart } from '../chart/chart.component';
 import { ChatEditedSuccessComponent } from '../chat-edited-success/chat-edited-success.component';
+import { MyChart } from '../custom/custom.component';
 import { UserAuthService } from '../_services/user-auth.service';
 
 @Component({

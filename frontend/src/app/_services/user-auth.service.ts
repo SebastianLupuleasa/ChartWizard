@@ -56,5 +56,9 @@ export class UserAuthService {
     return this.getRoles() && this.getToken();
   }
 
+  public getFullscreen(): string {
+    return localStorage.getItem("fullscreenChart")!;
+  }
+
 
 }

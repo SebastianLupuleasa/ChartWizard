@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { ChartComponent } from './chart/chart.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { SideNavComponent } from './side-nav/side-nav.component';
 import { MainNavComponent } from './main-nav/main-nav.component';
@@ -38,11 +37,11 @@ import { EditChartComponent } from './edit-chart/edit-chart.component';
 import { ChatEditedSuccessComponent } from './chat-edited-success/chat-edited-success.component';
 import { ImportChartComponent } from './import-chart/import-chart.component';
 import { ChartImportSuccessComponent } from './chart-import-success/chart-import-success.component';
+import { FullscreenChartComponent } from './fullscreen-chart/fullscreen-chart.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ChartComponent,
     SideNavComponent,
     MainNavComponent,
     LoginComponent,
@@ -61,6 +60,7 @@ import { ChartImportSuccessComponent } from './chart-import-success/chart-import
     ChatEditedSuccessComponent,
     ImportChartComponent,
     ChartImportSuccessComponent,
+    FullscreenChartComponent,
     ],
   imports: [
     BrowserModule,
@@ -90,7 +90,6 @@ import { ChartImportSuccessComponent } from './chart-import-success/chart-import
       multi: true
     },
     UserService,
-    ChartComponent
   ],
   bootstrap: [AppComponent]
 })
