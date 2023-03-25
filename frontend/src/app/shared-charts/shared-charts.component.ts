@@ -228,20 +228,22 @@ else {
     document.body.removeChild(imgDownload);
   }
 
+
   deleteChart( elementId: number) : void {
 
-  //   this.httpClient
-  //   .delete<any>(this.PATH_URL + 'charts/delete',{params: {
-  //     chartId:Number(elementId)
-  //   }})
-  //   .subscribe(data => {
-  //     window.location.reload();
-  //   },
-  //  (err: any) => {
-  //     window.location.reload();
-  //   });
-  // to be implemented
-
+    this.httpClient
+    .post<any>(this.PATH_URL + 'charts/shared/delete',{chartId:Number(elementId),userId:this.userAuthService.getUserId()})
+    
+    .subscribe(data => {
+      window.location.reload();
+    },(err: any) => {
+      if(err != "It's fine."){
+      this.dialog.open(ErrorDialogComponentComponent);
+      }else
+      {
+        window.location.reload();
+      }
+      });
   }
   
   downloadCsv( element: MyChart) : void {   

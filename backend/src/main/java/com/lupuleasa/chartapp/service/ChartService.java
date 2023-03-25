@@ -1,5 +1,6 @@
 package com.lupuleasa.chartapp.service;
 
+import com.lupuleasa.chartapp.dto.UserChartDto;
 import com.lupuleasa.chartapp.entity.Chart;
 import com.lupuleasa.chartapp.entity.JwtUser;
 import com.lupuleasa.chartapp.exception.ChartAppGenericException;
@@ -53,4 +54,20 @@ public class ChartService {
         JwtUser jwtUser = jwtUserService.getJwtUserById(userId);
         return jwtUser.getSharedCharts();
     }
+
+    public void deleteSharedChart(UserChartDto userChartDto) throws ChartAppGenericException {
+        JwtUser jwtUser = jwtUserService.getJwtUserById(userChartDto.getUserId());
+        List<Chart> sharedCharts = jwtUser.getSharedCharts();
+        if(repository.findById(userChartDto.getChartId()).isPresent()) {
+            sharedCharts.remove(repository.findById(userChartDto.getChartId()).get());
+        }
+        jwtUser.setSharedCharts(sharedCharts);
+        jwtUserService.save(jwtUser);
+    }
 }
+
+
+
+
+
+

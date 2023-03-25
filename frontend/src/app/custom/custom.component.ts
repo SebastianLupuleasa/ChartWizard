@@ -263,7 +263,7 @@ else {
       this.dialog.open(ErrorDialogComponentComponent);
       }else
       {
-        this.dialog.open(ChartSharedSuccessComponent);
+        window.location.reload();
       }
       });
   }

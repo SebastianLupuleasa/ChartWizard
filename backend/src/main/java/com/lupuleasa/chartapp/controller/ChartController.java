@@ -1,6 +1,7 @@
 package com.lupuleasa.chartapp.controller;
 
 import com.lupuleasa.chartapp.dto.SharedChartDto;
+import com.lupuleasa.chartapp.dto.UserChartDto;
 import com.lupuleasa.chartapp.entity.Chart;
 import com.lupuleasa.chartapp.exception.ChartAppGenericException;
 import com.lupuleasa.chartapp.service.ChartService;
@@ -49,6 +50,12 @@ public class ChartController {
     public ResponseEntity<Chart> editChart(@RequestBody Chart chart){
         service.addChart(chart);
         return new ResponseEntity<>(chart,HttpStatus.OK);
+    }
+
+    @PostMapping("/charts/shared/delete")
+    public ResponseEntity<String> deleteSharedChart(@RequestBody UserChartDto userChartDto) throws ChartAppGenericException {
+        service.deleteSharedChart(userChartDto);
+        return new ResponseEntity<>("Shared chart was successfully deleted!",HttpStatus.OK);
     }
 
     @DeleteMapping("/charts/delete")
