@@ -13,12 +13,14 @@ import { ChartSelectMenuComponent } from './chart-select-menu/chart-select-menu.
 import { EditChartComponent } from './edit-chart/edit-chart.component';
 import { ImportChartComponent } from './import-chart/import-chart.component';
 import { FullscreenChartComponent } from './fullscreen-chart/fullscreen-chart.component';
+import { SharedChartsComponent } from './shared-charts/shared-charts.component';
 
 const routes: Routes = [
   {path: 'create', component: ChartSelectMenuComponent, canActivate:[AuthGuard], data:{roles:"ROLE_ADMIN"}},
   {path: 'simple', component: CreateComponent, canActivate:[AuthGuard], data:{roles:"ROLE_ADMIN"}},
   {path: 'mixed', component: MixedChartsComponent, canActivate:[AuthGuard], data:{roles:"ROLE_ADMIN"}},
   {path: 'custom', component: CustomComponent, canActivate:[AuthGuard], data:{roles:"ROLE_ADMIN"}},
+  {path: 'shared', component: SharedChartsComponent, canActivate:[AuthGuard], data:{roles:"ROLE_ADMIN"}},
   {path: 'custom/edit', component: EditChartComponent, canActivate:[AuthGuard], data:{roles:"ROLE_ADMIN"}},
   {path: 'manage', component: ManageUsersComponent, canActivate:[AuthGuard], data:{roles:"ROLE_ADMIN"}},
   {path: 'manage/edit', component: EditUserComponent, canActivate:[AuthGuard], data:{roles:"ROLE_ADMIN"}},

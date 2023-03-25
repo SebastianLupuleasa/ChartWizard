@@ -1,10 +1,16 @@
 package com.lupuleasa.chartapp.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.List;
 
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name="Chart")
 public class Chart implements Serializable {
@@ -34,71 +40,7 @@ public class Chart implements Serializable {
     @Column(name = "user_id")
     private long userId;
 
-    public Chart(long id, String chartTitle, String chartType, String chartAnimation, List<String> chartLabels, List<ChartDataset> chartDatasets, long userId) {
-        this.id = id;
-        this.chartTitle = chartTitle;
-        this.chartType = chartType;
-        this.chartAnimation = chartAnimation;
-        this.chartLabels = chartLabels;
-        this.chartDatasets = chartDatasets;
-        this.userId = userId;
-    }
-
-    public Chart() {
-    }
-
-    public List<ChartDataset> getChartDatasets() {
-        return chartDatasets;
-    }
-    public void setChartDatasets(List<ChartDataset> chartDatasets) {
-        this.chartDatasets = chartDatasets;
-    }
-
-    public String getChartTitle() {
-        return chartTitle;
-    }
-
-    public void setChartTitle(String chartTitle) {
-        this.chartTitle = chartTitle;
-    }
-
-    public String getChartType() {
-        return chartType;
-    }
-
-    public void setChartType(String chartType) {
-        this.chartType = chartType;
-    }
-
-    public List<String> getChartLabels() {
-        return chartLabels;
-    }
-
-    public void setChartLabels(List<String> chartLabels) {
-        this.chartLabels = chartLabels;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(long userId) {
-        this.userId = userId;
-    }
-
-    public String getChartAnimation() {
-        return chartAnimation;
-    }
-
-    public void setChartAnimation(String chartAnimation) {
-        this.chartAnimation = chartAnimation;
-    }
+    @ElementCollection
+    @Column(name = "sharedTo")
+    private List<Long> userIds;
 }

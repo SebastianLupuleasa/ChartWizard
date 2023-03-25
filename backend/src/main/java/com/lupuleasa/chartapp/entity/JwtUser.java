@@ -54,6 +54,10 @@ public class JwtUser implements UserDetails {
     @JsonIgnore
     private List<Chart> charts = new ArrayList<>();
 
+    @OneToMany(cascade=CascadeType.REMOVE,fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Chart> sharedCharts = new ArrayList<>();
+
     @OneToOne(cascade=CascadeType.REMOVE,mappedBy = "user", fetch = FetchType.LAZY)
     @JsonIgnore
     private RefreshToken refreshToken;

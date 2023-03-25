@@ -187,6 +187,8 @@ else {
       ) as ChartItem;
 
       this.chart = new Chart(chartItem, config);
+
+      this.chart.resize(window.innerWidth,window.innerHeight/1.2);
     }
     }
 

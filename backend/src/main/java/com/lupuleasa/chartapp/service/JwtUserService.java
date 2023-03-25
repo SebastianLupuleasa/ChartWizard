@@ -33,6 +33,11 @@ public class JwtUserService {
                 .orElseThrow(() -> new ChartAppGenericException("User not found by email!"));
     }
 
+    public JwtUser getJwtUserById(long id) throws ChartAppGenericException {
+        return jwtUserRepository.findJwtUserById(id)
+                .orElseThrow(() -> new ChartAppGenericException("User not found by email!"));
+    }
+
     public JwtUser getJwtUserByUsername(String username) throws ChartAppRuntimeException {
         return jwtUserRepository.findJwtUserByUsername(username)
                 .orElseThrow(() -> new ChartAppRuntimeException("User not found by username!"));

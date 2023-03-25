@@ -1,47 +1,21 @@
-import { AfterViewChecked, Component, OnInit } from '@angular/core';
-import {
-  Chart,
-  ChartConfiguration,
-  ChartItem,
-  ChartType,
-  registerables,
-} from 'node_modules/chart.js';
-import { HttpClient} from '@angular/common/http';
-import { UserAuthService } from '../_services/user-auth.service';
-import { ngxCsv } from 'ngx-csv';
-import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { SharedChartDialogComponent } from '../shared-chart-dialog/shared-chart-dialog.component';
-import { ChartCreatedSuccessComponent } from '../chart-created-success/chart-created-success.component';
+import { Router } from '@angular/router';
+import { Chart, registerables, ChartType, ChartConfiguration, ChartItem } from 'chart.js';
+import { ngxCsv } from 'ngx-csv';
 import { ChartSharedSuccessComponent } from '../chart-shared-success/chart-shared-success.component';
+import { MyChart } from '../custom/custom.component';
 import { ErrorDialogComponentComponent } from '../error-dialog-component/error-dialog-component.component';
-
-export interface MyChart {
-  id: number;
-  chartTitle: string;
-  chartType: string;
-  chartAnimation: string;
-  chartLabels: string[];
-  chartDatasets: Dataset[],
-  user: number;
-  animation: string;
-}
-
-export interface Dataset {
-  id: number;
-  label: string;
-  type:string;
-  backgroundColor: string;
-  borderColor: string;
-  datasetValues: number[];
-}
+import { SharedChartDialogComponent } from '../shared-chart-dialog/shared-chart-dialog.component';
+import { UserAuthService } from '../_services/user-auth.service';
 
 @Component({
-  selector: 'app-custom',
-  templateUrl: './custom.component.html',
-  styleUrls: ['./custom.component.scss']
+  selector: 'app-shared-charts',
+  templateUrl: './shared-charts.component.html',
+  styleUrls: ['./shared-charts.component.scss']
 })
-export class CustomComponent implements OnInit, AfterViewChecked {
+export class SharedChartsComponent {
 
   headers = { 'content-type': 'application/json'}  
   PATH_URL: string = "http://localhost:9001/";
@@ -62,7 +36,7 @@ export class CustomComponent implements OnInit, AfterViewChecked {
   getChart() {
 
     this.httpClient
-      .get<any>(this.PATH_URL + 'custom',{params: {
+      .get<any>(this.PATH_URL + 'shared',{params: {
         userId:Number(this.userAuthService.getUserId())
       }})
       .subscribe((response) => {
@@ -70,8 +44,12 @@ export class CustomComponent implements OnInit, AfterViewChecked {
         if(this.customCharts.length === 0){
           this.chartsFound = "No charts were found!";
         }
-      },);
-  }
+      },
+      (err: any) => {
+        this.chartsFound = "No charts were found!";
+       });
+      }
+      
 
   createChart(): void {
     if (!this.chart && this.customCharts.length > 0) {
@@ -252,20 +230,18 @@ else {
 
   deleteChart( elementId: number) : void {
 
-    this.httpClient
-    .delete<any>(this.PATH_URL + 'charts/delete',{params: {
-      chartId:Number(elementId)
-    }})
-    .subscribe(data => {
-      window.location.reload();
-    },(err: any) => {
-      if(err != "It's fine."){
-      this.dialog.open(ErrorDialogComponentComponent);
-      }else
-      {
-        this.dialog.open(ChartSharedSuccessComponent);
-      }
-      });
+  //   this.httpClient
+  //   .delete<any>(this.PATH_URL + 'charts/delete',{params: {
+  //     chartId:Number(elementId)
+  //   }})
+  //   .subscribe(data => {
+  //     window.location.reload();
+  //   },
+  //  (err: any) => {
+  //     window.location.reload();
+  //   });
+  // to be implemented
+
   }
   
   downloadCsv( element: MyChart) : void {   

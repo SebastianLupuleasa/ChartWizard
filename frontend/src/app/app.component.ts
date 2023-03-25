@@ -6,9 +6,4 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  public static sidebarToggle: boolean = true;
-
-  get sidebarToggle() : boolean {
-    return AppComponent.sidebarToggle;
-  }
 }

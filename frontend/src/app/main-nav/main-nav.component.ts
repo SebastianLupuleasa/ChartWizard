@@ -19,9 +19,4 @@ public isLoggedIn() {
 public logout() {
   this.userAuthService.clear();
 }
-
-public toggleSidebar() {
- AppComponent.sidebarToggle = !AppComponent.sidebarToggle;
-}
-
 }

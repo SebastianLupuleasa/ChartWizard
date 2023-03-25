@@ -38,6 +38,10 @@ import { ChatEditedSuccessComponent } from './chat-edited-success/chat-edited-su
 import { ImportChartComponent } from './import-chart/import-chart.component';
 import { ChartImportSuccessComponent } from './chart-import-success/chart-import-success.component';
 import { FullscreenChartComponent } from './fullscreen-chart/fullscreen-chart.component';
+import { SharedChartsComponent } from './shared-charts/shared-charts.component';
+import { SharedChartDialogComponent } from './shared-chart-dialog/shared-chart-dialog.component';
+import { ChartSharedSuccessComponent } from './chart-shared-success/chart-shared-success.component';
+import { ErrorDialogComponentComponent } from './error-dialog-component/error-dialog-component.component';
 
 @NgModule({
   declarations: [
@@ -61,6 +65,10 @@ import { FullscreenChartComponent } from './fullscreen-chart/fullscreen-chart.co
     ImportChartComponent,
     ChartImportSuccessComponent,
     FullscreenChartComponent,
+    SharedChartsComponent,
+    SharedChartDialogComponent,
+    ChartSharedSuccessComponent,
+    ErrorDialogComponentComponent,
     ],
   imports: [
     BrowserModule,

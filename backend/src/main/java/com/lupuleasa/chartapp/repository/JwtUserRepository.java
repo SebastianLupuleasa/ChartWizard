@@ -12,5 +12,4 @@ public interface JwtUserRepository extends JpaRepository<JwtUser, Long> {
     Optional<JwtUser> findJwtUserByUsername(String username);
     Optional<JwtUser> findJwtUserByEmail(String email);
     Optional<JwtUser> findJwtUserById(long id);
-
 }
