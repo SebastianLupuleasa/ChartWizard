@@ -208,7 +208,7 @@ else {
     config = {
         type: chartType,
         data: data,
-        options: {},
+        options: {aspectRatio: 2},
       };
     }
     else {
@@ -218,7 +218,9 @@ else {
       config = {
         type: chartType,
         data: data,
-        options:   {animations: {
+        options:   {
+          aspectRatio: 1
+          ,animations: {
           tension: {
             duration: 1000,
             easing: chartAnimation,

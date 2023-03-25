@@ -179,34 +179,36 @@ else {
           break;
       }
 
-    let config: ChartConfiguration;
+      let config: ChartConfiguration;
     
-    if(element.chartAnimation === 'none' || element.chartAnimation === '' || element.chartAnimation === null || element.chartAnimation === undefined )
-    {
-    config = {
-        type: chartType,
-        data: data,
-        options: {},
-      };
-    }
-    else {
-
-      let chartAnimation : any = element.animation;
-
+      if(element.chartAnimation === 'none' || element.chartAnimation === '' || element.chartAnimation === null || element.chartAnimation === undefined )
+      {
       config = {
-        type: chartType,
-        data: data,
-        options:   {animations: {
-          tension: {
-            duration: 1000,
-            easing: chartAnimation,
-            from: 1,
-            to: 0,
-            loop: true
-          }
-        },}
-
-      };    
+          type: chartType,
+          data: data,
+          options: {aspectRatio: 2},
+        };
+      }
+      else {
+  
+        let chartAnimation : any = element.animation;
+  
+        config = {
+          type: chartType,
+          data: data,
+          options:   {
+            aspectRatio: 1
+            ,animations: {
+            tension: {
+              duration: 1000,
+              easing: chartAnimation,
+              from: 1,
+              to: 0,
+              loop: true
+            }
+          },}
+  
+        };        
     }
       const chartItem: ChartItem = document.getElementById(
         "chartDiv"+element.id

@@ -3,12 +3,13 @@
     <div id="divChart" *ngFor="let element of this.customCharts">
         <p *ngIf="element.chartTitle">{{element.chartTitle}}</p>
         <canvas id="chartDiv{{element.id}}"></canvas>
+     <div class="buttonDiv">   
         <button class="fa fa-download" aria-hidden="true" (click)="downloadChart('chartDiv'+element.id)"></button>
         <button class="fa fa-trash" aria-hidden="true" (click)="deleteChart(element.id)"></button>
         <button class="fa fa-arrow-circle-down" aria-hidden="true" (click)="downloadCsv(element)"></button>
-        <button class="fa fa-cog" aria-hidden="true" routerLink="edit" [state]="element"></button>
         <button class="fa fa-arrows-alt" aria-hidden="true" (click)="openLink(element)"></button>
         <button class="fa fa-share" aria-hidden="true" (click)="shareChart(element)"></button>
+    </div>
     </div>
     </div>
     
