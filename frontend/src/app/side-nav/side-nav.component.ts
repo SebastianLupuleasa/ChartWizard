@@ -9,7 +9,7 @@ import { UserAuthService } from '../_services/user-auth.service';
 export class SideNavComponent {
 
   userRoles : string[] = this.userAuthService.getRoles();
-  containsAdmin: boolean = this.userRoles.indexOf('ROLE_ADMIN') !== -1;
+  containsAdmin: boolean = this.userRoles ? this.userRoles.indexOf('ROLE_ADMIN') !== -1 : false;
 
   constructor(public userAuthService:UserAuthService) {}
 

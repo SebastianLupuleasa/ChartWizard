@@ -27,7 +27,7 @@ login(loginForm: NgForm) {
       this.userAuthService.setUsername(JSON.parse(response["user"])["username"]);
       this.userAuthService.setUserId(JSON.parse(response["user"])["id"]);
   
-     this.router.navigate(['charts']);
+     this.router.navigate(['']);
 
     },
     (error) => {

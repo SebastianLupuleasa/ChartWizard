@@ -79,67 +79,8 @@ export class CustomComponent implements OnInit, AfterViewChecked {
       this.customCharts.forEach(element => {
       Chart.register(...registerables);
 
-      let chartDatasets: {type: any,label: string; backgroundColor: string; borderColor: string; data: number[]; fill?:boolean, pointBackgroundColor?: string,  pointBorderColor?: string, pointHoverBackgroundColor?: string, pointHoverBorderColor?: string }[] = [];
+  let chartDatasets: {type: any,label: string; backgroundColor: string; borderColor: string; data: number[]; fill?:boolean, pointBackgroundColor?: string,  pointBorderColor?: string, pointHoverBackgroundColor?: string, pointHoverBorderColor?: string }[] = [];
 
-        if(element.chartType === 'radar')
-{
-       element.chartDatasets.forEach(element => {
-        let color = this.hexToRgb(element.backgroundColor);
-        chartDatasets.push(  {
-          type: element.type,
-          label: element.label,
-          backgroundColor: "rgba("+color?.r+", " + color?.g + ", "+ color?.b +", 0.2)",
-          borderColor: element.borderColor,
-          data: element.datasetValues,
-          fill: true,
-          pointBackgroundColor: element.backgroundColor,
-          pointBorderColor: '#fff',
-          pointHoverBackgroundColor: '#fff',
-          pointHoverBorderColor: element.backgroundColor
-        });
-      });
-    }
-else if(element.chartType === 'bubble')
-{
- element.chartDatasets.forEach(element => {
-
-    let bubbleData : any[] = []; 
-   
-    for(let i=0; i<element.datasetValues.length; i+=3)
-    {
-      bubbleData.push({x:element.datasetValues[i], y:element.datasetValues[i+1], r:element.datasetValues[i+2]});
-    }
-
-    chartDatasets.push(  {
-       type: element.type,
-       label: element.label,
-       backgroundColor: element.backgroundColor,
-       borderColor: element.borderColor,
-       data: bubbleData,
-     });
-   });
-}
-else if(element.chartType === 'scatter')
-{
- element.chartDatasets.forEach(element => {
-
-    let scatterData : any[] = []; 
-   
-    for(let i=0; i<element.datasetValues.length; i+=2)
-    {
-      scatterData.push({x:element.datasetValues[i], y:element.datasetValues[i+1]});
-    }
-
-    chartDatasets.push(  {
-       type: element.type,
-       label: element.label,
-       backgroundColor: element.backgroundColor,
-       borderColor: element.borderColor,
-       data: scatterData,
-     });
-   });
-}
-else {
   element.chartDatasets.forEach(element => {
     chartDatasets.push(  {
        type: element.type,
@@ -149,7 +90,7 @@ else {
        data: element.datasetValues,
      });
    });
-}
+
       const data = {
         labels: element.chartLabels,
         datasets: chartDatasets,
@@ -191,14 +132,6 @@ else {
         case 'radar':
           chartType = 'radar';
           break;
-        
-        case 'bubble':
-          chartType = 'bubble';
-          break;
-        
-        case 'scatter':
-          chartType = 'scatter';
-          break;
       }
 
     let config: ChartConfiguration;
@@ -219,7 +152,7 @@ else {
         type: chartType,
         data: data,
         options:   {
-          aspectRatio: 1
+          aspectRatio: 2
           ,animations: {
           tension: {
             duration: 1000,

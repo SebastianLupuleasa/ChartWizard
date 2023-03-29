@@ -1,9 +1,11 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, SimpleChanges } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, FormArray } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { ChartType, ChartConfiguration, ChartItem, Chart, registerables } from 'chart.js';
 import { ChartCreatedSuccessComponent } from '../chart-created-success/chart-created-success.component';
+import { MyChart } from '../custom/custom.component';
 import { UserAuthService } from '../_services/user-auth.service';
 
 @Component({
@@ -13,6 +15,8 @@ import { UserAuthService } from '../_services/user-auth.service';
 })
 export class CreateComponent implements OnInit {
 
+  chart!: Chart;
+
   headers = { 'content-type': 'application/json'}  
 
   PATH_OF_API = "http://localhost:9001";
@@ -21,7 +25,9 @@ export class CreateComponent implements OnInit {
 
   chartForm!: FormGroup;
 
-  constructor(private router: Router,private fb: FormBuilder,private userAuthService:UserAuthService, private httpclient: HttpClient, public dialog: MatDialog) { }
+  constructor(private router: Router,private fb: FormBuilder,private userAuthService:UserAuthService, private httpclient: HttpClient, public dialog: MatDialog) { 
+    Chart.register(...registerables);
+  }
 
 get labels() {
   return this.chartForm.get('chartLabels') as FormArray;
@@ -51,6 +57,8 @@ get datasetValues() {
       datasetLabel: [''],
       datasetValues: ['']
     });
+
+    this.getChartFormChange();
   }
 
   addChart() {
@@ -77,15 +85,18 @@ get datasetValues() {
      let borderColor = this.chartForm.getRawValue()["borderColor"].split(";");
 
      borderColor.pop();
+     let datasetValues = this.chartForm.getRawValue()["datasetValues"].split(";");
 
-      chartDatasetArray.push(
-        {
-          label:this.chartForm.getRawValue()["datasetLabel"],
-          backgroundColor:backgroundColor,
-          borderColor:borderColor,
-          datasetValues: this.chartForm.getRawValue()["datasetValues"].split(";"),
-        }
-      );
+    datasetValues = datasetValues.filter((obj: string) => {return obj !== ''});
+   
+    chartDatasetArray.push(
+         {
+           label:this.chartForm.getRawValue()["datasetLabel"],
+           backgroundColor:backgroundColor,
+           borderColor:borderColor,
+           datasetValues: datasetValues,
+         }
+       );
         
 
     this.chartForm.getRawValue()["chartLabels"].forEach(function(label : Label){
@@ -110,6 +121,7 @@ get datasetValues() {
     var input = document.createElement("input");
     input.type="color";
     input.name="backgroundColorPicker";
+    input.style.cssText = "width: 50px; margin: 5px;";
     backgroundColorExtender?.appendChild(input);   
     
     this.calculateBackgroundColor();
@@ -130,6 +142,7 @@ get datasetValues() {
     var input = document.createElement("input");
     input.type="color";
     input.name="borderColorPicker";
+    input.style.cssText = "width: 50px; margin: 5px;";
     backgroundColorExtender?.appendChild(input);   
     
     this.calculateBorderColor();
@@ -146,11 +159,12 @@ get datasetValues() {
   }
 
   addDatasetValue() {
-    let backgroundColorExtender = document.getElementById("datasetValueExtender");
+    let datasetValueExtender = document.getElementById("datasetValueExtender");
     var input = document.createElement("input");
     input.type="number";
     input.name="datasetValuePicker";
-    backgroundColorExtender?.appendChild(input);   
+    input.style.cssText = " width: 50px; margin: 5px;";
+    datasetValueExtender?.appendChild(input);   
     
     this.calculateDatasetValue();
   }
@@ -164,5 +178,169 @@ get datasetValues() {
     this.datasetValues.setValue(this.datasetValues.getRawValue()+datasetValueList[i].value+";");
     }
   }
+
+  getChartFormChange()
+  {
+    if(this.chart)
+    {
+      this.chart.destroy();
+    }
+
+    let chartLabelArray : String[] = [];
+
+    interface Label {
+     label: string;
+    }
+
+    interface TransformedChartDataset {
+      label: string;
+      backgroundColor: string[];
+      borderColor: string[];
+      datasetValues: string[];
+    }
+
+    let chartDatasetArray : TransformedChartDataset[] = [];
+    
+     let backgroundColor = this.chartForm.getRawValue()["backgroundColor"].split(";");
+
+     backgroundColor.pop();
+
+     let borderColor = this.chartForm.getRawValue()["borderColor"].split(";");
+
+     borderColor.pop();
+
+    let datasetValues = this.chartForm.getRawValue()["datasetValues"].split(";");
+
+      
+    datasetValues = datasetValues.filter((obj: string) => {return obj !== ''});
+
+   
+    chartDatasetArray.push(
+        {
+          label:this.chartForm.getRawValue()["datasetLabel"],
+          backgroundColor:backgroundColor,
+          borderColor:borderColor,
+          datasetValues: datasetValues,
+        }
+      );
+        
+
+    this.chartForm.getRawValue()["chartLabels"].forEach(function(label : Label){
+      chartLabelArray.push(label.label);
+    })
+    
+    let chart = {chartTitle:this.chartForm.getRawValue()["chartTitle"], chartType:this.chartForm.getRawValue()["chartType"], chartAnimation:this.chartForm.getRawValue()["chartAnimation"], chartLabels:chartLabelArray,chartDatasets:chartDatasetArray,userId:this.userAuthService.getUserId()};
+
+    this.createChart(chart);
+
+  }
+
+
+  createChart(chart : any): void {
+    if (chart) {
+     
+let chartDatasets: {type: any,label: string; backgroundColor: string; borderColor: string; data: number[]; fill?:boolean, pointBackgroundColor?: string,  pointBorderColor?: string, pointHoverBackgroundColor?: string, pointHoverBorderColor?: string }[] = [];
+
+         chart.chartDatasets.forEach((element: { type: any; label: any; backgroundColor: any; borderColor: any; datasetValues: any; }) => {
+    chartDatasets.push(  {
+       type: element.type,
+       label: element.label,
+       backgroundColor: element.backgroundColor,
+       borderColor: element.borderColor,
+       data: element.datasetValues,
+     });
+   });
+
+      const data = {
+        labels: chart.chartLabels,
+        datasets: chartDatasets,
+      };
+
+      const options = {
+        scales: {
+          y: {
+            beginAtZero: true,
+            display: false,
+          },
+        },
+      };
+
+      let chartType : ChartType = 'line';
+
+      switch(chart.chartType){
+
+        case 'line':
+          chartType = 'line';
+          break;
+
+        case 'pie':
+          chartType = 'pie';
+          break;
+
+        case 'bar':
+          chartType = 'bar';
+          break;
+        
+        case 'doughnut':
+          chartType = 'doughnut';
+          break;
+        
+        case 'polarArea':
+          chartType = 'polarArea';
+          break;
+
+        case 'radar':
+          chartType = 'radar';
+          break;
+       
+      }
+
+    let config: ChartConfiguration;
+    
+    if(chart.chartAnimation === 'none' || chart.chartAnimation === '' || chart.chartAnimation === null || chart.chartAnimation === undefined )
+    {
+    config = {
+        type: chartType,
+        data: data,
+        options: {},
+      };
+    }
+    else {
+
+      let chartAnimation : any = chart.animation;
+
+      config = {
+        type: chartType,
+        data: data,
+        options:   {animations: {
+          tension: {
+            duration: 1000,
+            easing: chartAnimation,
+            from: 1,
+            to: 0,
+            loop: true
+          }
+        },}
+
+      };    
+    }
+      const chartItem: ChartItem = document.getElementById(
+        "fullscreenChart"
+      ) as ChartItem;
+
+      this.chart = new Chart(chartItem, config);
+
+      this.chart.resize(window.innerWidth/2,window.innerHeight);
+    }
+    }
+
+    hexToRgb(hex: any) {
+      var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+      return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+      } : null;
+    }
 
 }

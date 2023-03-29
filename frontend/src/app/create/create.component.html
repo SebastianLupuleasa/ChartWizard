@@ -1,34 +1,33 @@
-<h1>Simple Chart Creator</h1>
-<form [formGroup]="chartForm" (ngSubmit)="addChart()">
-  <mat-accordion class="example-headers-align" multi>
-    <mat-expansion-panel>
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          Chart Info
-        </mat-panel-title>
-        </mat-expansion-panel-header>
+<div class="createContentDiv">
+
+  <div id="fullscreenDiv">
+    <canvas id="fullscreenChart"></canvas>
+    </div>
+
+<form [formGroup]="chartForm" (ngSubmit)="addChart()" (change)="getChartFormChange()">
+  
+  <div style="display: flex; flex-wrap: wrap; flex-direction: column;">
     <mat-form-field>
         <mat-label>Chart Title</mat-label>
         <input type="text" matInput formControlName="chartTitle"
-               placeholder="Chart title">
+               placeholder="Title">
      </mat-form-field>
-      <mat-form-field>
+
+      <mat-form-field style="width:fit-content">
         <mat-label>Chart Type</mat-label>
-        <mat-select matInput formControlName="chartType" >
+        <mat-select  matInput formControlName="chartType" (selectionChange)="getChartFormChange()" >
           <mat-option value="line">line</mat-option>
           <mat-option value="bar">bar</mat-option>
           <mat-option value="pie">pie</mat-option>
           <mat-option value="doughnut">doughnut</mat-option>
           <mat-option value="polarArea">polarArea</mat-option>
           <mat-option value="radar">radar</mat-option>
-          <mat-option value="bubble">bubble</mat-option>
-          <mat-option value="scatter">scatter</mat-option>
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field>
+       <mat-form-field>
         <mat-label>Chart Animation</mat-label>
-        <mat-select matInput formControlName="chartAnimation" >
+        <mat-select  matInput formControlName="chartAnimation" (selectionChange)="getChartFormChange()" >
           <mat-option value="none">none</mat-option>
           <mat-option value="linear">linear</mat-option>
           <mat-option value="easeInQuad">easeInQuad</mat-option>
@@ -61,50 +60,31 @@
           <mat-option value="easeInBounce">easeInBounce</mat-option>
           <mat-option value="easeOutBounce">easeOutBounce</mat-option>
           <mat-option value="easeInOutBounce">easeInOutBounce</mat-option>
-
-
         </mat-select>
       </mat-form-field>
-    </mat-expansion-panel>
-  </mat-accordion>
-      
+    </div>
 
-      <div formArrayName="chartLabels">
-      <mat-accordion class="example-headers-align" multi>
-        <mat-expansion-panel>
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              Chart Labels
-            </mat-panel-title>
-            </mat-expansion-panel-header>
-         <div *ngFor="let label of labels.controls; let i=index">
-          <div [formGroupName]="i">
-            <mat-form-field>
-              <mat-label>Label</mat-label>
-              <input type="text" matInput formControlName="label"
-              placeholder="Label"> 
-            </mat-form-field>
-          </div>
-         </div>
-
-         <div>
-          <button mat-raised-button color="primary" type="button" (click)="addLabel()">Add label</button>
-          </div>
-      
-        </mat-expansion-panel>
-        </mat-accordion>
+    <div>
+      <div formArrayName="chartLabels" style="display: flex; flex-wrap: wrap; flex-direction: column;">
+        <div *ngFor="let label of labels.controls; let i=index" style="margin:1%">
+       <div [formGroupName]="i">
+         <mat-form-field>
+           <mat-label>Label</mat-label>
+           <input type="text" matInput formControlName="label"
+           placeholder="Label"> 
+         </mat-form-field>
+       </div>
       </div>
 
-      
       <div>
-        <mat-accordion class="example-headers-align" multi>
-          <mat-expansion-panel>
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                Chart Dataset
-              </mat-panel-title>
-              </mat-expansion-panel-header>
-              
+       <button style="margin:1%" mat-raised-button color="primary" type="button" (click)="addLabel()">Add label</button>
+       </div>
+      </div>
+
+    </div>    
+    
+        <div>
+                <div style="display: flex; flex-wrap: wrap; flex-direction: column;">                    
               <mat-form-field>
                 <mat-label>Label</mat-label>
                 <input type="text" matInput formControlName="datasetLabel"
@@ -130,16 +110,18 @@
              <div id="datasetValueExtender" (change)="calculateDatasetValue()">
               <h4>Dataset Values</h4>
               <button mat-raised-button color="primary" type="button" (click)="addDatasetValue()">Add</button>
-              <input name="datasetValuePicker" type="number">
-            </div>
-            
-          <input type="text" matInput formControlName="datasetValues" placeholder="Dataset Values" readonly="true" [style.visibility]="'hidden'"> 
-                                
-          </mat-expansion-panel>
-          </mat-accordion>
-        </div>
+              <input name="datasetValuePicker" type="number">              
+            </div>         
 
-      <div>
-      <button mat-raised-button class="createChartButton btn btn-primary" color="primary">Create Chart</button>
-      </div>
+            <input type="text" matInput formControlName="datasetValues" placeholder="Dataset Values" readonly="true" [style.visibility]="'hidden'"> 
+
+           
+     </div>
+     </div>
+
+     <div >
+      <button mat-raised-button class="createChartButton">Create Chart</button>
+     </div>
 </form>
+</div>
+

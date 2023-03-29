@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ChartType, ChartConfiguration, ChartItem, Chart, registerables } from 'chart.js';
 import { ChatEditedSuccessComponent } from '../chat-edited-success/chat-edited-success.component';
 import { MyChart } from '../custom/custom.component';
 import { UserAuthService } from '../_services/user-auth.service';
@@ -16,6 +17,7 @@ export class EditChartComponent {
 
   editedChart!: MyChart;
   chartForm!: FormGroup;
+  chart!: Chart;
 
   get labels() {
     return this.chartForm.get('chartLabels') as FormArray;
@@ -48,7 +50,9 @@ export class EditChartComponent {
   headers = { 'content-type': 'application/json'};
   PATH_OF_API = "http://localhost:9001";
 
-  constructor(private router: Router,private fb: FormBuilder,private userAuthService:UserAuthService, private httpclient: HttpClient, public dialog: MatDialog,public activatedRoute: ActivatedRoute) { }
+  constructor(private router: Router,private fb: FormBuilder,private userAuthService:UserAuthService, private httpclient: HttpClient, public dialog: MatDialog,public activatedRoute: ActivatedRoute) { 
+    Chart.register(...registerables);
+  }
 
   
   ngAfterViewInit(): void {
@@ -124,6 +128,8 @@ export class EditChartComponent {
       this.editedChart.chartDatasets[0].datasetValues.forEach(element => {
         this.addDatasetValueWithValue(element.toString());
       });
+
+      this.getChartFormChange();
   }
 
   editChart() {
@@ -187,14 +193,20 @@ export class EditChartComponent {
       );
       }
       else {
-        chartDatasetArray.push(
-          {
-            label:this.chartForm.getRawValue()["datasetLabel"],
-            backgroundColor:stringBackgroundArray,
-            borderColor:stringBorderArray,
-            datasetValues: this.chartForm.getRawValue()["datasetValues"].split(";"),
-          }
-        );      
+
+    let datasetValues = this.chartForm.getRawValue()["datasetValues"].split(";");
+
+      
+    datasetValues = datasetValues.filter((obj: string) => {return obj !== ''});
+   
+    chartDatasetArray.push(
+        {
+          label:this.chartForm.getRawValue()["datasetLabel"],
+          backgroundColor:stringBackgroundArray,
+          borderColor:stringBorderArray,
+          datasetValues: datasetValues,
+        }
+      );      
       }
 
     this.chartForm.getRawValue()["chartLabels"].forEach(function(label : Label){
@@ -220,6 +232,7 @@ export class EditChartComponent {
     var input = document.createElement("input");
     input.type="color";
     input.name="backgroundColorPicker";
+    input.style.cssText = " width: 50px; margin: 5px;";
     input.value=value;
     backgroundColorExtender?.appendChild(input);   
     
@@ -231,6 +244,7 @@ export class EditChartComponent {
     var input = document.createElement("input");
     input.type="color";
     input.name="backgroundColorPicker";
+    input.style.cssText = " width: 50px; margin: 5px;";
     backgroundColorExtender?.appendChild(input);   
     
     this.calculateBackgroundColor();
@@ -251,6 +265,7 @@ export class EditChartComponent {
     var input = document.createElement("input");
     input.type="color";
     input.name="borderColorPicker";
+    input.style.cssText = " width: 50px; margin: 5px;";
     input.value= value;
     backgroundColorExtender?.appendChild(input);   
     
@@ -262,6 +277,7 @@ export class EditChartComponent {
     var input = document.createElement("input");
     input.type="color";
     input.name="borderColorPicker";
+    input.style.cssText = " width: 50px; margin: 5px;";
     backgroundColorExtender?.appendChild(input);   
     
     this.calculateBorderColor();
@@ -282,6 +298,7 @@ export class EditChartComponent {
     var input = document.createElement("input");
     input.type="number";
     input.name="datasetValuePicker";
+    input.style.cssText = " width: 50px; margin: 5px;";
     backgroundColorExtender?.appendChild(input);   
     
     this.calculateDatasetValue();
@@ -292,6 +309,7 @@ export class EditChartComponent {
     var input = document.createElement("input");
     input.type="number";
     input.name="datasetValuePicker";
+    input.style.cssText = " width: 50px; margin: 5px;";
     input.value=value;
     backgroundColorExtender?.appendChild(input);   
     
@@ -313,6 +331,7 @@ export class EditChartComponent {
     var input = document.createElement("input");
     input.type="color";
     input.name="backgroundSecondColorPicker";
+    input.style.cssText = " width: 50px; margin: 5px;";
     backgroundColorExtender?.appendChild(input);   
     
     this.calculateSecondBackgroundColor();
@@ -323,6 +342,7 @@ export class EditChartComponent {
     var input = document.createElement("input");
     input.type="color";
     input.name="backgroundSecondColorPicker";
+    input.style.cssText = " width: 50px; margin: 5px;";
     input.value= value;
     console.log(backgroundColorExtender);
     backgroundColorExtender?.appendChild(input);   
@@ -345,6 +365,7 @@ export class EditChartComponent {
     var input = document.createElement("input");
     input.type="color";
     input.name="borderSecondColorPicker";
+    input.style.cssText = " width: 50px; margin: 5px;";
     backgroundColorExtender?.appendChild(input);   
     
     this.calculateSecondBorderColor();
@@ -355,6 +376,7 @@ export class EditChartComponent {
     var input = document.createElement("input");
     input.type="color";
     input.name="borderSecondColorPicker";
+    input.style.cssText = " width: 50px; margin: 5px;";
     input.value = value;
     backgroundColorExtender?.appendChild(input);   
     
@@ -376,6 +398,7 @@ export class EditChartComponent {
     var input = document.createElement("input");
     input.type="number";
     input.name="datasetSecondValuePicker";
+    input.style.cssText = " width: 50px; margin: 5px;";
     backgroundColorExtender?.appendChild(input);   
     
     this.calculateSecondDatasetValue();
@@ -386,6 +409,7 @@ export class EditChartComponent {
     var input = document.createElement("input");
     input.type="number";
     input.name="datasetSecondValuePicker";
+    input.style.cssText = " width: 50px; margin: 5px;";
     input.value= value;
     backgroundColorExtender?.appendChild(input);   
     
@@ -401,5 +425,169 @@ export class EditChartComponent {
     this.datasetSecondValues.setValue(this.datasetSecondValues.getRawValue()+datasetValueList[i].value+";");
     }
   }
+
+  getChartFormChange()
+  {
+    if(this.chart)
+    {
+      this.chart.destroy();
+    }
+
+    let chartLabelArray : String[] = [];
+
+    interface Label {
+     label: string;
+    }
+
+    interface TransformedChartDataset {
+      label: string;
+      backgroundColor: string[];
+      borderColor: string[];
+      datasetValues: string[];
+    }
+
+    let chartDatasetArray : TransformedChartDataset[] = [];
+    
+     let backgroundColor = this.chartForm.getRawValue()["backgroundColor"].split(";");
+
+     backgroundColor.pop();
+
+     let borderColor = this.chartForm.getRawValue()["borderColor"].split(";");
+
+     borderColor.pop();
+
+    let datasetValues = this.chartForm.getRawValue()["datasetValues"].split(";");
+
+      
+    datasetValues = datasetValues.filter((obj: string) => {return obj !== ''});
+
+   
+    chartDatasetArray.push(
+        {
+          label:this.chartForm.getRawValue()["datasetLabel"],
+          backgroundColor:backgroundColor,
+          borderColor:borderColor,
+          datasetValues: datasetValues,
+        }
+      );
+        
+
+    this.chartForm.getRawValue()["chartLabels"].forEach(function(label : Label){
+      chartLabelArray.push(label.label);
+    })
+    
+    let chart = {chartTitle:this.chartForm.getRawValue()["chartTitle"], chartType:this.chartForm.getRawValue()["chartType"], chartAnimation:this.chartForm.getRawValue()["chartAnimation"], chartLabels:chartLabelArray,chartDatasets:chartDatasetArray,userId:this.userAuthService.getUserId()};
+
+    this.createChart(chart);
+
+  }
+
+
+  createChart(chart : any): void {
+    if (chart) {
+     
+let chartDatasets: {type: any,label: string; backgroundColor: string; borderColor: string; data: number[]; fill?:boolean, pointBackgroundColor?: string,  pointBorderColor?: string, pointHoverBackgroundColor?: string, pointHoverBorderColor?: string }[] = [];
+
+         chart.chartDatasets.forEach((element: { type: any; label: any; backgroundColor: any; borderColor: any; datasetValues: any; }) => {
+    chartDatasets.push(  {
+       type: element.type,
+       label: element.label,
+       backgroundColor: element.backgroundColor,
+       borderColor: element.borderColor,
+       data: element.datasetValues,
+     });
+   });
+
+      const data = {
+        labels: chart.chartLabels,
+        datasets: chartDatasets,
+      };
+
+      const options = {
+        scales: {
+          y: {
+            beginAtZero: true,
+            display: false,
+          },
+        },
+      };
+
+      let chartType : ChartType = 'line';
+
+      switch(chart.chartType){
+
+        case 'line':
+          chartType = 'line';
+          break;
+
+        case 'pie':
+          chartType = 'pie';
+          break;
+
+        case 'bar':
+          chartType = 'bar';
+          break;
+        
+        case 'doughnut':
+          chartType = 'doughnut';
+          break;
+        
+        case 'polarArea':
+          chartType = 'polarArea';
+          break;
+
+        case 'radar':
+          chartType = 'radar';
+          break;
+
+        }
+
+    let config: ChartConfiguration;
+    
+    if(chart.chartAnimation === 'none' || chart.chartAnimation === '' || chart.chartAnimation === null || chart.chartAnimation === undefined )
+    {
+    config = {
+        type: chartType,
+        data: data,
+        options: {},
+      };
+    }
+    else {
+
+      let chartAnimation : any = chart.animation;
+
+      config = {
+        type: chartType,
+        data: data,
+        options:   {animations: {
+          tension: {
+            duration: 1000,
+            easing: chartAnimation,
+            from: 1,
+            to: 0,
+            loop: true
+          }
+        },}
+
+      };    
+    }
+      const chartItem: ChartItem = document.getElementById(
+        "fullscreenChart"
+      ) as ChartItem;
+
+      this.chart = new Chart(chartItem, config);
+
+      this.chart.resize(window.innerWidth/2,window.innerHeight);
+    }
+    }
+
+    hexToRgb(hex: any) {
+      var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+      return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+      } : null;
+    }
 
 }
