@@ -128,59 +128,50 @@
 </div>
 </div>
 
-        <div *ngIf="this.editedChart.chartDatasets.length == 2">
-            <mat-accordion class="example-headers-align" multi>
-              <mat-expansion-panel>
-                <mat-expansion-panel-header>
-                  <mat-panel-title>
-                   Second Chart Dataset
-                  </mat-panel-title>
-                  </mat-expansion-panel-header>
-                  
-                  <mat-form-field>
-                    <mat-label>Label</mat-label>
-                    <input type="text" matInput formControlName="secondDatasetLabel"
-                    placeholder="Label"> 
-                  </mat-form-field>
-  
-                  <mat-form-field>
-                      <mat-label>Chart Type</mat-label>
-                      <mat-select matInput formControlName="secondDatasetType" >
-                        <mat-option value="line">line</mat-option>
-                        <mat-option value="bar">bar</mat-option>
-                        <mat-option value="pie">pie</mat-option>
-                        <mat-option value="doughnut">doughnut</mat-option>
-                        <mat-option value="polarArea">polarArea</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-    
-                  <div id="backgroundSecondColorExtender" (change)="calculateSecondBackgroundColor()">
-                    <h4>Background Color</h4>
-                    <button mat-raised-button color="primary" type="button" (click)="addSecondBackgroundColor()">Add</button>
-                    </div>
-               
-                  <input type="text" matInput formControlName="secondBackgroundColor" readonly="true" [style.visibility]="'hidden'"/>
-                  
-                 <div id="borderSecondColorExtender" (change)="calculateSecondBorderColor()">
-                    <h4>Border Color</h4>
-                    <button mat-raised-button color="primary" type="button" (click)="addSecondBorderColor()">Add</button>
-                    </div>
-      
-                 <input type="text" matInput formControlName="secondBorderColor" readonly="true" [style.visibility]="'hidden'"/>
-                       
-                 <div id="datasetSecondValueExtender" (change)="calculateSecondDatasetValue()">
-                  <h4>Dataset Values</h4>
-                  <button mat-raised-button color="primary" type="button" (click)="addSecondDatasetValue()">Add</button>
-                </div>
-                
-              <input type="text" matInput formControlName="secondDatasetValues" placeholder="Dataset Values" readonly="true" [style.visibility]="'hidden'"> 
-                                    
-              </mat-expansion-panel>
-              </mat-accordion>
+      <div>
+        <div *ngIf="this.editedChart.chartDatasets.length == 2" style="display: flex; flex-wrap: wrap; flex-direction: column;">             
+          <mat-form-field>
+            <mat-label>Label</mat-label>
+            <input type="text" matInput formControlName="secondDatasetLabel"
+            placeholder="Label"> 
+          </mat-form-field>
+
+          <mat-form-field>
+              <mat-label>Chart Type</mat-label>
+              <mat-select matInput formControlName="secondDatasetType" >
+                <mat-option value="line">line</mat-option>
+                <mat-option value="bar">bar</mat-option>
+                <mat-option value="pie">pie</mat-option>
+                <mat-option value="doughnut">doughnut</mat-option>
+                <mat-option value="polarArea">polarArea</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+          <div id="backgroundSecondColorExtender" (change)="calculateSecondBackgroundColor()">
+            <h4>Background Color</h4>
+            <button mat-raised-button color="primary" type="button" (click)="addSecondBackgroundColor()">Add</button>
             </div>
+       
+          <input type="text" matInput formControlName="secondBackgroundColor" readonly="true" [style.visibility]="'hidden'"/>
+          
+         <div id="borderSecondColorExtender" (change)="calculateSecondBorderColor()">
+            <h4>Border Color</h4>
+            <button mat-raised-button color="primary" type="button" (click)="addSecondBorderColor()">Add</button>
+            </div>
+
+         <input type="text" matInput formControlName="secondBorderColor" readonly="true" [style.visibility]="'hidden'"/>
+               
+         <div id="datasetSecondValueExtender" (change)="calculateSecondDatasetValue()">
+          <h4>Dataset Values</h4>
+          <button mat-raised-button color="primary" type="button" (click)="addSecondDatasetValue()">Add</button>
+        </div>
+        
+      <input type="text" matInput formControlName="secondDatasetValues" placeholder="Dataset Values" readonly="true" [style.visibility]="'hidden'">        
+      </div>
+    </div>
 
       <div>
       <button mat-raised-button class="createChartButton btn btn-primary" color="primary">Edit Chart</button>
       </div>
 </form>
-
+</div>

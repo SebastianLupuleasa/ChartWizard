@@ -72,6 +72,8 @@ export class EditChartComponent {
             this.addSecondDatasetValueWithValue(element.toString());
           }); 
         }
+
+        this.getChartFormChange();
   }
 
 
@@ -129,7 +131,6 @@ export class EditChartComponent {
         this.addDatasetValueWithValue(element.toString());
       });
 
-      this.getChartFormChange();
   }
 
   editChart() {
@@ -344,7 +345,6 @@ export class EditChartComponent {
     input.name="backgroundSecondColorPicker";
     input.style.cssText = " width: 50px; margin: 5px;";
     input.value= value;
-    console.log(backgroundColorExtender);
     backgroundColorExtender?.appendChild(input);   
     
     this.calculateSecondBackgroundColor();
@@ -441,10 +441,71 @@ export class EditChartComponent {
 
     interface TransformedChartDataset {
       label: string;
+      type?: string;
       backgroundColor: string[];
       borderColor: string[];
       datasetValues: string[];
     }
+
+    if(this.editedChart.chartDatasets.length == 2){
+      let chartDatasetArray : TransformedChartDataset[] = [];
+    
+         
+    let backgroundColor = this.chartForm.getRawValue()["secondBackgroundColor"].split(";");
+
+    backgroundColor.pop();
+
+    let borderColor = this.chartForm.getRawValue()["secondBorderColor"].split(";");
+   
+    borderColor.pop();
+
+    let datasetValues = this.chartForm.getRawValue()["secondDatasetValues"].split(";");
+      
+    datasetValues = datasetValues.filter((obj: string) => {return obj !== ''});
+
+      chartDatasetArray.push(
+        {
+          label:this.chartForm.getRawValue()["secondDatasetLabel"],
+          type:this.chartForm.getRawValue()["secondDatasetType"],
+          backgroundColor:backgroundColor,
+          borderColor:borderColor,
+          datasetValues: datasetValues,
+        }        
+      );
+
+      backgroundColor = this.chartForm.getRawValue()["backgroundColor"].split(";");
+
+      backgroundColor.pop();
+ 
+      borderColor = this.chartForm.getRawValue()["borderColor"].split(";");
+ 
+      borderColor.pop();
+   
+    datasetValues = this.chartForm.getRawValue()["datasetValues"].split(";");
+      
+    datasetValues = datasetValues.filter((obj: string) => {return obj !== ''});
+
+      chartDatasetArray.push(
+        {
+          label:this.chartForm.getRawValue()["datasetLabel"],
+          type:this.chartForm.getRawValue()["datasetType"],
+          backgroundColor:backgroundColor,
+          borderColor:borderColor,
+          datasetValues: datasetValues,
+        }        
+      );
+        
+
+    this.chartForm.getRawValue()["chartLabels"].forEach(function(label : Label){
+      chartLabelArray.push(label.label);
+    })
+    
+    let chart = {chartTitle:this.chartForm.getRawValue()["chartTitle"], chartType:this.chartForm.getRawValue()["chartType"], chartAnimation:this.chartForm.getRawValue()["chartAnimation"], chartLabels:chartLabelArray,chartDatasets:chartDatasetArray,userId:this.userAuthService.getUserId()};
+    
+    this.createChart(chart);
+
+    }
+    else {
 
     let chartDatasetArray : TransformedChartDataset[] = [];
     
@@ -479,8 +540,7 @@ export class EditChartComponent {
     let chart = {chartTitle:this.chartForm.getRawValue()["chartTitle"], chartType:this.chartForm.getRawValue()["chartType"], chartAnimation:this.chartForm.getRawValue()["chartAnimation"], chartLabels:chartLabelArray,chartDatasets:chartDatasetArray,userId:this.userAuthService.getUserId()};
 
     this.createChart(chart);
-
-  }
+  }}
 
 
   createChart(chart : any): void {
