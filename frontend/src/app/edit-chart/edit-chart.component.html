@@ -13,19 +13,21 @@
                placeholder="Title">
      </mat-form-field>
 
-      <mat-form-field style="width:fit-content">
+      <mat-form-field *ngIf="this.editedChart.chartDatasets.length != 2" style="width:fit-content">
         <mat-label>Chart Type</mat-label>
-        <mat-select  matInput formControlName="chartType" (selectionChange)="getChartFormChange()" >
+        <mat-select  matInput formControlName="chartType" (selectionChange)="getChartFormChange(); calculateFirstDataset();" >
           <mat-option value="line">line</mat-option>
           <mat-option value="bar">bar</mat-option>
           <mat-option value="pie">pie</mat-option>
           <mat-option value="doughnut">doughnut</mat-option>
           <mat-option value="polarArea">polarArea</mat-option>
           <mat-option value="radar">radar</mat-option>
+          <mat-option value="scatter">scatter</mat-option>
+          <mat-option value="bubble">bubble</mat-option>
         </mat-select>
       </mat-form-field>
 
-       <mat-form-field>
+       <mat-form-field *ngIf="this.editedChart.chartDatasets.length != 2">
         <mat-label>Chart Animation</mat-label>
         <mat-select  matInput formControlName="chartAnimation" (selectionChange)="getChartFormChange()" >
           <mat-option value="none">none</mat-option>
@@ -94,7 +96,7 @@
     
     <mat-form-field *ngIf="this.editedChart.chartDatasets.length == 2">
       <mat-label>Chart Type</mat-label>
-      <mat-select matInput formControlName="datasetType" >
+      <mat-select matInput formControlName="datasetType" (selectionChange)="getChartFormChange()">
         <mat-option value="line">line</mat-option>
         <mat-option value="bar">bar</mat-option>
         <mat-option value="pie">pie</mat-option>
@@ -117,13 +119,15 @@
 
    <input type="text" matInput formControlName="borderColor" readonly="true" readonly="true" [style.visibility]="'hidden'"/>
          
-   <div id="datasetValueExtender" (change)="calculateDatasetValue()">
+   <div (change)="calculateDatasetValue()">
     <h4>Dataset Values</h4>
-    <button mat-raised-button color="primary" type="button" (click)="addDatasetValue()">Add</button>
-    </div>         
+    <button *ngIf="this.chartType.getRawValue() !== 'scatter' && this.chartType.getRawValue() !== 'bubble'"  mat-raised-button color="primary" type="button" (click)="addDatasetValue()">Add</button>
+    <button *ngIf="this.chartType.getRawValue() === 'scatter'" mat-raised-button color="primary" type="button" (click)="addDatasetValueScatter()">Add</button>
+    <button *ngIf="this.chartType.getRawValue() === 'bubble'" mat-raised-button color="primary" type="button" (click)="addDatasetValueBubble()">Add</button>
+    <div style="display: flex; flex-wrap: wrap; flex-direction: row;" id="datasetValueExtender"></div>
+  </div>         
 
   <input type="text" matInput formControlName="datasetValues" placeholder="Dataset Values" readonly="true" [style.visibility]="'hidden'"> 
-
  
 </div>
 </div>
@@ -138,12 +142,12 @@
 
           <mat-form-field>
               <mat-label>Chart Type</mat-label>
-              <mat-select matInput formControlName="secondDatasetType" >
+              <mat-select matInput formControlName="secondDatasetType" (selectionChange)="getChartFormChange()">
                 <mat-option value="line">line</mat-option>
                 <mat-option value="bar">bar</mat-option>
                 <mat-option value="pie">pie</mat-option>
                 <mat-option value="doughnut">doughnut</mat-option>
-                <mat-option value="polarArea">polarArea</mat-option>
+                <mat-option value="polarArea">polarArea</mat-option>                
                 </mat-select>
             </mat-form-field>
 
@@ -161,10 +165,11 @@
 
          <input type="text" matInput formControlName="secondBorderColor" readonly="true" [style.visibility]="'hidden'"/>
                
+        
          <div id="datasetSecondValueExtender" (change)="calculateSecondDatasetValue()">
           <h4>Dataset Values</h4>
           <button mat-raised-button color="primary" type="button" (click)="addSecondDatasetValue()">Add</button>
-        </div>
+        </div>      
         
       <input type="text" matInput formControlName="secondDatasetValues" placeholder="Dataset Values" readonly="true" [style.visibility]="'hidden'">        
       </div>

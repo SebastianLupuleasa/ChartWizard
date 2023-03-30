@@ -26,6 +26,10 @@ export class EditChartComponent {
   get datasetBackground() {
     return this.chartForm.get('backgroundColor') as FormControl;
   }
+
+  get chartType() {
+    return this.chartForm.get('chartType') as FormControl;
+  }
   
   get datasetBorder() {
     return this.chartForm.get('borderColor') as FormControl;
@@ -73,8 +77,21 @@ export class EditChartComponent {
           }); 
         }
 
-        this.getChartFormChange();
-  }
+        if(this.editedChart.chartType === 'scatter'){
+          this.addDatasetValueWithValueScatter(this.editedChart.chartDatasets[0].datasetValues);
+    }
+     else if(this.editedChart.chartType === 'bubble'){
+              this.addDatasetValueWithValueBubble(this.editedChart.chartDatasets[0].datasetValues);
+         } 
+     else
+     {
+       this.editedChart.chartDatasets[0].datasetValues.forEach(element => {
+         this.addDatasetValueWithValue(element.toString());
+       });
+     }
+      
+     this.getChartFormChange();
+        }
 
 
   ngOnInit(): void {
@@ -127,10 +144,6 @@ export class EditChartComponent {
         this.addBorderColorWithValue(element);
       });    
       
-      this.editedChart.chartDatasets[0].datasetValues.forEach(element => {
-        this.addDatasetValueWithValue(element.toString());
-      });
-
   }
 
   editChart() {
@@ -295,26 +308,101 @@ export class EditChartComponent {
   }
 
   addDatasetValue() {
-    let backgroundColorExtender = document.getElementById("datasetValueExtender");
+    let datasetValueExtender = document.getElementById("datasetValueExtender");
     var input = document.createElement("input");
     input.type="number";
     input.name="datasetValuePicker";
     input.style.cssText = " width: 50px; margin: 5px;";
-    backgroundColorExtender?.appendChild(input);   
+    datasetValueExtender?.appendChild(input);   
     
     this.calculateDatasetValue();
   }
 
   addDatasetValueWithValue(value: string) {
-    let backgroundColorExtender = document.getElementById("datasetValueExtender");
+    let datasetValueExtender = document.getElementById("datasetValueExtender");
     var input = document.createElement("input");
     input.type="number";
     input.name="datasetValuePicker";
     input.style.cssText = " width: 50px; margin: 5px;";
     input.value=value;
-    backgroundColorExtender?.appendChild(input);   
+    datasetValueExtender?.appendChild(input);   
     
     this.calculateDatasetValue();
+  }
+
+  addDatasetValueWithValueScatter(values: number[]) {
+      let datasetValueExtender = document.getElementById("datasetValueExtender");
+      for(let i =0; i<values.length;i+=2)
+ {
+    var div = document.createElement("div");
+    var div1 = document.createElement("div");
+    var input = document.createElement("input");
+    input.type="number";
+    input.name="datasetValuePicker";
+    input.style.cssText = " width: 50px; margin: 5px;";
+    if(values[i] || values[i] === 0)
+    input.value=values[i].toString();
+    var input1 = document.createElement("input");
+    input1.type="number";
+    input1.name="datasetValuePicker";
+    input1.style.cssText = " width: 50px; margin: 5px;";
+    if(values[i+1] || values[i+1] === 0)
+    input1.value=values[i+1].toString();
+   
+
+    div.innerText='x:';
+    div1.innerText='y:';
+    div.appendChild(input);
+    div1.appendChild(input1);
+   
+
+    datasetValueExtender?.appendChild(div);
+    datasetValueExtender?.appendChild(div1);
+      
+    this.calculateDatasetValue();
+ }
+  }
+
+  addDatasetValueWithValueBubble(values: number[]) {
+    let datasetValueExtender = document.getElementById("datasetValueExtender");
+
+    for(let i =0; i<values.length;i+=3)
+ {
+    var div = document.createElement("div");
+    var div1 = document.createElement("div");
+    var div2 = document.createElement("div");
+    var input = document.createElement("input");
+    input.type="number";
+    input.name="datasetValuePicker";
+    input.style.cssText = " width: 50px; margin: 5px;";
+    if(values[i] || values[i] === 0)
+    input.value=values[i].toString();
+    var input1 = document.createElement("input");
+    input1.type="number";
+    input1.name="datasetValuePicker";
+    input1.style.cssText = " width: 50px; margin: 5px;";
+    if(values[i+1] || values[i+1] === 0)
+    input1.value=values[i+1].toString();
+    var input2 = document.createElement("input");
+    input2.type="number";
+    input2.name="datasetValuePicker";
+    input2.style.cssText = " width: 50px; margin: 5px;";
+    if(values[i+2] || values[i+2] === 0 )
+    input2.value=values[i+2].toString();
+
+    div.innerText='x:';
+    div1.innerText='y:';
+    div2.innerText='r:';
+    div.appendChild(input);
+    div1.appendChild(input1);
+    div2.appendChild(input2);
+
+    datasetValueExtender?.appendChild(div);
+    datasetValueExtender?.appendChild(div1);
+    datasetValueExtender?.appendChild(div2);   
+   
+    this.calculateDatasetValue();
+ }
   }
 
   calculateDatasetValue() {
@@ -718,4 +806,80 @@ let config: ChartConfiguration;
       } : null;
     }
 
+    addDatasetValueBubble() {
+      let datasetValueExtender = document.getElementById("datasetValueExtender");
+      var div = document.createElement("div");
+      var div1 = document.createElement("div");
+      var div2 = document.createElement("div");
+      var input = document.createElement("input");
+      input.type="number";
+      input.name="datasetValuePicker";
+      input.style.cssText = " width: 50px; margin: 5px;";
+      var input1 = document.createElement("input");
+      input1.type="number";
+      input1.name="datasetValuePicker";
+      input1.style.cssText = " width: 50px; margin: 5px;";
+      var input2 = document.createElement("input");
+      input2.type="number";
+      input2.name="datasetValuePicker";
+      input2.style.cssText = " width: 50px; margin: 5px;";
+
+      div.innerText='x:';
+      div1.innerText='y:';
+      div2.innerText='r:';
+      div.appendChild(input);
+      div1.appendChild(input1);
+      div2.appendChild(input2);
+
+      datasetValueExtender?.appendChild(div);
+      datasetValueExtender?.appendChild(div1);
+      datasetValueExtender?.appendChild(div2);   
+      
+      this.calculateDatasetValue();
+    }
+
+    addDatasetValueScatter() {
+      let datasetValueExtender = document.getElementById("datasetValueExtender");
+      var div = document.createElement("div");
+      var div1 = document.createElement("div");
+      var input = document.createElement("input");
+      input.type="number";
+      input.name="datasetValuePicker";
+      input.style.cssText = " width: 50px; margin: 5px;";
+      var input1 = document.createElement("input");
+      input1.type="number";
+      input1.name="datasetValuePicker";
+      input1.style.cssText = " width: 50px; margin: 5px;";
+   
+      div.innerText='x:';
+      div1.innerText='y:';
+      div.appendChild(input);
+      div1.appendChild(input1);
+
+      datasetValueExtender?.appendChild(div);
+      datasetValueExtender?.appendChild(div1);
+           
+      this.calculateDatasetValue();
+    }
+
+    calculateFirstDataset() {      
+
+    let datasetValueExtender = document.getElementById("datasetValueExtender");
+    datasetValueExtender!.innerHTML='';
+
+    if(this.chartType.getRawValue() === 'scatter'){
+        this.addDatasetValueWithValueScatter(this.editedChart.chartDatasets[0].datasetValues);
+  }
+   else if(this.chartType.getRawValue() === 'bubble'){
+            this.addDatasetValueWithValueBubble(this.editedChart.chartDatasets[0].datasetValues);
+       } 
+   else
+   {
+    this.editedChart.chartDatasets[0].datasetValues.forEach((element: { toString: () => string; }) => {
+       this.addDatasetValueWithValue(element.toString());
+     });
+   }
+   
+    }
+      
 }
