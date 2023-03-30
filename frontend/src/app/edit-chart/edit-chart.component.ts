@@ -502,6 +502,7 @@ export class EditChartComponent {
     
     let chart = {chartTitle:this.chartForm.getRawValue()["chartTitle"], chartType:this.chartForm.getRawValue()["chartType"], chartAnimation:this.chartForm.getRawValue()["chartAnimation"], chartLabels:chartLabelArray,chartDatasets:chartDatasetArray,userId:this.userAuthService.getUserId()};
     
+   
     this.createChart(chart);
 
     }
@@ -547,62 +548,129 @@ export class EditChartComponent {
     if (chart) {
      
 let chartDatasets: {type: any,label: string; backgroundColor: string; borderColor: string; data: number[]; fill?:boolean, pointBackgroundColor?: string,  pointBorderColor?: string, pointHoverBackgroundColor?: string, pointHoverBorderColor?: string }[] = [];
+   
 
-         chart.chartDatasets.forEach((element: { type: any; label: any; backgroundColor: any; borderColor: any; datasetValues: any; }) => {
-    chartDatasets.push(  {
-       type: element.type,
-       label: element.label,
-       backgroundColor: element.backgroundColor,
-       borderColor: element.borderColor,
-       data: element.datasetValues,
-     });
-   });
+if(chart.chartType === 'radar')
+{
+  chart.chartDatasets.forEach((element: { backgroundColor: any; type: any; label: any; borderColor: any; datasetValues: any; }) => {
+let color = this.hexToRgb(element.backgroundColor);
+chartDatasets.push(  {
+  type: element.type,
+  label: element.label,
+  backgroundColor: "rgba("+color?.r+", " + color?.g + ", "+ color?.b +", 0.2)",
+  borderColor: element.borderColor,
+  data: element.datasetValues,
+  fill: true,
+  pointBackgroundColor: element.backgroundColor,
+  pointBorderColor: '#fff',
+  pointHoverBackgroundColor: '#fff',
+  pointHoverBorderColor: element.backgroundColor
+});
+});
+}
+else if(chart.chartType === 'bubble')
+{
+  chart.chartDatasets.forEach((element: { datasetValues: string | any[]; type: any; label: any; backgroundColor: any; borderColor: any; }) => {
 
-      const data = {
-        labels: chart.chartLabels,
-        datasets: chartDatasets,
-      };
+let bubbleData : any[] = []; 
 
-      const options = {
-        scales: {
-          y: {
-            beginAtZero: true,
-            display: false,
-          },
-        },
-      };
+for(let i=0; i<element.datasetValues.length; i+=3)
+{
+bubbleData.push({x:element.datasetValues[i], y:element.datasetValues[i+1], r:element.datasetValues[i+2]});
+}
 
-      let chartType : ChartType = 'line';
+chartDatasets.push(  {
+type: element.type,
+label: element.label,
+backgroundColor: element.backgroundColor,
+borderColor: element.borderColor,
+data: bubbleData,
+});
+});
+}
+else if(chart.chartType === 'scatter')
+{
+  chart.chartDatasets.forEach((element: { datasetValues: string | any[]; type: any; label: any; backgroundColor: any; borderColor: any; }) => {
 
-      switch(chart.chartType){
+let scatterData : any[] = []; 
 
-        case 'line':
-          chartType = 'line';
-          break;
+for(let i=0; i<element.datasetValues.length; i+=2)
+{
+scatterData.push({x:element.datasetValues[i], y:element.datasetValues[i+1]});
+}
 
-        case 'pie':
-          chartType = 'pie';
-          break;
+chartDatasets.push(  {
+type: element.type,
+label: element.label,
+backgroundColor: element.backgroundColor,
+borderColor: element.borderColor,
+data: scatterData,
+});
+});
+}
+else {
+chart.chartDatasets.forEach((element: { type: any; label: any; backgroundColor: any; borderColor: any; datasetValues: any; }) => {
+chartDatasets.push(  {
+type: element.type,
+label: element.label,
+backgroundColor: element.backgroundColor,
+borderColor: element.borderColor,
+data: element.datasetValues,
+});
+});
+}
+const data = {
+labels: chart.chartLabels,
+datasets: chartDatasets,
+};
 
-        case 'bar':
-          chartType = 'bar';
-          break;
-        
-        case 'doughnut':
-          chartType = 'doughnut';
-          break;
-        
-        case 'polarArea':
-          chartType = 'polarArea';
-          break;
+const options = {
+scales: {
+  y: {
+    beginAtZero: true,
+    display: false,
+  },
+},
+};
 
-        case 'radar':
-          chartType = 'radar';
-          break;
+let chartType : ChartType = 'line';
 
-        }
+switch(chart.chartType){
 
-    let config: ChartConfiguration;
+case 'line':
+  chartType = 'line';
+  break;
+
+case 'pie':
+  chartType = 'pie';
+  break;
+
+case 'bar':
+  chartType = 'bar';
+  break;
+
+case 'doughnut':
+  chartType = 'doughnut';
+  break;
+
+case 'polarArea':
+  chartType = 'polarArea';
+  break;
+
+case 'radar':
+  chartType = 'radar';
+  break;
+
+case 'bubble':
+  chartType = 'bubble';
+  break;
+
+case 'scatter':
+  chartType = 'scatter';
+  break;
+}
+
+let config: ChartConfiguration;
     
     if(chart.chartAnimation === 'none' || chart.chartAnimation === '' || chart.chartAnimation === null || chart.chartAnimation === undefined )
     {

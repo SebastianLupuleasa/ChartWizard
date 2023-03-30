@@ -22,6 +22,8 @@
           <mat-option value="doughnut">doughnut</mat-option>
           <mat-option value="polarArea">polarArea</mat-option>
           <mat-option value="radar">radar</mat-option>
+          <mat-option value="scatter">scatter</mat-option>
+          <mat-option value="bubble">bubble</mat-option>
         </mat-select>
       </mat-form-field>
 
@@ -106,19 +108,39 @@
             </div>
   
              <input type="text" matInput formControlName="borderColor" readonly="true" readonly="true" [style.visibility]="'hidden'"/>
-                   
-             <div id="datasetValueExtender" (change)="calculateDatasetValue()">
+            
+            
+             <div *ngIf="this.chartType.getRawValue() !== 'scatter' && this.chartType.getRawValue() !== 'bubble'" id="datasetValueExtender" (change)="calculateDatasetValue()">
               <h4>Dataset Values</h4>
               <button mat-raised-button color="primary" type="button" (click)="addDatasetValue()">Add</button>
               <input name="datasetValuePicker" type="number">              
             </div>         
 
-            <input type="text" matInput formControlName="datasetValues" placeholder="Dataset Values" readonly="true" [style.visibility]="'hidden'"> 
+            <div *ngIf="this.chartType.getRawValue() === 'bubble'"  (change)="calculateDatasetValue()">
+              <h4>Dataset Values</h4>
+              <button mat-raised-button color="primary" type="button" (click)="addDatasetValueBubble()">Add</button>
+              <div id="datasetValueExtender" style="display: flex; flex-wrap: wrap; flex-direction: row;">
+              <div>x:<input name="datasetValuePicker" type="number"></div>
+              <div>y:<input name="datasetValuePicker" type="number"></div>
+              <div>r:<input name="datasetValuePicker" type="number"></div>   
+              </div>         
+            </div>       
+            
+            <div *ngIf="this.chartType.getRawValue() === 'scatter'" (change)="calculateDatasetValue()">
+              <h4>Dataset Values</h4>
+              <button mat-raised-button color="primary" type="button" (click)="addDatasetValueScatter()">Add</button>
+              <div style="display: flex; flex-wrap: wrap; flex-direction: row;"  id="datasetValueExtender">
+              <div>x:<input name="datasetValuePicker" type="number"></div>
+              <div>y:<input name="datasetValuePicker" type="number"></div>
+             </div>
+            </div>  
+
+             <input type="text" matInput formControlName="datasetValues" placeholder="Dataset Values" readonly="true" [style.visibility]="'hidden'"> 
 
            
      </div>
      </div>
-
+    
      <div >
       <button mat-raised-button class="createChartButton">Create Chart</button>
      </div>

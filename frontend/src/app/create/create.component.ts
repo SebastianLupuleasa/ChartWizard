@@ -41,6 +41,10 @@ get datasetBorder() {
   return this.chartForm.get('borderColor') as FormControl;
 }
 
+get chartType() {
+  return this.chartForm.get('chartType') as FormControl;
+}
+
 get datasetValues() {
   return this.chartForm.get('datasetValues') as FormControl;
 }
@@ -235,67 +239,133 @@ get datasetValues() {
 
   }
 
-
   createChart(chart : any): void {
     if (chart) {
      
 let chartDatasets: {type: any,label: string; backgroundColor: string; borderColor: string; data: number[]; fill?:boolean, pointBackgroundColor?: string,  pointBorderColor?: string, pointHoverBackgroundColor?: string, pointHoverBorderColor?: string }[] = [];
+   
 
-         chart.chartDatasets.forEach((element: { type: any; label: any; backgroundColor: any; borderColor: any; datasetValues: any; }) => {
-    chartDatasets.push(  {
-       type: element.type,
-       label: element.label,
-       backgroundColor: element.backgroundColor,
-       borderColor: element.borderColor,
-       data: element.datasetValues,
-     });
-   });
+if(chart.chartType === 'radar')
+{
+  chart.chartDatasets.forEach((element: { backgroundColor: any; type: any; label: any; borderColor: any; datasetValues: any; }) => {
+let color = this.hexToRgb(element.backgroundColor);
+chartDatasets.push(  {
+  type: element.type,
+  label: element.label,
+  backgroundColor: "rgba("+color?.r+", " + color?.g + ", "+ color?.b +", 0.2)",
+  borderColor: element.borderColor,
+  data: element.datasetValues,
+  fill: true,
+  pointBackgroundColor: element.backgroundColor,
+  pointBorderColor: '#fff',
+  pointHoverBackgroundColor: '#fff',
+  pointHoverBorderColor: element.backgroundColor
+});
+});
+}
+else if(chart.chartType === 'bubble')
+{
+  chart.chartDatasets.forEach((element: { datasetValues: string | any[]; type: any; label: any; backgroundColor: any; borderColor: any; }) => {
 
-      const data = {
-        labels: chart.chartLabels,
-        datasets: chartDatasets,
-      };
+let bubbleData : any[] = []; 
 
-      const options = {
-        scales: {
-          y: {
-            beginAtZero: true,
-            display: false,
-          },
-        },
-      };
+for(let i=0; i<element.datasetValues.length; i+=3)
+{
+bubbleData.push({x:element.datasetValues[i], y:element.datasetValues[i+1], r:element.datasetValues[i+2]});
+}
 
-      let chartType : ChartType = 'line';
+chartDatasets.push(  {
+type: element.type,
+label: element.label,
+backgroundColor: element.backgroundColor,
+borderColor: element.borderColor,
+data: bubbleData,
+});
+});
+}
+else if(chart.chartType === 'scatter')
+{
+  chart.chartDatasets.forEach((element: { datasetValues: string | any[]; type: any; label: any; backgroundColor: any; borderColor: any; }) => {
 
-      switch(chart.chartType){
+let scatterData : any[] = []; 
 
-        case 'line':
-          chartType = 'line';
-          break;
+for(let i=0; i<element.datasetValues.length; i+=2)
+{
+scatterData.push({x:element.datasetValues[i], y:element.datasetValues[i+1]});
+}
 
-        case 'pie':
-          chartType = 'pie';
-          break;
+chartDatasets.push(  {
+type: element.type,
+label: element.label,
+backgroundColor: element.backgroundColor,
+borderColor: element.borderColor,
+data: scatterData,
+});
+});
+}
+else {
+chart.chartDatasets.forEach((element: { type: any; label: any; backgroundColor: any; borderColor: any; datasetValues: any; }) => {
+chartDatasets.push(  {
+type: element.type,
+label: element.label,
+backgroundColor: element.backgroundColor,
+borderColor: element.borderColor,
+data: element.datasetValues,
+});
+});
+}
+const data = {
+labels: chart.chartLabels,
+datasets: chartDatasets,
+};
 
-        case 'bar':
-          chartType = 'bar';
-          break;
-        
-        case 'doughnut':
-          chartType = 'doughnut';
-          break;
-        
-        case 'polarArea':
-          chartType = 'polarArea';
-          break;
+const options = {
+scales: {
+  y: {
+    beginAtZero: true,
+    display: false,
+  },
+},
+};
 
-        case 'radar':
-          chartType = 'radar';
-          break;
-       
-      }
+let chartType : ChartType = 'line';
 
-    let config: ChartConfiguration;
+switch(chart.chartType){
+
+case 'line':
+  chartType = 'line';
+  break;
+
+case 'pie':
+  chartType = 'pie';
+  break;
+
+case 'bar':
+  chartType = 'bar';
+  break;
+
+case 'doughnut':
+  chartType = 'doughnut';
+  break;
+
+case 'polarArea':
+  chartType = 'polarArea';
+  break;
+
+case 'radar':
+  chartType = 'radar';
+  break;
+
+case 'bubble':
+  chartType = 'bubble';
+  break;
+
+case 'scatter':
+  chartType = 'scatter';
+  break;
+}
+
+let config: ChartConfiguration;
     
     if(chart.chartAnimation === 'none' || chart.chartAnimation === '' || chart.chartAnimation === null || chart.chartAnimation === undefined )
     {
@@ -341,6 +411,62 @@ let chartDatasets: {type: any,label: string; backgroundColor: string; borderColo
         g: parseInt(result[2], 16),
         b: parseInt(result[3], 16)
       } : null;
+    }
+
+    addDatasetValueBubble() {
+      let datasetValueExtender = document.getElementById("datasetValueExtender");
+      var div = document.createElement("div");
+      var div1 = document.createElement("div");
+      var div2 = document.createElement("div");
+      var input = document.createElement("input");
+      input.type="number";
+      input.name="datasetValuePicker";
+      input.style.cssText = " width: 50px; margin: 5px;";
+      var input1 = document.createElement("input");
+      input1.type="number";
+      input1.name="datasetValuePicker";
+      input1.style.cssText = " width: 50px; margin: 5px;";
+      var input2 = document.createElement("input");
+      input2.type="number";
+      input2.name="datasetValuePicker";
+      input2.style.cssText = " width: 50px; margin: 5px;";
+
+      div.innerText='x:';
+      div1.innerText='y:';
+      div2.innerText='r:';
+      div.appendChild(input);
+      div1.appendChild(input1);
+      div2.appendChild(input2);
+
+      datasetValueExtender?.appendChild(div);
+      datasetValueExtender?.appendChild(div1);
+      datasetValueExtender?.appendChild(div2);   
+      
+      this.calculateDatasetValue();
+    }
+
+    addDatasetValueScatter() {
+      let datasetValueExtender = document.getElementById("datasetValueExtender");
+      var div = document.createElement("div");
+      var div1 = document.createElement("div");
+      var input = document.createElement("input");
+      input.type="number";
+      input.name="datasetValuePicker";
+      input.style.cssText = " width: 50px; margin: 5px;";
+      var input1 = document.createElement("input");
+      input1.type="number";
+      input1.name="datasetValuePicker";
+      input1.style.cssText = " width: 50px; margin: 5px;";
+   
+      div.innerText='x:';
+      div1.innerText='y:';
+      div.appendChild(input);
+      div1.appendChild(input1);
+
+      datasetValueExtender?.appendChild(div);
+      datasetValueExtender?.appendChild(div1);
+           
+      this.calculateDatasetValue();
     }
 
 }
