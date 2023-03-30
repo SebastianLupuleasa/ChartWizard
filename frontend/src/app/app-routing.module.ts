@@ -11,7 +11,6 @@ import { EditUserComponent } from './edit-user/edit-user.component';
 import { MixedChartsComponent } from './mixed-charts/mixed-charts.component';
 import { ChartSelectMenuComponent } from './chart-select-menu/chart-select-menu.component';
 import { EditChartComponent } from './edit-chart/edit-chart.component';
-import { ImportChartComponent } from './import-chart/import-chart.component';
 import { FullscreenChartComponent } from './fullscreen-chart/fullscreen-chart.component';
 import { SharedChartsComponent } from './shared-charts/shared-charts.component';
 
@@ -24,7 +23,6 @@ const routes: Routes = [
   {path: 'custom/edit', component: EditChartComponent, canActivate:[AuthGuard], data:{roles:"ROLE_ADMIN"}},
   {path: 'manage', component: ManageUsersComponent, canActivate:[AuthGuard], data:{roles:"ROLE_ADMIN"}},
   {path: 'manage/edit', component: EditUserComponent, canActivate:[AuthGuard], data:{roles:"ROLE_ADMIN"}},
-  {path: 'import', component: ImportChartComponent, canActivate:[AuthGuard], data:{roles:"ROLE_ADMIN"}},
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'forbidden', component: ForbiddenComponent},

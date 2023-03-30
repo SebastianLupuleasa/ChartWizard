@@ -8,7 +8,6 @@ import { SideNavComponent } from './side-nav/side-nav.component';
 import { MainNavComponent } from './main-nav/main-nav.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LoginComponent } from './login/login.component';
-import { AdminComponent } from './admin/admin.component';
 import { RegisterComponent } from './register/register.component';
 import { AppRoutingModule } from './app-routing.module';
 import { ForbiddenComponent } from './forbidden/forbidden.component';
@@ -35,13 +34,13 @@ import { MixedChartsComponent } from './mixed-charts/mixed-charts.component';
 import { ChartSelectMenuComponent } from './chart-select-menu/chart-select-menu.component';
 import { EditChartComponent } from './edit-chart/edit-chart.component';
 import { ChatEditedSuccessComponent } from './chat-edited-success/chat-edited-success.component';
-import { ImportChartComponent } from './import-chart/import-chart.component';
 import { ChartImportSuccessComponent } from './chart-import-success/chart-import-success.component';
 import { FullscreenChartComponent } from './fullscreen-chart/fullscreen-chart.component';
 import { SharedChartsComponent } from './shared-charts/shared-charts.component';
 import { SharedChartDialogComponent } from './shared-chart-dialog/shared-chart-dialog.component';
 import { ChartSharedSuccessComponent } from './chart-shared-success/chart-shared-success.component';
 import { ErrorDialogComponentComponent } from './error-dialog-component/error-dialog-component.component';
+import { AdminComponent } from './admin/admin.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +61,6 @@ import { ErrorDialogComponentComponent } from './error-dialog-component/error-di
     ChartSelectMenuComponent,
     EditChartComponent,
     ChatEditedSuccessComponent,
-    ImportChartComponent,
     ChartImportSuccessComponent,
     FullscreenChartComponent,
     SharedChartsComponent,

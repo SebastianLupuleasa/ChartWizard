@@ -183,44 +183,6 @@ export class SharedChartsComponent {
       });
   }
   
-  downloadCsv( element: MyChart) : void {   
-    if(element.chartDatasets.length !=2){
-      var options = { 
-        fieldSeparator: ',',
-        quoteStrings: '"',
-        decimalseparator: '.',
-        showLabels: true, 
-        showTitle: false,
-        title: 'Exported Chart',
-        useBom: true,
-        noDownload: false,
-        headers: ["ChartTitle", "ChartType", "ChartAnimation","ChartLabels","DatasetTitle","DatasetType","DatasetBackgroundColor","DatasetBorderColor","DatasetValues"]
-      };
-
-   new ngxCsv([[element.chartTitle,element.chartType,element.chartAnimation,element.chartLabels.toString(),element.chartDatasets[0].label,
-    element.chartDatasets[0].type ,element.chartDatasets[0].backgroundColor.toString(),element.chartDatasets[0].borderColor.toString(),element.chartDatasets[0].datasetValues.join(";")]
-    ], 'ExportedChart',options);}
-
-    else {
-
-      var options = { 
-        fieldSeparator: ',',
-        quoteStrings: '"',
-        decimalseparator: '.',
-        showLabels: true, 
-        showTitle: false,
-        title: 'Exported Chart',
-        useBom: true,
-        noDownload: false,
-        headers: ["ChartTitle", "ChartType", "ChartAnimation","ChartLabels","DatasetTitle","DatasetType","DatasetBackgroundColor","DatasetBorderColor","DatasetValues",
-        "SecondDatasetTitle","SecondDatasetType","SecondDatasetBackgroundColor","SecondDatasetBorderColor","SecondDatasetValues"]
-      };
-    
-      new ngxCsv([[element.chartTitle,element.chartType,element.chartAnimation,element.chartLabels.toString(),element.chartDatasets[0].label,
-      element.chartDatasets[0].type ,element.chartDatasets[0].backgroundColor.toString(),element.chartDatasets[0].borderColor.toString(),element.chartDatasets[0].datasetValues.join(";")
-      ,element.chartDatasets[1].label,element.chartDatasets[1].type,element.chartDatasets[1].backgroundColor.toString(),element.chartDatasets[1].borderColor.toString(),element.chartDatasets[1].datasetValues.join(";")]], 'ExportedChart',options);}
-    }
-
   hexToRgb(hex: any) {
     var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     return result ? {
