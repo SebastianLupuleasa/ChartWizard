@@ -25,16 +25,4 @@ export class UserService {
     return this.httpClient.post(this.PATH_OF_API + "/auth/register", registerData, {headers: this.requestHeader});
   }
 
-  public roleMatch(allowedRoles: string): boolean {
-    const userRoles: any = this.userAuthService.getRoles();
-
-    //TODOs
-
-   if(userRoles.indexOf(allowedRoles) > -1) {
-    return true;
-   }
-   return false;
-      
-  }
-
 }

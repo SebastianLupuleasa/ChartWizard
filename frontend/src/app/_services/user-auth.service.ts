@@ -60,5 +60,4 @@ export class UserAuthService {
     return localStorage.getItem("fullscreenChart")!;
   }
 
-
 }

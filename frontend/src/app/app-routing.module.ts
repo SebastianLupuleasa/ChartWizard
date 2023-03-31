@@ -13,21 +13,22 @@ import { ChartSelectMenuComponent } from './chart-select-menu/chart-select-menu.
 import { EditChartComponent } from './edit-chart/edit-chart.component';
 import { FullscreenChartComponent } from './fullscreen-chart/fullscreen-chart.component';
 import { SharedChartsComponent } from './shared-charts/shared-charts.component';
+import { AuthGuardAccess } from './_auth/auth.guard.access';
 
 const routes: Routes = [
-  {path: 'create', component: ChartSelectMenuComponent, canActivate:[AuthGuard], data:{roles:"ROLE_ADMIN"}},
-  {path: 'simple', component: CreateComponent, canActivate:[AuthGuard], data:{roles:"ROLE_ADMIN"}},
-  {path: 'mixed', component: MixedChartsComponent, canActivate:[AuthGuard], data:{roles:"ROLE_ADMIN"}},
-  {path: 'custom', component: CustomComponent, canActivate:[AuthGuard], data:{roles:"ROLE_ADMIN"}},
-  {path: 'shared', component: SharedChartsComponent, canActivate:[AuthGuard], data:{roles:"ROLE_ADMIN"}},
-  {path: 'custom/edit', component: EditChartComponent, canActivate:[AuthGuard], data:{roles:"ROLE_ADMIN"}},
-  {path: 'manage', component: ManageUsersComponent, canActivate:[AuthGuard], data:{roles:"ROLE_ADMIN"}},
-  {path: 'manage/edit', component: EditUserComponent, canActivate:[AuthGuard], data:{roles:"ROLE_ADMIN"}},
-  {path: 'login', component: LoginComponent},
-  {path: 'register', component: RegisterComponent},
-  {path: 'forbidden', component: ForbiddenComponent},
-  {path: 'fullscreen', component: FullscreenChartComponent},
-  {path: '', component: CustomComponent, canActivate:[AuthGuard], data:{roles:"ROLE_ADMIN"}}
+  {path: 'create', component: ChartSelectMenuComponent, canActivate:[AuthGuard], data:{roles:["ROLE_ADMIN","ROLE_USER"]}},
+  {path: 'simple', component: CreateComponent, canActivate:[AuthGuard], data:{roles:["ROLE_ADMIN","ROLE_USER"]}},
+  {path: 'mixed', component: MixedChartsComponent, canActivate:[AuthGuard], data:{roles:["ROLE_ADMIN","ROLE_USER"]}},
+  {path: 'custom', component: CustomComponent, canActivate:[AuthGuard], data:{roles:["ROLE_ADMIN","ROLE_USER"]}},
+  {path: 'shared', component: SharedChartsComponent, canActivate:[AuthGuard], data:{roles:["ROLE_ADMIN","ROLE_USER"]}},
+  {path: 'custom/edit', component: EditChartComponent, canActivate:[AuthGuard], data:{roles:["ROLE_ADMIN","ROLE_USER"]}},
+  {path: 'manage', component: ManageUsersComponent, canActivate:[AuthGuard], data:{roles:["ROLE_ADMIN"]}},
+  {path: 'manage/edit', component: EditUserComponent, canActivate:[AuthGuard], data:{roles:["ROLE_ADMIN"]}},
+  {path: 'login', component: LoginComponent, canActivate:[AuthGuardAccess]},
+  {path: 'register', component: RegisterComponent, canActivate:[AuthGuardAccess]},
+  {path: 'forbidden', component: ForbiddenComponent, canActivate:[AuthGuard], data:{roles:["ROLE_USER"]}},
+  {path: 'fullscreen', component: FullscreenChartComponent, canActivate:[AuthGuard], data:{roles:["ROLE_ADMIN","ROLE_USER"]}},
+  {path: '', component: CustomComponent, canActivate:[AuthGuard], data:{roles:["ROLE_ADMIN","ROLE_USER"]}}
 ];
 
 @NgModule({
