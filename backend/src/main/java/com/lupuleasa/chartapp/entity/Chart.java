@@ -31,6 +31,7 @@ public class Chart implements Serializable {
 
     @ElementCollection
     @Column(name = "chartLabels")
+    @OrderColumn
     private List<String> chartLabels;
 
     @OneToMany(cascade=CascadeType.REMOVE)

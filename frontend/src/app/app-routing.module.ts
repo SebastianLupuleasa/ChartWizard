@@ -14,6 +14,8 @@ import { EditChartComponent } from './edit-chart/edit-chart.component';
 import { FullscreenChartComponent } from './fullscreen-chart/fullscreen-chart.component';
 import { SharedChartsComponent } from './shared-charts/shared-charts.component';
 import { AuthGuardAccess } from './_auth/auth.guard.access';
+import { OpenAIApi } from 'openai';
+import { OpenApiComponent } from './open-api/open-api.component';
 
 const routes: Routes = [
   {path: 'create', component: ChartSelectMenuComponent, canActivate:[AuthGuard], data:{roles:["ROLE_ADMIN","ROLE_USER"]}},
@@ -28,6 +30,7 @@ const routes: Routes = [
   {path: 'register', component: RegisterComponent, canActivate:[AuthGuardAccess]},
   {path: 'forbidden', component: ForbiddenComponent, canActivate:[AuthGuard], data:{roles:["ROLE_USER"]}},
   {path: 'fullscreen', component: FullscreenChartComponent, canActivate:[AuthGuard], data:{roles:["ROLE_ADMIN","ROLE_USER"]}},
+  {path: 'api', component: OpenApiComponent, canActivate:[AuthGuard], data:{roles:["ROLE_ADMIN","ROLE_USER"]}},
   {path: '', component: CustomComponent, canActivate:[AuthGuard], data:{roles:["ROLE_ADMIN","ROLE_USER"]}}
 ];
 

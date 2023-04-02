@@ -41,6 +41,7 @@ import { SharedChartDialogComponent } from './shared-chart-dialog/shared-chart-d
 import { ChartSharedSuccessComponent } from './chart-shared-success/chart-shared-success.component';
 import { ErrorDialogComponentComponent } from './error-dialog-component/error-dialog-component.component';
 import { AdminComponent } from './admin/admin.component';
+import { OpenApiComponent } from './open-api/open-api.component';
 
 @NgModule({
   declarations: [
@@ -67,6 +68,7 @@ import { AdminComponent } from './admin/admin.component';
     SharedChartDialogComponent,
     ChartSharedSuccessComponent,
     ErrorDialogComponentComponent,
+    OpenApiComponent,
     ],
   imports: [
     BrowserModule,
