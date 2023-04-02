@@ -53,7 +53,7 @@ generateText(){
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + String("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")
+        'Authorization': 'Bearer ' + String("")
       },
       body: JSON.stringify({
         'model' : "gpt-3.5-turbo",
