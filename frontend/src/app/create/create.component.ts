@@ -53,6 +53,8 @@ get datasetValues() {
   ngOnInit(): void {
     this.chartForm = this.fb.group({
       chartTitle: [''],
+      chartSubtitle: [''],
+      chartBackgroundColor: ['#FFFFFF'],
       chartType: ['line'],
       chartAnimation: ['none'],
       chartLabels: this.fb.array([this.fb.group({label: ['']}), this.fb.group({label: ['']})]),
@@ -107,7 +109,7 @@ get datasetValues() {
       chartLabelArray.push(label.label);
     })
     
-    let chart = {chartTitle:this.chartForm.getRawValue()["chartTitle"], chartType:this.chartForm.getRawValue()["chartType"], chartAnimation:this.chartForm.getRawValue()["chartAnimation"], chartLabels:chartLabelArray,chartDatasets:chartDatasetArray,userId:this.userAuthService.getUserId()};
+    let chart = {chartTitle:this.chartForm.getRawValue()["chartTitle"],chartSubtitle:this.chartForm.getRawValue()["chartSubtitle"],chartBackgroundColor:this.chartForm.getRawValue()["chartBackgroundColor"], chartType:this.chartForm.getRawValue()["chartType"], chartAnimation:this.chartForm.getRawValue()["chartAnimation"], chartLabels:chartLabelArray,chartDatasets:chartDatasetArray,userId:this.userAuthService.getUserId()};
    this.httpclient.post(this.PATH_OF_API + "/charts/add",chart,{'headers':this.headers}).subscribe((res) => {
 
     this.dialog.open(ChartCreatedSuccessComponent);
@@ -233,21 +235,21 @@ get datasetValues() {
       chartLabelArray.push(label.label);
     })
     
-    let chart = {chartTitle:this.chartForm.getRawValue()["chartTitle"], chartType:this.chartForm.getRawValue()["chartType"], chartAnimation:this.chartForm.getRawValue()["chartAnimation"], chartLabels:chartLabelArray,chartDatasets:chartDatasetArray,userId:this.userAuthService.getUserId()};
+    let chart = {chartTitle:this.chartForm.getRawValue()["chartTitle"], chartType:this.chartForm.getRawValue()["chartType"], chartSubtitle:this.chartForm.getRawValue()["chartSubtitle"],chartBackgroundColor:this.chartForm.getRawValue()["chartBackgroundColor"], chartAnimation:this.chartForm.getRawValue()["chartAnimation"], chartLabels:chartLabelArray,chartDatasets:chartDatasetArray,userId:this.userAuthService.getUserId()};
 
     this.createChart(chart);
 
   }
 
-  createChart(chart : any): void {
-    if (chart) {
+  createChart(myChart : any): void {
+    if (myChart) {
      
 let chartDatasets: {type: any,label: string; backgroundColor: string; borderColor: string; data: number[]; fill?:boolean, pointBackgroundColor?: string,  pointBorderColor?: string, pointHoverBackgroundColor?: string, pointHoverBorderColor?: string }[] = [];
    
 
-if(chart.chartType === 'radar')
+if(myChart.chartType === 'radar')
 {
-  chart.chartDatasets.forEach((element: { backgroundColor: any; type: any; label: any; borderColor: any; datasetValues: any; }) => {
+  myChart.chartDatasets.forEach((element: { backgroundColor: any; type: any; label: any; borderColor: any; datasetValues: any; }) => {
 let color = this.hexToRgb(element.backgroundColor);
 chartDatasets.push(  {
   type: element.type,
@@ -263,9 +265,9 @@ chartDatasets.push(  {
 });
 });
 }
-else if(chart.chartType === 'bubble')
+else if(myChart.chartType === 'bubble')
 {
-  chart.chartDatasets.forEach((element: { datasetValues: string | any[]; type: any; label: any; backgroundColor: any; borderColor: any; }) => {
+  myChart.chartDatasets.forEach((element: { datasetValues: string | any[]; type: any; label: any; backgroundColor: any; borderColor: any; }) => {
 
 let bubbleData : any[] = []; 
 
@@ -283,9 +285,9 @@ data: bubbleData,
 });
 });
 }
-else if(chart.chartType === 'scatter')
+else if(myChart.chartType === 'scatter')
 {
-  chart.chartDatasets.forEach((element: { datasetValues: string | any[]; type: any; label: any; backgroundColor: any; borderColor: any; }) => {
+  myChart.chartDatasets.forEach((element: { datasetValues: string | any[]; type: any; label: any; backgroundColor: any; borderColor: any; }) => {
 
 let scatterData : any[] = []; 
 
@@ -304,7 +306,7 @@ data: scatterData,
 });
 }
 else {
-chart.chartDatasets.forEach((element: { type: any; label: any; backgroundColor: any; borderColor: any; datasetValues: any; }) => {
+myChart.chartDatasets.forEach((element: { type: any; label: any; backgroundColor: any; borderColor: any; datasetValues: any; }) => {
 chartDatasets.push(  {
 type: element.type,
 label: element.label,
@@ -315,7 +317,7 @@ data: element.datasetValues,
 });
 }
 const data = {
-labels: chart.chartLabels,
+labels: myChart.chartLabels,
 datasets: chartDatasets,
 };
 
@@ -330,7 +332,7 @@ scales: {
 
 let chartType : ChartType = 'line';
 
-switch(chart.chartType){
+switch(myChart.chartType){
 
 case 'line':
   chartType = 'line';
@@ -366,18 +368,71 @@ case 'scatter':
 }
 
 let config: ChartConfiguration;
+
+const plugin = {
+  id: 'customCanvasBackgroundColor',
+  beforeDraw: (chart: { width?: any; height?: any; ctx?: any; }, args: any, options: { color: string; }) => {
+    const {ctx} = chart;
+    ctx.save();
+    ctx.globalCompositeOperation = 'destination-over';
+    ctx.fillStyle = myChart.chartBackgroundColor || 'rgb(255,255,255)';
+    ctx.fillRect(0, 0, chart.width, chart.height);
+    ctx.restore();
+  }
+  };
+
+  if(myChart.chartType === 'bar-horizontal'){
+    myChart.chartAnimation = 'none';
+  }
     
-    if(chart.chartAnimation === 'none' || chart.chartAnimation === '' || chart.chartAnimation === null || chart.chartAnimation === undefined )
+    if(myChart.chartAnimation === 'none' || myChart.chartAnimation === '' || myChart.chartAnimation === null || myChart.chartAnimation === undefined )
     {
+      if(myChart.chartType === 'bar-horizontal')
+{
+  config = {
+    type: 'bar',
+    data: data,
+    options: {
+      indexAxis: 'y',
+     aspectRatio: 2,
+      plugins: {
+        title: {
+            display: true,
+            text:myChart.chartTitle
+        },
+        subtitle: {
+          display: true,
+            text:myChart.chartSubtitle
+        }            
+      }
+     },
+     plugins: [plugin],
+  };
+}
+else{
     config = {
         type: chartType,
         data: data,
-        options: {},
+        options: {
+          aspectRatio: 2,
+          plugins: {
+            title: {
+                display: true,
+                text:myChart.chartTitle
+            },
+            subtitle: {
+              display: true,
+                text:myChart.chartSubtitle
+            }            
+          }
+         },
+         plugins: [plugin],
       };
+    }
     }
     else {
 
-      let chartAnimation : any = chart.animation;
+      let chartAnimation : any = myChart.animation;
 
       config = {
         type: chartType,
@@ -390,8 +445,18 @@ let config: ChartConfiguration;
             to: 0,
             loop: true
           }
-        },}
-
+        },
+        plugins: {
+          title: {
+              display: true,
+              text:myChart.chartTitle
+          },
+          subtitle: {
+            display: true,
+              text:myChart.chartSubtitle
+          }            
+        }},
+        plugins:[plugin]
       };    
     }
       const chartItem: ChartItem = document.getElementById(

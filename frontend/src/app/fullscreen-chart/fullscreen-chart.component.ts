@@ -30,7 +30,10 @@ export class FullscreenChartComponent {
   
      createChart(): void {
       if (!this.chart && this.customChart) {
-       
+
+          let horizontalFlag = false;
+          let datasetsNumber = this.customChart.chartDatasets.length;
+      
            let chartDatasets: {type: any,label: string; backgroundColor: string; borderColor: string; data: number[]; fill?:boolean, pointBackgroundColor?: string,  pointBorderColor?: string, pointHoverBackgroundColor?: string, pointHoverBorderColor?: string }[] = [];
   
           if(this.customChart.chartType === 'radar')
@@ -93,8 +96,16 @@ export class FullscreenChartComponent {
   }
   else {
     this.customChart.chartDatasets.forEach(element => {
+
+      let myType =  element.type;
+
+      if(element.type === "bar-horizontal" && datasetsNumber>1){
+         horizontalFlag = true;
+         myType = 'bar';
+      }   
+
       chartDatasets.push(  {
-         type: element.type,
+         type: myType,
          label: element.label,
          backgroundColor: element.backgroundColor,
          borderColor: element.borderColor,
@@ -152,16 +163,72 @@ export class FullscreenChartComponent {
             chartType = 'scatter';
             break;
         }
+        
+const plugin = {
+  id: 'customCanvasBackgroundColor',
+  beforeDraw: (chart: { width?: any; height?: any; ctx?: any; }, args: any, options: { color: string; }) => {
+    const {ctx} = chart;
+    ctx.save();
+    ctx.globalCompositeOperation = 'destination-over';
+    ctx.fillStyle = this.customChart.chartBackgroundColor || 'rgb(255,255,255)';
+    ctx.fillRect(0, 0, chart.width, chart.height);
+    ctx.restore();
+  }
+};
+
+if(this.customChart.chartType === 'bar-horizontal'){
+  this.customChart.chartAnimation = 'none';
+}
   
       let config: ChartConfiguration;
       
       if(this.customChart.chartAnimation === 'none' || this.customChart.chartAnimation === '' || this.customChart.chartAnimation === null || this.customChart.chartAnimation === undefined )
       {
-      config = {
-          type: chartType,
-          data: data,
-          options: {},
-        };
+        if(this.customChart.chartType === 'bar-horizontal')
+        {
+          config = {
+            type: 'bar',
+            data: data,
+            options: {
+              indexAxis: 'y',
+             aspectRatio: 2,
+              plugins: {
+                legend: {
+                  position: 'right',
+                },
+                title: {
+                    display: true,
+                    text:this.customChart.chartTitle
+                },
+                subtitle: {
+                  display: true,
+                    text:this.customChart.chartSubtitle
+                }            
+              }
+             },
+             plugins: [plugin],
+          };
+      }
+      else{
+        config = {
+            type: chartType,
+            data: data,
+            options: {
+              aspectRatio: 2,
+              plugins: {
+                title: {
+                    display: true,
+                    text:this.customChart.chartTitle
+                },
+                subtitle: {
+                  display: true,
+                    text:this.customChart.chartSubtitle
+                }            
+              }
+             },
+             plugins: [plugin],
+          };
+        }
       }
       else {
   
@@ -178,10 +245,47 @@ export class FullscreenChartComponent {
               to: 0,
               loop: true
             }
-          },}
-  
+          },
+          plugins: {
+            title: {
+                display: true,
+                text:this.customChart.chartTitle
+            },
+            subtitle: {
+              display: true,
+                text:this.customChart.chartSubtitle
+            }            
+          }},
+          plugins:[plugin]  
         };    
       }
+
+      if(horizontalFlag)
+      {
+        config = {
+          type: 'line',
+          data: data,
+          options: {
+            indexAxis: 'y',
+           aspectRatio: 2,
+            plugins: {
+              legend: {
+                position: 'right',
+              },
+              title: {
+                  display: true,
+                  text:this.customChart.chartTitle
+              },
+              subtitle: {
+                display: true,
+                  text:this.customChart.chartSubtitle
+              }            
+            }
+           },
+           plugins: [plugin],
+        };  
+      }
+
         const chartItem: ChartItem = document.getElementById(
           "fullscreenChart"
         ) as ChartItem;

@@ -3,10 +3,13 @@
 <h1>What should your chart be about?</h1>
 <input id="myInput" type="text">
 <button class="specialButton" (click) ='generateText()'>Generate Chart</button>
-<canvas id="myChart"></canvas>
+</div>
+
+<div class="chartDiv">
+    <canvas id="myChart"></canvas>
 <div class="buttonDiv">
-    <button class="fa fa-floppy-o chartButtons" (click)="saveChart()" aria-hidden="true"></button>   
-    <button class="fa fa-download chartButtons" (click)="downloadChart('myChart')" aria-hidden="true"></button>    
+    <button id="saveButton" class="fa fa-floppy-o chartButtons hiddenButton" (click)="saveChart()" aria-hidden="true"></button>   
+    <button id="downloadButton" class="fa fa-download chartButtons hiddenButton" (click)="downloadChart('myChart')" aria-hidden="true"></button>    
 </div>
 </div>
 

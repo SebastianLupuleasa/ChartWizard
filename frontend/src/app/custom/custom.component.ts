@@ -19,6 +19,8 @@ import { ErrorDialogComponentComponent } from '../error-dialog-component/error-d
 export interface MyChart {
   id: number;
   chartTitle: string;
+  chartSubtitle: string;
+  chartBackgroundColor: string;
   chartType: string;
   chartAnimation: string;
   chartLabels: string[];
@@ -48,6 +50,7 @@ export class CustomComponent implements OnInit, AfterViewChecked {
   customCharts: MyChart[] = [];
   chart!: Chart;
   chartsFound: string = "";
+  
 
   constructor(private httpclient: HttpClient,public dialog: MatDialog,private httpClient: HttpClient, private userAuthService: UserAuthService, private router: Router) {}
 
@@ -76,14 +79,18 @@ export class CustomComponent implements OnInit, AfterViewChecked {
   createChart(): void {
     if (!this.chart && this.customCharts.length > 0) {
       this.chartsFound="";
+      let horizontalFlag = false;
       this.customCharts.forEach(element => {
       Chart.register(...registerables);
 
       let chartDatasets: {type: any,label: string; backgroundColor: string; borderColor: string; data: number[]; fill?:boolean, pointBackgroundColor?: string,  pointBorderColor?: string, pointHoverBackgroundColor?: string, pointHoverBorderColor?: string }[] = [];
+      
+      let datasetsNumber = element.chartDatasets.length;
 
         if(element.chartType === 'radar')
 {
-       element.chartDatasets.forEach(element => {
+         element.chartDatasets.forEach(element => {
+
         let color = this.hexToRgb(element.backgroundColor);
         chartDatasets.push(  {
           type: element.type,
@@ -141,8 +148,16 @@ else if(element.chartType === 'scatter')
 }
 else {
   element.chartDatasets.forEach(element => {
+
+    let myType =  element.type;
+
+    if(element.type === "bar-horizontal" && datasetsNumber>1){
+       horizontalFlag = true;
+       myType = 'bar';
+    }   
+
     chartDatasets.push(  {
-       type: element.type,
+       type: myType,
        label: element.label,
        backgroundColor: element.backgroundColor,
        borderColor: element.borderColor,
@@ -201,15 +216,74 @@ else {
           break;
       }
 
+    const plugin = {
+        id: 'customCanvasBackgroundColor',
+        beforeDraw: (chart: { width?: any; height?: any; ctx?: any; }, args: any, options: { color: string; }) => {
+          const {ctx} = chart;
+          ctx.save();
+          ctx.globalCompositeOperation = 'destination-over';
+          ctx.fillStyle = element.chartBackgroundColor || 'rgb(255,255,255)';
+          ctx.fillRect(0, 0, chart.width, chart.height);
+          ctx.restore();
+        }
+      };
+
+
     let config: ChartConfiguration;
+
+    if(element.chartType === 'bar-horizontal')
+    {
+      element.chartAnimation='none';
+    }
     
     if(element.chartAnimation === 'none' || element.chartAnimation === '' || element.chartAnimation === null || element.chartAnimation === undefined )
     {
+
+    if(element.chartType === 'bar-horizontal')
+{
+  config = {
+    type: 'bar',
+    data: data,
+    options: {
+      indexAxis: 'y',
+     aspectRatio: 2,
+      plugins: {
+        legend: {
+          position: 'right',
+        },
+        title: {
+            display: true,
+            text:element.chartTitle
+        },
+        subtitle: {
+          display: true,
+            text:element.chartSubtitle
+        }            
+      }
+     },
+     plugins: [plugin],
+  };
+}
+else{
     config = {
         type: chartType,
         data: data,
-        options: {aspectRatio: 2},
+        options: {
+          aspectRatio: 2,
+          plugins: {
+            title: {
+                display: true,
+                text:element.chartTitle
+            },
+            subtitle: {
+              display: true,
+                text:element.chartSubtitle
+            }            
+          }
+         },
+         plugins: [plugin],
       };
+    }
     }
     else {
 
@@ -219,7 +293,7 @@ else {
         type: chartType,
         data: data,
         options:   {
-          aspectRatio: 1
+          aspectRatio: 2
           ,animations: {
           tension: {
             duration: 1000,
@@ -228,9 +302,45 @@ else {
             to: 0,
             loop: true
           }
-        },}
-
+        },
+        plugins: {
+          title: {
+              display: true,
+              text:element.chartTitle
+          },
+          subtitle: {
+            display: true,
+              text:element.chartSubtitle
+          },            
+        }},
+        plugins: [plugin],
       };    
+    }
+
+    if(horizontalFlag)
+    {
+      config = {
+        type: 'line',
+        data: data,
+        options: {
+          indexAxis: 'y',
+         aspectRatio: 2,
+          plugins: {
+            legend: {
+              position: 'right',
+            },
+            title: {
+                display: true,
+                text:element.chartTitle
+            },
+            subtitle: {
+              display: true,
+                text:element.chartSubtitle
+            }            
+          }
+         },
+         plugins: [plugin],
+      };  
     }
       const chartItem: ChartItem = document.getElementById(
         "chartDiv"+element.id

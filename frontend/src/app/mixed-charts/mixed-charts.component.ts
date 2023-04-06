@@ -61,6 +61,8 @@ get datasetSecondValues() {
   ngOnInit(): void {
     this.chartForm = this.fb.group({
       chartTitle: [''],
+      chartSubtitle: [''],
+      chartBackgroundColor: ['#FFFFFF'],
       chartType: ['line'],
       chartAnimation: ['none'],
       chartLabels: this.fb.array([this.fb.group({label: ['']}), this.fb.group({label: ['']})]),
@@ -139,7 +141,7 @@ get datasetSecondValues() {
       chartLabelArray.push(label.label);
     })
     
-    let chart = {chartTitle:this.chartForm.getRawValue()["chartTitle"], chartType:this.chartForm.getRawValue()["chartType"], chartAnimation:this.chartForm.getRawValue()["chartAnimation"], chartLabels:chartLabelArray,chartDatasets:chartDatasetArray,userId:this.userAuthService.getUserId()};
+    let chart = {chartTitle:this.chartForm.getRawValue()["chartTitle"], chartSubtitle:this.chartForm.getRawValue()["chartSubtitle"],chartBackgroundColor:this.chartForm.getRawValue()["chartBackgroundColor"], chartType:this.chartForm.getRawValue()["chartType"], chartAnimation:this.chartForm.getRawValue()["chartAnimation"], chartLabels:chartLabelArray,chartDatasets:chartDatasetArray,userId:this.userAuthService.getUserId()};
    this.httpclient.post(this.PATH_OF_API + "/charts/add",chart,{'headers':this.headers}).subscribe((res) => {
 
     this.dialog.open(ChartCreatedSuccessComponent);
@@ -351,7 +353,7 @@ get datasetSecondValues() {
       chartLabelArray.push(label.label);
     })
     
-    let chart = {chartTitle:this.chartForm.getRawValue()["chartTitle"], chartType:this.chartForm.getRawValue()["chartType"], chartAnimation:this.chartForm.getRawValue()["chartAnimation"], chartLabels:chartLabelArray,chartDatasets:chartDatasetArray,userId:this.userAuthService.getUserId()};
+    let chart = {chartTitle:this.chartForm.getRawValue()["chartTitle"], chartSubtitle:this.chartForm.getRawValue()["chartSubtitle"],chartBackgroundColor:this.chartForm.getRawValue()["chartBackgroundColor"], chartType:this.chartForm.getRawValue()["chartType"], chartAnimation:this.chartForm.getRawValue()["chartAnimation"], chartLabels:chartLabelArray,chartDatasets:chartDatasetArray,userId:this.userAuthService.getUserId()};
     
     this.createChart(chart);
   }
@@ -359,11 +361,19 @@ get datasetSecondValues() {
 
   createChart(chart : any): void {
     if (chart) {
+
+      let horizontalFlag = false;
      
 let chartDatasets: {type: any,label: string; backgroundColor: string; borderColor: string; data: number[]; fill?:boolean, pointBackgroundColor?: string,  pointBorderColor?: string, pointHoverBackgroundColor?: string, pointHoverBorderColor?: string }[] = [];
 
          chart.chartDatasets.forEach((element: { type: any; label: any; backgroundColor: any; borderColor: any; datasetValues: any; }) => {
-    chartDatasets.push(  {
+    
+          if(element.type === "bar-horizontal"){
+            element.type = 'bar';
+            horizontalFlag = true;
+          }
+
+      chartDatasets.push(  {
        type: element.type,
        label: element.label,
        backgroundColor: element.backgroundColor,
@@ -388,63 +398,65 @@ let chartDatasets: {type: any,label: string; backgroundColor: string; borderColo
 
       let chartType : ChartType = 'line';
 
-      switch(chart.chartType){
-
-        case 'line':
-          chartType = 'line';
-          break;
-
-        case 'pie':
-          chartType = 'pie';
-          break;
-
-        case 'bar':
-          chartType = 'bar';
-          break;
-        
-        case 'doughnut':
-          chartType = 'doughnut';
-          break;
-        
-        case 'polarArea':
-          chartType = 'polarArea';
-          break;
-
-        case 'radar':
-          chartType = 'radar';
-          break;
-       
-      }
+    const plugin = {
+        id: 'customCanvasBackgroundColor',
+        beforeDraw: (exampleChart: { width?: any; height?: any; ctx?: any; }, args: any, options: { color: string; }) => {
+          const {ctx} = exampleChart;
+          ctx.save();
+          ctx.globalCompositeOperation = 'destination-over';
+          ctx.fillStyle = chart.chartBackgroundColor || 'rgb(255,255,255)';
+          ctx.fillRect(0, 0, exampleChart.width, exampleChart.height);
+          ctx.restore();
+        }
+      };
 
     let config: ChartConfiguration;
     
-    if(chart.chartAnimation === 'none' || chart.chartAnimation === '' || chart.chartAnimation === null || chart.chartAnimation === undefined )
+    if(horizontalFlag)
     {
-    config = {
-        type: chartType,
-        data: data,
-        options: {},
-      };
-    }
-    else {
-
-      let chartAnimation : any = chart.animation;
-
       config = {
         type: chartType,
         data: data,
-        options:   {animations: {
-          tension: {
-            duration: 1000,
-            easing: chartAnimation,
-            from: 1,
-            to: 0,
-            loop: true
+        options: {
+          indexAxis: 'y',
+         aspectRatio: 2,
+          plugins: {
+            legend: {
+              position: 'right',
+            },
+            title: {
+                display: true,
+                text:chart.chartTitle
+            },
+            subtitle: {
+              display: true,
+                text:chart.chartSubtitle
+            }            
           }
-        },}
-
-      };    
+         },
+         plugins: [plugin],
+      };  
     }
+    else{
+    config = {
+        type: chartType,
+        data: data,
+        options: {
+          plugins: {
+            title: {
+                display: true,
+                text:chart.chartTitle
+            },
+            subtitle: {
+              display: true,
+                text:chart.chartSubtitle
+            }            
+          }
+        },
+        plugins: [plugin]
+      };
+    }
+
       const chartItem: ChartItem = document.getElementById(
         "fullscreenChart"
       ) as ChartItem;

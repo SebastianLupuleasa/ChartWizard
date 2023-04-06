@@ -21,7 +21,13 @@ public class Chart implements Serializable {
     private long id;
 
     @Column(name = "chartTitle")
-    private String chartTitle;
+    private String chartTitle = "";
+
+    @Column(name = "chartSubtitle")
+    private String chartSubtitle = "";
+
+    @Column(name = "chartBackgroundColor")
+    private String chartBackgroundColor = "#FFFFFF";
 
     @Column(name = "chartType")
     private String chartType;

@@ -7,6 +7,8 @@ import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { ChartCreatedSuccessComponent } from '../chart-created-success/chart-created-success.component';
 import { UserAuthService } from '../_services/user-auth.service';
+import { ChartSavedSuccessfullyComponent } from '../chart-saved-successfully/chart-saved-successfully.component';
+import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -49,15 +51,21 @@ generateText(){
       div!.innerHTML="";
       div!.className = "loader";
 
+      let downloadButton =document.getElementById("downloadButton");
+      let saveButton =document.getElementById("saveButton");
+
+      downloadButton?.classList.add("hiddenButton");
+      saveButton?.classList.add("hiddenButton");
+
       const requestOptions = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + String("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")
+        'Authorization': 'Bearer ' + String(environment.openAPI)
       },
       body: JSON.stringify({
         'model' : "gpt-3.5-turbo",
-        "messages": [{"role": "user", "content": "html code of a chart.js about "+ input!.value}],
+        "messages": [{"role": "user", "content": "html code of a simple chart.js about "+ input!.value}],
         'temperature': 0.1,
         'max_tokens': Math.floor(2000),
         'top_p': 1,
@@ -83,10 +91,10 @@ generateText(){
 
             Chart.register(...registerables);
             const chartItem: ChartItem = document.getElementById("myChart") as ChartItem;
-      
-            let goodConfig = chartGpt.substring(chartGpt.indexOf("type:"), 
-            chartGpt.indexOf("},"));
 
+            downloadButton?.classList.remove("hiddenButton");
+            saveButton?.classList.remove("hiddenButton");
+      
             let type =  chartGpt.substring(chartGpt.indexOf("type:"), 
             chartGpt.indexOf(","));
 
@@ -143,6 +151,71 @@ generateText(){
             this.datasetValues = datasetValues.split(',').map(Number);
             this.backgroundColor = backgroundColorArray;
             this.borderColor = borderColorArray;
+
+         if(type === "scatter")
+            {
+              arrayDatasetValues = datasetValues.replaceAll(" ","").replaceAll("\n","").replaceAll("\t","").replaceAll("x",`"x"`).replaceAll("y",`"y"`);
+              arrayDatasetValues = arrayDatasetValues.split(",{");
+              for (let i = 1; i < arrayDatasetValues.length; i++)
+               {
+                arrayDatasetValues[i]="{"+arrayDatasetValues[i];
+              }
+
+                let arr = [];
+
+                for (let i = 0; i < arrayDatasetValues.length; i++)
+                {
+                 arr.push(JSON.parse(arrayDatasetValues[i]));
+                }
+
+              arrayDatasetValues = arr;
+              this.datasetValues = [];
+
+              arrayDatasetValues.forEach((element: {x:number, y:number}) => {
+                  this.datasetValues.push(element.x);
+                  this.datasetValues.push(element.y);
+              });
+            }
+            else if(type === "bubble"){
+              arrayDatasetValues = datasetValues.replaceAll(" ","").replaceAll("\n","").replaceAll("\t","").replaceAll("x",`"x"`).replaceAll("y",`"y"`).replaceAll("r",`"r"`);
+              arrayDatasetValues = arrayDatasetValues.split(",{");
+              for (let i = 1; i < arrayDatasetValues.length; i++)
+               {
+                arrayDatasetValues[i]="{"+arrayDatasetValues[i];
+              }
+
+                let arr = [];
+
+                for (let i = 0; i < arrayDatasetValues.length; i++)
+                {
+                 arr.push(JSON.parse(arrayDatasetValues[i]));
+                }
+
+              arrayDatasetValues = arr;
+              this.datasetValues = [];
+
+              arrayDatasetValues.forEach((element: {x:number, y:number, r:number}) => {
+                  this.datasetValues.push(element.x);
+                  this.datasetValues.push(element.y);
+                  this.datasetValues.push(element.r);
+              });
+            }
+
+          if(this.borderColor[0].indexOf("backgroundColor") > -1){
+              this.borderColor = [];
+            }
+
+            if(this.labels[1].indexOf("data: [") > -1){
+              this.labels = [];
+            }
+
+            if(labelsArray[1].indexOf("data: [") > -1) {
+              labelsArray = [];
+            }
+
+            if(borderColorArray[0].indexOf("backgroundColor") > -1) {
+              borderColorArray= [];
+            }
                               
             let config =
             {
@@ -204,7 +277,7 @@ generateText(){
     ],userId:this.userAuthService.getUserId()};
     this.httpclient.post(this.PATH_OF_API + "/charts/add",chart,{'headers':this.headers}).subscribe((res) => {
  
-     this.dialog.open(ChartCreatedSuccessComponent);
+     this.dialog.open(ChartSavedSuccessfullyComponent);
     
   });
   }

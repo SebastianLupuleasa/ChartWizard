@@ -103,6 +103,8 @@ export class EditChartComponent {
       if(this.editedChart && this.editedChart.chartDatasets.length ==2) {
       this.chartForm = this.fb.group({
         chartTitle: [this.editedChart.chartTitle],
+        chartSubtitle: [this.editedChart.chartSubtitle],
+        chartBackgroundColor: [this.editedChart.chartBackgroundColor],
         chartType: ['line'],
         chartAnimation: ['none'],
         chartLabels: this.fb.array([]),
@@ -120,6 +122,8 @@ export class EditChartComponent {
     else {
       this.chartForm = this.fb.group({
         chartTitle: [this.editedChart.chartTitle],
+        chartSubtitle: [this.editedChart.chartSubtitle],
+        chartBackgroundColor: [this.editedChart.chartBackgroundColor],
         chartType: [this.editedChart.chartType],
         chartAnimation: [this.editedChart.chartAnimation],
         chartLabels: this.fb.array([]),
@@ -227,7 +231,7 @@ export class EditChartComponent {
       chartLabelArray.push(label.label);
     })
     
-    let chart = {id: this.editedChart.id,chartTitle:this.chartForm.getRawValue()["chartTitle"], chartType:this.chartForm.getRawValue()["chartType"], chartAnimation:this.chartForm.getRawValue()["chartAnimation"], chartLabels:chartLabelArray,chartDatasets:chartDatasetArray,userId:this.userAuthService.getUserId()};
+    let chart = {id: this.editedChart.id,chartTitle:this.chartForm.getRawValue()["chartTitle"],chartSubtitle:this.chartForm.getRawValue()["chartSubtitle"],chartBackgroundColor:this.chartForm.getRawValue()["chartBackgroundColor"], chartType:this.chartForm.getRawValue()["chartType"], chartAnimation:this.chartForm.getRawValue()["chartAnimation"], chartLabels:chartLabelArray,chartDatasets:chartDatasetArray,userId:this.userAuthService.getUserId()};
    this.httpclient.put(this.PATH_OF_API + "/charts/edit",chart,{'headers':this.headers}).subscribe((res) => {
 
     this.dialog.open(ChatEditedSuccessComponent);
@@ -588,7 +592,7 @@ export class EditChartComponent {
       chartLabelArray.push(label.label);
     })
     
-    let chart = {chartTitle:this.chartForm.getRawValue()["chartTitle"], chartType:this.chartForm.getRawValue()["chartType"], chartAnimation:this.chartForm.getRawValue()["chartAnimation"], chartLabels:chartLabelArray,chartDatasets:chartDatasetArray,userId:this.userAuthService.getUserId()};
+    let chart = {chartTitle:this.chartForm.getRawValue()["chartTitle"],chartSubtitle:this.chartForm.getRawValue()["chartSubtitle"],chartBackgroundColor:this.chartForm.getRawValue()["chartBackgroundColor"], chartType:this.chartForm.getRawValue()["chartType"], chartAnimation:this.chartForm.getRawValue()["chartAnimation"], chartLabels:chartLabelArray,chartDatasets:chartDatasetArray,userId:this.userAuthService.getUserId()};
     
    
     this.createChart(chart);
@@ -626,7 +630,7 @@ export class EditChartComponent {
       chartLabelArray.push(label.label);
     })
     
-    let chart = {chartTitle:this.chartForm.getRawValue()["chartTitle"], chartType:this.chartForm.getRawValue()["chartType"], chartAnimation:this.chartForm.getRawValue()["chartAnimation"], chartLabels:chartLabelArray,chartDatasets:chartDatasetArray,userId:this.userAuthService.getUserId()};
+    let chart = {chartTitle:this.chartForm.getRawValue()["chartTitle"], chartSubtitle:this.chartForm.getRawValue()["chartSubtitle"],chartBackgroundColor:this.chartForm.getRawValue()["chartBackgroundColor"], chartType:this.chartForm.getRawValue()["chartType"], chartAnimation:this.chartForm.getRawValue()["chartAnimation"], chartLabels:chartLabelArray,chartDatasets:chartDatasetArray,userId:this.userAuthService.getUserId()};
 
     this.createChart(chart);
   }}
@@ -634,6 +638,8 @@ export class EditChartComponent {
 
   createChart(chart : any): void {
     if (chart) {
+
+ let horizontalFlag = false;
      
 let chartDatasets: {type: any,label: string; backgroundColor: string; borderColor: string; data: number[]; fill?:boolean, pointBackgroundColor?: string,  pointBorderColor?: string, pointHoverBackgroundColor?: string, pointHoverBorderColor?: string }[] = [];
    
@@ -697,9 +703,18 @@ data: scatterData,
 });
 }
 else {
+  let datasetsNumber = chart.chartDatasets.length;
+ 
 chart.chartDatasets.forEach((element: { type: any; label: any; backgroundColor: any; borderColor: any; datasetValues: any; }) => {
+  let myType =  element.type;
+
+  if(element.type === "bar-horizontal" && datasetsNumber>1){
+     horizontalFlag = true;
+     myType = 'bar';
+  }   
+
 chartDatasets.push(  {
-type: element.type,
+type: myType,
 label: element.label,
 backgroundColor: element.backgroundColor,
 borderColor: element.borderColor,
@@ -758,15 +773,72 @@ case 'scatter':
   break;
 }
 
+const plugin = {
+  id: 'customCanvasBackgroundColor',
+  beforeDraw: (sChart: { width?: any; height?: any; ctx?: any; }, args: any, options: { color: string; }) => {
+    const {ctx} = sChart;
+    ctx.save();
+    ctx.globalCompositeOperation = 'destination-over';
+    ctx.fillStyle = chart.chartBackgroundColor || 'rgb(255,255,255)';
+    ctx.fillRect(0, 0, sChart.width, sChart.height);
+    ctx.restore();
+  }
+};
+
+if(chart.chartType === 'bar-horizontal')
+{
+  chart.chartAnimation = 'none';
+}
+
 let config: ChartConfiguration;
     
     if(chart.chartAnimation === 'none' || chart.chartAnimation === '' || chart.chartAnimation === null || chart.chartAnimation === undefined )
     {
-    config = {
-        type: chartType,
-        data: data,
-        options: {},
-      };
+      if(chart.chartType === 'bar-horizontal')
+      {
+        config = {
+          type: 'bar',
+          data: data,
+          options: {
+            indexAxis: 'y',
+           aspectRatio: 2,
+            plugins: {
+              legend: {
+                position: 'right',
+              },
+              title: {
+                  display: true,
+                  text:chart.chartTitle
+              },
+              subtitle: {
+                display: true,
+                  text:chart.chartSubtitle
+              }            
+            }
+           },
+           plugins: [plugin],
+        };
+    }
+    else{
+      config = {
+          type: chartType,
+          data: data,
+          options: {
+            aspectRatio: 2,
+            plugins: {
+              title: {
+                  display: true,
+                  text:chart.chartTitle
+              },
+              subtitle: {
+                display: true,
+                  text:chart.chartSubtitle
+              }            
+            }
+           },
+           plugins: [plugin],
+        };
+      }
     }
     else {
 
@@ -783,10 +855,46 @@ let config: ChartConfiguration;
             to: 0,
             loop: true
           }
-        },}
-
+        },
+        plugins: {
+          title: {
+              display: true,
+              text:chart.chartTitle
+          },
+          subtitle: {
+            display: true,
+              text:chart.chartSubtitle
+          }            
+        }},
+        plugins: [plugin]
       };    
     }
+
+    if(horizontalFlag)
+    {
+      config = {
+        type: 'line',
+        data: data,
+        options: {
+          indexAxis: 'y',
+         aspectRatio: 2,
+          plugins: {
+            legend: {
+              position: 'right',
+            },
+            title: {
+                display: true,
+                text:chart.chartTitle
+            },
+            subtitle: {
+              display: true,
+                text:chart.chartSubtitle
+            }            
+          }
+         },
+        }}
+        
+    
       const chartItem: ChartItem = document.getElementById(
         "fullscreenChart"
       ) as ChartItem;

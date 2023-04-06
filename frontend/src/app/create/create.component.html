@@ -13,11 +13,18 @@
                placeholder="Title">
      </mat-form-field>
 
-      <mat-form-field style="width:fit-content">
+      <mat-form-field>
+        <mat-label>Chart Subtitle</mat-label>
+        <input type="text" matInput formControlName="chartSubtitle"
+              placeholder="Subtitle">
+    </mat-form-field>
+
+    <mat-form-field style="width:fit-content">
         <mat-label>Chart Type</mat-label>
         <mat-select  matInput formControlName="chartType" (selectionChange)="getChartFormChange()" >
           <mat-option value="line">line</mat-option>
           <mat-option value="bar">bar</mat-option>
+          <mat-option value="bar-horizontal">bar-horizontal</mat-option>
           <mat-option value="pie">pie</mat-option>
           <mat-option value="doughnut">doughnut</mat-option>
           <mat-option value="polarArea">polarArea</mat-option>
@@ -27,7 +34,7 @@
         </mat-select>
       </mat-form-field>
 
-       <mat-form-field>
+       <mat-form-field *ngIf="this.chartType.getRawValue() == 'line' || this.chartType.getRawValue() == 'radar'">
         <mat-label>Chart Animation</mat-label>
         <mat-select  matInput formControlName="chartAnimation" (selectionChange)="getChartFormChange()" >
           <mat-option value="none">none</mat-option>
@@ -64,9 +71,16 @@
           <mat-option value="easeInOutBounce">easeInOutBounce</mat-option>
         </mat-select>
       </mat-form-field>
+         
+    <div>
+      <h4>Background Color</h4>
+      <input type="color" matInput formControlName="chartBackgroundColor"
+      value="#FFFFFF">       
     </div>
 
-    <div>
+    </div>
+
+    <div *ngIf="this.chartType.getRawValue() != 'scatter' && this.chartType.getRawValue() != 'bubble'">
       <div formArrayName="chartLabels" style="display: flex; flex-wrap: wrap; flex-direction: column;">
         <div *ngFor="let label of labels.controls; let i=index" style="margin:1%">
        <div [formGroupName]="i">
@@ -88,7 +102,7 @@
         <div>
                 <div style="display: flex; flex-wrap: wrap; flex-direction: column;">                    
               <mat-form-field>
-                <mat-label>Label</mat-label>
+                <mat-label>Dataset Label</mat-label>
                 <input type="text" matInput formControlName="datasetLabel"
                 placeholder="Label"> 
               </mat-form-field>

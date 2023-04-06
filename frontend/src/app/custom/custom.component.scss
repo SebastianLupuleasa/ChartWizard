@@ -5,21 +5,13 @@
     margin: 2%;
     margin-left: 5%;
      }
-  
-  .containerCharts p {
-      color:black;
-      text-align: center;
-      font-size: xx-large;
-      font-weight: bold;
-      background-color: aliceblue;
-      border: 2px solid black;
-      }
+
   
     .containerCharts {
       display: flex;
       flex-direction: row;
       flex-wrap: wrap;
-    }
+      }
 
 
   .fa {
@@ -79,5 +71,5 @@ button:active {
   display: flex;
   justify-content: center;
   align-items: center;
-   border: 1px solid black;
+  border: 1px solid black;
 }
