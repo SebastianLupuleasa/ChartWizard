@@ -387,16 +387,7 @@ let chartDatasets: {type: any,label: string; backgroundColor: string; borderColo
         datasets: chartDatasets,
       };
 
-      const options = {
-        scales: {
-          y: {
-            beginAtZero: true,
-            display: false,
-          },
-        },
-      };
-
-      let chartType : ChartType = 'line';
+    let chartType : ChartType = 'line';
 
     const plugin = {
         id: 'customCanvasBackgroundColor',

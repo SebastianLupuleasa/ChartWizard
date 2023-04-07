@@ -40,7 +40,6 @@ import { SharedChartsComponent } from './shared-charts/shared-charts.component';
 import { SharedChartDialogComponent } from './shared-chart-dialog/shared-chart-dialog.component';
 import { ChartSharedSuccessComponent } from './chart-shared-success/chart-shared-success.component';
 import { ErrorDialogComponentComponent } from './error-dialog-component/error-dialog-component.component';
-import { AdminComponent } from './admin/admin.component';
 import { OpenApiComponent } from './open-api/open-api.component';
 import { ChartSavedSuccessfullyComponent } from './chart-saved-successfully/chart-saved-successfully.component';
 
@@ -50,7 +49,6 @@ import { ChartSavedSuccessfullyComponent } from './chart-saved-successfully/char
     SideNavComponent,
     MainNavComponent,
     LoginComponent,
-    AdminComponent,
     RegisterComponent,
     ForbiddenComponent,
     CreateComponent,

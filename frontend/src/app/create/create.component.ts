@@ -321,52 +321,6 @@ labels: myChart.chartLabels,
 datasets: chartDatasets,
 };
 
-const options = {
-scales: {
-  y: {
-    beginAtZero: true,
-    display: false,
-  },
-},
-};
-
-let chartType : ChartType = 'line';
-
-switch(myChart.chartType){
-
-case 'line':
-  chartType = 'line';
-  break;
-
-case 'pie':
-  chartType = 'pie';
-  break;
-
-case 'bar':
-  chartType = 'bar';
-  break;
-
-case 'doughnut':
-  chartType = 'doughnut';
-  break;
-
-case 'polarArea':
-  chartType = 'polarArea';
-  break;
-
-case 'radar':
-  chartType = 'radar';
-  break;
-
-case 'bubble':
-  chartType = 'bubble';
-  break;
-
-case 'scatter':
-  chartType = 'scatter';
-  break;
-}
-
 let config: ChartConfiguration;
 
 const plugin = {
@@ -411,7 +365,7 @@ const plugin = {
 }
 else{
     config = {
-        type: chartType,
+        type: myChart.chartType,
         data: data,
         options: {
           aspectRatio: 2,
@@ -435,7 +389,7 @@ else{
       let chartAnimation : any = myChart.animation;
 
       config = {
-        type: chartType,
+        type: myChart.chartType,
         data: data,
         options:   {animations: {
           tension: {

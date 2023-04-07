@@ -86,9 +86,7 @@ generateText(){
           {  
             div!.innerText = "Sorry. Wrong input. Try again.";
           }else{
-            // var win = window.open("", "Title", "toolbar=no,location=center,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=780,height=200,top="+(screen.height-400)+",left="+(screen.width-840));
-            // win!.document.write(chartGpt);
-
+    
             Chart.register(...registerables);
             const chartItem: ChartItem = document.getElementById("myChart") as ChartItem;
 
@@ -286,13 +284,10 @@ generateText(){
     if (/^rgb/.test(color)) {
       const rgba = color.replace(/^rgba?\(|\s+|\)$/g, '').split(',');
   
-      // rgb to hex
-      // eslint-disable-next-line no-bitwise
       let hex = `#${((1 << 24) + (parseInt(rgba[0], 10) << 16) + (parseInt(rgba[1], 10) << 8) + parseInt(rgba[2], 10))
         .toString(16)
         .slice(1)}`;
   
-      // added alpha param if exists
       if (rgba[4]) {
         const alpha = Math.round(0o1 * 255);
         const hexAlpha = (alpha + 0x10000).toString(16).substr(-2).toUpperCase();

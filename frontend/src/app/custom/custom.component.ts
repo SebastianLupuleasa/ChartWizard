@@ -165,56 +165,11 @@ else {
      });
    });
 }
-      const data = {
+    const data = {
         labels: element.chartLabels,
         datasets: chartDatasets,
       };
 
-      const options = {
-        scales: {
-          y: {
-            beginAtZero: true,
-            display: false,
-          },
-        },
-      };
-
-      let chartType : ChartType = 'line';
-
-      switch(element.chartType){
-
-        case 'line':
-          chartType = 'line';
-          break;
-
-        case 'pie':
-          chartType = 'pie';
-          break;
-
-        case 'bar':
-          chartType = 'bar';
-          break;
-        
-        case 'doughnut':
-          chartType = 'doughnut';
-          break;
-        
-        case 'polarArea':
-          chartType = 'polarArea';
-          break;
-
-        case 'radar':
-          chartType = 'radar';
-          break;
-        
-        case 'bubble':
-          chartType = 'bubble';
-          break;
-        
-        case 'scatter':
-          chartType = 'scatter';
-          break;
-      }
 
     const plugin = {
         id: 'customCanvasBackgroundColor',
@@ -266,7 +221,7 @@ else {
 }
 else{
     config = {
-        type: chartType,
+        type: element.chartType as ChartType,
         data: data,
         options: {
           aspectRatio: 2,
@@ -290,7 +245,7 @@ else{
       let chartAnimation : any = element.animation;
 
       config = {
-        type: chartType,
+        type: element.chartType as ChartType,
         data: data,
         options:   {
           aspectRatio: 2

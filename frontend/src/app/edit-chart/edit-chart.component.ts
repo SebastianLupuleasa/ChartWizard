@@ -727,52 +727,6 @@ labels: chart.chartLabels,
 datasets: chartDatasets,
 };
 
-const options = {
-scales: {
-  y: {
-    beginAtZero: true,
-    display: false,
-  },
-},
-};
-
-let chartType : ChartType = 'line';
-
-switch(chart.chartType){
-
-case 'line':
-  chartType = 'line';
-  break;
-
-case 'pie':
-  chartType = 'pie';
-  break;
-
-case 'bar':
-  chartType = 'bar';
-  break;
-
-case 'doughnut':
-  chartType = 'doughnut';
-  break;
-
-case 'polarArea':
-  chartType = 'polarArea';
-  break;
-
-case 'radar':
-  chartType = 'radar';
-  break;
-
-case 'bubble':
-  chartType = 'bubble';
-  break;
-
-case 'scatter':
-  chartType = 'scatter';
-  break;
-}
-
 const plugin = {
   id: 'customCanvasBackgroundColor',
   beforeDraw: (sChart: { width?: any; height?: any; ctx?: any; }, args: any, options: { color: string; }) => {
@@ -821,7 +775,7 @@ let config: ChartConfiguration;
     }
     else{
       config = {
-          type: chartType,
+          type: chart.chartType,
           data: data,
           options: {
             aspectRatio: 2,
@@ -845,7 +799,7 @@ let config: ChartConfiguration;
       let chartAnimation : any = chart.animation;
 
       config = {
-        type: chartType,
+        type: chart.chartType,
         data: data,
         options:   {animations: {
           tension: {

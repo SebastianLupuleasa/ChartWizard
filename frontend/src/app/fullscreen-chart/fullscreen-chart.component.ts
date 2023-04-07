@@ -117,52 +117,6 @@ export class FullscreenChartComponent {
           labels: this.customChart.chartLabels,
           datasets: chartDatasets,
         };
-  
-        const options = {
-          scales: {
-            y: {
-              beginAtZero: true,
-              display: false,
-            },
-          },
-        };
-  
-        let chartType : ChartType = 'line';
-  
-        switch(this.customChart.chartType){
-  
-          case 'line':
-            chartType = 'line';
-            break;
-  
-          case 'pie':
-            chartType = 'pie';
-            break;
-  
-          case 'bar':
-            chartType = 'bar';
-            break;
-          
-          case 'doughnut':
-            chartType = 'doughnut';
-            break;
-          
-          case 'polarArea':
-            chartType = 'polarArea';
-            break;
-  
-          case 'radar':
-            chartType = 'radar';
-            break;
-          
-          case 'bubble':
-            chartType = 'bubble';
-            break;
-          
-          case 'scatter':
-            chartType = 'scatter';
-            break;
-        }
         
 const plugin = {
   id: 'customCanvasBackgroundColor',
@@ -211,7 +165,7 @@ if(this.customChart.chartType === 'bar-horizontal'){
       }
       else{
         config = {
-            type: chartType,
+            type: this.customChart.chartType as ChartType,
             data: data,
             options: {
               aspectRatio: 2,
@@ -235,7 +189,7 @@ if(this.customChart.chartType === 'bar-horizontal'){
         let chartAnimation : any = this.customChart.animation;
   
         config = {
-          type: chartType,
+          type: this.customChart.chartType as ChartType,
           data: data,
           options:   {animations: {
             tension: {
