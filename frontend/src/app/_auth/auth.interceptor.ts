@@ -1,8 +1,7 @@
-import { HttpBackend, HttpClient, HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from "@angular/common/http";
-import { IfStmt } from "@angular/compiler";
+import { HttpBackend, HttpClient, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
-import { catchError, Observable, switchMap, throwError } from "rxjs";
+import { catchError, Observable, throwError } from "rxjs";
 import { UserAuthService } from "../_services/user-auth.service";
 
 @Injectable()
@@ -10,12 +9,20 @@ export class AuthInterceptor implements HttpInterceptor {
     
     private httpClient: HttpClient;
 
-    PATH_OF_API = "http://localhost:9001";
+    private PATH_OF_API = "http://localhost:9001";
 
     constructor(private userAuthService:UserAuthService, private router:Router, private httpBackend: HttpBackend) {
         this.httpClient = new HttpClient(httpBackend);
     }
-  
+
+    private addToken(request:HttpRequest<any>, token:string) {
+        return request.clone({
+            setHeaders: {
+                Authorization : `Bearer ${token}`
+            }
+        });
+    }
+
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
       
         if(req.headers.get("No-Auth") === "Trues") {
@@ -57,13 +64,5 @@ export class AuthInterceptor implements HttpInterceptor {
     }
         )
        );
-    }
-
-    private addToken(request:HttpRequest<any>, token:string) {
-        return request.clone({
-            setHeaders: {
-                Authorization : `Bearer ${token}`
-            }
-        });
     }
 }

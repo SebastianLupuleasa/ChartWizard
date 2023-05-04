@@ -1,20 +1,18 @@
+import { HttpClient } from '@angular/common/http';
 import { AfterViewChecked, Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import {
   Chart,
   ChartConfiguration,
   ChartItem,
   ChartType,
-  registerables,
+  registerables
 } from 'node_modules/chart.js';
-import { HttpClient} from '@angular/common/http';
-import { UserAuthService } from '../_services/user-auth.service';
-import { ngxCsv } from 'ngx-csv';
-import { Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
-import { SharedChartDialogComponent } from '../shared-chart-dialog/shared-chart-dialog.component';
-import { ChartCreatedSuccessComponent } from '../chart-created-success/chart-created-success.component';
 import { ChartSharedSuccessComponent } from '../chart-shared-success/chart-shared-success.component';
 import { ErrorDialogComponentComponent } from '../error-dialog-component/error-dialog-component.component';
+import { SharedChartDialogComponent } from '../shared-chart-dialog/shared-chart-dialog.component';
+import { UserAuthService } from '../_services/user-auth.service';
 
 export interface MyChart {
   id: number;

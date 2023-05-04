@@ -1,14 +1,11 @@
-import { Component, Inject, Renderer2 } from '@angular/core';
-import { Chart, ChartConfiguration, ChartItem, registerables } from 'node_modules/chart.js';
-import ChatGPT from "chatgpt-api"
-import { Configuration, OpenAIApi } from 'openai';
 import { DOCUMENT } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { Component, Inject, Renderer2 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ChartCreatedSuccessComponent } from '../chart-created-success/chart-created-success.component';
-import { UserAuthService } from '../_services/user-auth.service';
-import { ChartSavedSuccessfullyComponent } from '../chart-saved-successfully/chart-saved-successfully.component';
+import { Chart, ChartItem, registerables } from 'node_modules/chart.js';
 import { environment } from 'src/environments/environment';
+import { ChartSavedSuccessfullyComponent } from '../chart-saved-successfully/chart-saved-successfully.component';
+import { UserAuthService } from '../_services/user-auth.service';
 
 
 @Component({
@@ -17,19 +14,33 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./open-api.component.scss']
 })
 export class OpenApiComponent {
-
-  PATH_OF_API = "http://localhost:9001";
-  headers = { 'content-type': 'application/json'};
-
-  chart!: Chart;
-
-  type:string = "";
-  labels:string[] = [];
-  datasetLabel:string = "";
-  datasetValues: number[]= [];
-  backgroundColor: string[]= [];
-  borderColor: string[]=[];
-
+  private backgroundColor: string[]= [];
+  private borderColor: string[]=[];
+  private chart!: Chart;
+  private datasetLabel:string = "";
+  private datasetValues: number[]= [];
+  private headers = { 'content-type': 'application/json'};
+  private labels:string[] = [];
+  private PATH_OF_API = "http://localhost:9001";
+  private rgbaToHex = (color: string): string => {
+    if (/^rgb/.test(color)) {
+      const rgba = color.replace(/^rgba?\(|\s+|\)$/g, '').split(',');
+  
+      let hex = `#${((1 << 24) + (parseInt(rgba[0], 10) << 16) + (parseInt(rgba[1], 10) << 8) + parseInt(rgba[2], 10))
+        .toString(16)
+        .slice(1)}`;
+  
+      if (rgba[4]) {
+        const alpha = Math.round(0o1 * 255);
+        const hexAlpha = (alpha + 0x10000).toString(16).substr(-2).toUpperCase();
+        hex += hexAlpha;
+      }
+  
+      return hex;
+    }
+    return color;
+  };
+  private type:string = "";
   constructor(private userAuthService:UserAuthService,
     private _renderer2: Renderer2, 
     @Inject(DOCUMENT) private _document: Document,
@@ -37,9 +48,18 @@ export class OpenApiComponent {
     public dialog: MatDialog
 ) { }
 
-public ngOnInit() {}
+ downloadChart( elementId: string) : void {
+    let canvas = document.getElementById(elementId) as HTMLCanvasElement;;
+    let img    = canvas.toDataURL("image/png");
+    let imgDownload = document.createElement('a');
+    imgDownload.href = img;
+    imgDownload.download = elementId+".png";
+    document.body.appendChild(imgDownload);
+    imgDownload.click();
+    document.body.removeChild(imgDownload);
+  }
 
-generateText(){
+ generateText(){
 
       if(this.chart)
       {
@@ -241,18 +261,7 @@ generateText(){
                             
   }
 
-  downloadChart( elementId: string) : void {
-    let canvas = document.getElementById(elementId) as HTMLCanvasElement;;
-    let img    = canvas.toDataURL("image/png");
-    let imgDownload = document.createElement('a');
-    imgDownload.href = img;
-    imgDownload.download = elementId+".png";
-    document.body.appendChild(imgDownload);
-    imgDownload.click();
-    document.body.removeChild(imgDownload);
-  }
-
-  saveChart(){
+ saveChart(){
     let borderColorHexa :string[] = [];
 
     this.borderColor.forEach( color =>{
@@ -280,25 +289,7 @@ generateText(){
   });
   }
 
-  rgbaToHex = (color: string): string => {
-    if (/^rgb/.test(color)) {
-      const rgba = color.replace(/^rgba?\(|\s+|\)$/g, '').split(',');
-  
-      let hex = `#${((1 << 24) + (parseInt(rgba[0], 10) << 16) + (parseInt(rgba[1], 10) << 8) + parseInt(rgba[2], 10))
-        .toString(16)
-        .slice(1)}`;
-  
-      if (rgba[4]) {
-        const alpha = Math.round(0o1 * 255);
-        const hexAlpha = (alpha + 0x10000).toString(16).substr(-2).toUpperCase();
-        hex += hexAlpha;
-      }
-  
-      return hex;
-    }
-    return color;
-  };
-
+public ngOnInit() {}
 }
 
 

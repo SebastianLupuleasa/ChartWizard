@@ -2,10 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { UserAuthService } from '../_services/user-auth.service';
+import { ActivatedRoute, Router } from '@angular/router';
 import { JwtUser } from '../manage-users/manage-users.component';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { UserEditedSuccessComponent } from '../user-edited-success/user-edited-success.component';
+import { UserAuthService } from '../_services/user-auth.service';
 
 @Component({
   selector: 'app-edit-user',

@@ -1,11 +1,10 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, OnInit, SimpleChanges } from '@angular/core';
-import { FormGroup, FormBuilder, FormControl, FormArray } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { ChartType, ChartConfiguration, ChartItem, Chart, registerables } from 'chart.js';
+import { Chart, ChartConfiguration, ChartItem, registerables } from 'chart.js';
 import { ChartCreatedSuccessComponent } from '../chart-created-success/chart-created-success.component';
-import { MyChart } from '../custom/custom.component';
 import { UserAuthService } from '../_services/user-auth.service';
 
 @Component({

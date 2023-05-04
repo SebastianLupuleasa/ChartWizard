@@ -6,13 +6,10 @@ import { UserAuthService } from './user-auth.service';
   providedIn: 'root'
 })
 export class UserService {
-
-   PATH_OF_API = "http://localhost:9001";
-
-  requestHeader = new HttpHeaders({"No-Auth":"True"});
-
   private httpClient: HttpClient;
+   private PATH_OF_API = "http://localhost:9001";
 
+  private requestHeader = new HttpHeaders({"No-Auth":"True"});
   constructor(private httpclient: HttpClient, private userAuthService:UserAuthService, private httpBackend: HttpBackend) {
     this.httpClient = new HttpClient(httpBackend);
   }

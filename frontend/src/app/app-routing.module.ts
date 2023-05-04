@@ -1,21 +1,20 @@
-import { RegisterComponent } from './register/register.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './login/login.component';
-import { ForbiddenComponent } from './forbidden/forbidden.component';
-import { AuthGuard } from './_auth/auth.guard';
+import { ChartSelectMenuComponent } from './chart-select-menu/chart-select-menu.component';
 import { CreateComponent } from './create/create.component';
 import { CustomComponent } from './custom/custom.component';
-import { ManageUsersComponent } from './manage-users/manage-users.component';
-import { EditUserComponent } from './edit-user/edit-user.component';
-import { MixedChartsComponent } from './mixed-charts/mixed-charts.component';
-import { ChartSelectMenuComponent } from './chart-select-menu/chart-select-menu.component';
 import { EditChartComponent } from './edit-chart/edit-chart.component';
+import { EditUserComponent } from './edit-user/edit-user.component';
+import { ForbiddenComponent } from './forbidden/forbidden.component';
 import { FullscreenChartComponent } from './fullscreen-chart/fullscreen-chart.component';
-import { SharedChartsComponent } from './shared-charts/shared-charts.component';
-import { AuthGuardAccess } from './_auth/auth.guard.access';
-import { OpenAIApi } from 'openai';
+import { LoginComponent } from './login/login.component';
+import { ManageUsersComponent } from './manage-users/manage-users.component';
+import { MixedChartsComponent } from './mixed-charts/mixed-charts.component';
 import { OpenApiComponent } from './open-api/open-api.component';
+import { RegisterComponent } from './register/register.component';
+import { SharedChartsComponent } from './shared-charts/shared-charts.component';
+import { AuthGuard } from './_auth/auth.guard';
+import { AuthGuardAccess } from './_auth/auth.guard.access';
 
 const routes: Routes = [
   {path: 'create', component: ChartSelectMenuComponent, canActivate:[AuthGuard], data:{roles:["ROLE_ADMIN","ROLE_USER"]}},

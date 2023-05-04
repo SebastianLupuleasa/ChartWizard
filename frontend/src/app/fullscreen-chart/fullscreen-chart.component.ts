@@ -4,7 +4,7 @@ import {
   ChartConfiguration,
   ChartItem,
   ChartType,
-  registerables,
+  registerables
 } from 'node_modules/chart.js';
 import { MyChart } from '../custom/custom.component';
 import { UserAuthService } from '../_services/user-auth.service';
@@ -15,20 +15,13 @@ import { UserAuthService } from '../_services/user-auth.service';
   styleUrls: ['./fullscreen-chart.component.scss']
 })
 export class FullscreenChartComponent {
-
-  customChart: MyChart = JSON.parse(this.userAuthService.getFullscreen());
-  chart!: Chart;
-
+  private chart!: Chart;
+  private customChart: MyChart = JSON.parse(this.userAuthService.getFullscreen());
   constructor(private userAuthService:UserAuthService){
     Chart.register(...registerables);
   }
 
-  ngOnInit(): void {
-    this.createChart();
-     }
-
-  
-     createChart(): void {
+     private createChart(): void {
       if (!this.chart && this.customChart) {
 
           let horizontalFlag = false;
@@ -250,7 +243,7 @@ if(this.customChart.chartType === 'bar-horizontal'){
       }
       }
 
-    hexToRgb(hex: any) {
+    private hexToRgb(hex: any) {
       var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
       return result ? {
         r: parseInt(result[1], 16),
@@ -259,4 +252,7 @@ if(this.customChart.chartType === 'bar-horizontal'){
       } : null;
     }
 
+  private ngOnInit(): void {
+    this.createChart();
+     }
 }
