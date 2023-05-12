@@ -15,6 +15,9 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
+/**
+ * This service is responsive for performing checks and operations on Jwt tokens
+ */
 @Service
 @RequiredArgsConstructor
 public class RefreshTokenService {
@@ -25,17 +28,32 @@ public class RefreshTokenService {
     @Value("${refreshToken.expiration}")
     private int expiration;
 
+    /**
+     * This method is responsible for creating a Jwt token
+     * @param user the owner of the token
+     * @return the newly created token
+     */
     public String createToken(JwtUser user) {
         var refreshToken = refreshTokenRepository.save((RefreshToken.builder().token(UUID.randomUUID().toString())
                 .user(user).expiration(ZonedDateTime.now(ZoneId.systemDefault()).plusMinutes(expiration)).build()));
         return refreshToken.getToken();
     }
 
+    /**
+     * Checks if the Jwt token is already created
+     * @param user the owner of the token
+     * @return true or false
+     */
     public Boolean isTokenAlreadyCreated(JwtUser user)
     {
         return refreshTokenRepository.findRefreshTokenByUser(user).isPresent();
     }
 
+    /**
+     * Gets the token belonging to a user
+     * @param user the owner of the token
+     * @return the jwt token
+     */
     public String getTokenByUser(JwtUser user)
     {
         var refreshToken =refreshTokenRepository.findRefreshTokenByUser(user);
@@ -45,6 +63,11 @@ public class RefreshTokenService {
        return "";
     }
 
+    /**
+     * Refreshes the Jwt token
+     * @param refreshRequestDto dto that contains the refresh token
+     * @return JwtResponseDto containing the jwt token and a refresh token
+     */
     public JwtResponseDto refreshToken(JwtRefreshRequestDto refreshRequestDto) {
         var tokenOpt = refreshTokenRepository.findRefreshTokenByToken((refreshRequestDto.getRefreshToken()));
         if(tokenOpt.isEmpty()){
@@ -60,11 +83,20 @@ public class RefreshTokenService {
         return JwtResponseDto.of(jwt, token.getToken());
     }
 
+    /**
+     * Updates the refresh token
+     * @param token the new refresh token to be updated
+     */
     private void updateToken(RefreshToken token) {
         token.setExpiration(ZonedDateTime.now(ZoneId.systemDefault()).plusMinutes(expiration));
         refreshTokenRepository.save(token);
     }
 
+    /**
+     * Checks if the Jwt token is expired
+     * @param expirationTime the expiration time of the token
+     * @return true or false
+     */
     private boolean isTokenExpired(ZonedDateTime expirationTime) {
         return expirationTime.isBefore(ZonedDateTime.now(ZoneId.systemDefault()));
     }

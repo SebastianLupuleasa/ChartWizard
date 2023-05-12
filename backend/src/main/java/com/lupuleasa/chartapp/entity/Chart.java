@@ -6,6 +6,9 @@ import lombok.*;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * The entity for the charts
+ */
 @Getter
 @Setter
 @Builder

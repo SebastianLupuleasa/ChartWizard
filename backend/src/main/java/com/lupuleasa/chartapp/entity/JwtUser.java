@@ -13,6 +13,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.*;
 
+
+/**
+ * The entity for the user of the application
+ */
 @EqualsAndHashCode(of = "uuid")
 @Getter
 @Setter

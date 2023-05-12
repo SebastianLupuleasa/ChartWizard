@@ -9,6 +9,9 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
+/**
+ * The utils needed for the construction of the token
+ */
 @Component
 @RequiredArgsConstructor
 public class JwtUtils {
@@ -19,6 +22,11 @@ public class JwtUtils {
     @Value("${jwt.secret}")
     private String secret;
 
+    /**
+     * Creates a new jwt token
+     * @param email the email used for token creation
+     * @return a jwt token as a string
+     */
     public String createJwt(String email) {
         return JWT.create()
                 .withSubject(email)

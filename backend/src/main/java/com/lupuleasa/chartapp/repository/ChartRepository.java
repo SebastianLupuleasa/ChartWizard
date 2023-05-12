@@ -6,6 +6,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * The repository for Chart
+ */
 @Repository
 public interface ChartRepository extends JpaRepository<Chart, Integer> {
     List<Chart> findAllByUserId(long userId);

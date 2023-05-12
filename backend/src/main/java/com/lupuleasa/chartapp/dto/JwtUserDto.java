@@ -2,6 +2,9 @@ package com.lupuleasa.chartapp.dto;
 
 import lombok.*;
 
+/**
+ * The dto for managing user info
+ */
 @Getter
 @Setter
 @Builder

@@ -6,6 +6,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+/**
+ * The repository for the JwtUser
+ */
 @Repository
 public interface JwtUserRepository extends JpaRepository<JwtUser, Long> {
 

@@ -8,6 +8,9 @@ import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
+/**
+ * The refresh token used for refreshing the JwtToken
+ */
 @EqualsAndHashCode(of = "uuid")
 @Getter
 @Setter

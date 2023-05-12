@@ -15,22 +15,44 @@ import java.util.Collections;
 
 import static com.lupuleasa.chartapp.enums.Role.ROLE_USER;
 
+/**
+ * The controller responsible for the authentication of the user
+ */
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
 
+    /**
+     * The service responsible for refreshing the Jwt Token
+      */
   private final RefreshTokenService refreshTokenService;
 
+    /**
+     * The repository for the JwtUser
+     */
   private final JwtUserRepository jwtUserRepository;
 
+    /**
+     * The password encoder
+     */
   private final PasswordEncoder passwordEncoder;
 
+    /**
+     * The method for the refresh of the token
+     * @param refreshRequestDto a dto containing the refresh token
+     * @return a dto containing a new Jwt token and a new refresh token
+     */
   @PostMapping("/refresh")
    public JwtResponseDto refreshJwt(@RequestBody JwtRefreshRequestDto refreshRequestDto) {
       return refreshTokenService.refreshToken(refreshRequestDto);
   }
 
+    /**
+     * The method for the registration of the user
+     * @param jwtUser the user to be registered
+     * @return a response entity with an ok http status
+     */
    @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody JwtUser jwtUser) {
        jwtUser.setRole(Collections.singleton(ROLE_USER));

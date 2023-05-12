@@ -10,12 +10,21 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+/**
+ * The service responsible for retrieving the user details
+ */
 @Service
 @RequiredArgsConstructor
 public class JwtUserDetailsService implements UserDetailsService {
 
     private final JwtUserService jwtUserService;
 
+    /**
+     * Returns the details of a user based on email
+     * @param email the email of the user
+     * @return the user details
+     * @throws UsernameNotFoundException thrown when the user is not found
+     */
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         JwtUser user = null;

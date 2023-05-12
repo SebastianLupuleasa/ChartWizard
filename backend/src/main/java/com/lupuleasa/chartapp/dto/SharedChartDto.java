@@ -1,8 +1,10 @@
 package com.lupuleasa.chartapp.dto;
 
-import com.lupuleasa.chartapp.entity.Chart;
 import lombok.*;
 
+/**
+ * The dto for a shared chart
+ */
 @Getter
 @Setter
 @Builder

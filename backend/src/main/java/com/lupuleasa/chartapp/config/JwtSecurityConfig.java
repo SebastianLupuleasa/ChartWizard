@@ -17,23 +17,51 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 
+/**
+ * Jwt Security Config
+ */
 @Configuration
 public class JwtSecurityConfig {
 
+    /**
+     * The authentication manager
+     */
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    /**
+     * The auth success handler
+     */
     private final AuthSuccessHandler authSuccessHandler;
 
+    /**
+     * The service for JwtUser's details
+     */
     private final JwtUserDetailsService jwtUserDetailsService;
+
+    /**
+     * The secret key
+     */
     private final String secret;
 
+    /**
+     * The constructor for JwtSecurityConfig
+     * @param authSuccessHandler the auth handler
+     * @param jwtUserDetailsService the details service
+     * @param secret the secret key
+     */
     public JwtSecurityConfig(AuthSuccessHandler authSuccessHandler, JwtUserDetailsService jwtUserDetailsService, @Value("${jwt.secret}") String secret) {
         this.authSuccessHandler = authSuccessHandler;
         this.jwtUserDetailsService = jwtUserDetailsService;
         this.secret = secret;
     }
 
+    /**
+     * An bean for SecurityFilterChain
+     * @param http type of HttpSecurity
+     * @return bean of SecurityFilterChain
+     * @throws Exception an generic Exception
+     */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -45,6 +73,8 @@ public class JwtSecurityConfig {
                     try {
                         auth
                                 .requestMatchers("/auth/**","/**")
+                                .permitAll()
+                                .requestMatchers(AUTH_WHITELIST)
                                 .permitAll().and().authorizeHttpRequests()
                                 .anyRequest().hasAnyRole("ADMIN","USER")
                                 .and()
@@ -64,6 +94,10 @@ public class JwtSecurityConfig {
         return http.build();
     }
 
+    /**
+     * An bean for JsonObjectAuthenticationFilter
+     * @return a bean of JsonObjectAuthenticationFilter with the right handler and manager
+     */
     @Bean
     public JsonObjectAuthenticationFilter authenticationFilter() {
         var filter = new JsonObjectAuthenticationFilter();
@@ -72,4 +106,11 @@ public class JwtSecurityConfig {
         return filter;
     }
 
+    private static final String[] AUTH_WHITELIST = {
+      "/api/v1/auth/**",
+      "/v3/api-docs/**",
+      "/v3/api-docs.yaml",
+      "/swagger-ui/**",
+      "/swagger-ui.html"
+    };
 }

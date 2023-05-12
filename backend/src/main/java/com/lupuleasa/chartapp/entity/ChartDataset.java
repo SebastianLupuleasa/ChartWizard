@@ -11,6 +11,9 @@ import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * The entity for the dataset of a chart
+ */
 @Entity
 @Getter
 @Setter

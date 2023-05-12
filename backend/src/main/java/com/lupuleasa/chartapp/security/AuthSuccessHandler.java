@@ -18,6 +18,9 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+/**
+ * The handler that validates the authentication
+ */
 @Component
 @Slf4j
 @RequiredArgsConstructor
@@ -27,6 +30,14 @@ public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private final JwtUtils jwtUtils;
 
     private final RefreshTokenService refreshTokenService;
+
+    /**
+     * This methods execute after the authentication is successful and send the body containing the tokens
+     * @param request the http request
+     * @param response the http response
+     * @param authentication the authentication
+     * @throws IOException the exception that will be thrown
+     */
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException {
