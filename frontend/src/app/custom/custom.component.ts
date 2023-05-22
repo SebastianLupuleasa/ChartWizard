@@ -76,9 +76,10 @@ export class CustomComponent implements OnInit, AfterViewChecked {
 
   createChart(): void {
     if (!this.chart && this.customCharts.length > 0) {
+      console.log(this.customCharts);
       this.chartsFound="";
-      let horizontalFlag = false;
       this.customCharts.forEach(element => {
+      let horizontalFlag = false;
       Chart.register(...registerables);
 
       let chartDatasets: {type: any,label: string; backgroundColor: string; borderColor: string; data: number[]; fill?:boolean, pointBackgroundColor?: string,  pointBorderColor?: string, pointHoverBackgroundColor?: string, pointHoverBorderColor?: string }[] = [];
@@ -300,9 +301,11 @@ else{
       ) as ChartItem;
 
       this.chart = new Chart(chartItem, config);
+      horizontalFlag = false;
     }
-      );}
-  }
+      );
+    }
+    }
   downloadChart( elementId: string) : void {
 
     let canvas = document.getElementById(elementId) as HTMLCanvasElement;;
