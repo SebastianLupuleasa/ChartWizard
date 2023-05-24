@@ -1,7 +1,7 @@
 package com.lupuleasa.chartapp.service;
 
-import com.lupuleasa.chartapp.exception.ChartAppGenericException;
 import com.lupuleasa.chartapp.entity.JwtUser;
+import com.lupuleasa.chartapp.exception.ChartAppGenericException;
 import com.lupuleasa.chartapp.exception.ChartAppRuntimeException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;

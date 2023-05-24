@@ -5,7 +5,6 @@ import com.lupuleasa.chartapp.dto.UserChartDto;
 import com.lupuleasa.chartapp.entity.Chart;
 import com.lupuleasa.chartapp.exception.ChartAppGenericException;
 import com.lupuleasa.chartapp.service.ChartService;
-import com.lupuleasa.chartapp.service.JwtUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -81,9 +80,9 @@ public class ChartController {
      * @return the edited chart
      */
     @PutMapping("/charts/edit")
-    public ResponseEntity<Chart> editChart(@RequestBody Chart chart){
+    public ResponseEntity<String> editChart(@RequestBody Chart chart){
         service.addChart(chart);
-        return new ResponseEntity<>(chart,HttpStatus.OK);
+        return new ResponseEntity<>("Chart was successfully edited!",HttpStatus.OK);
     }
 
     /**

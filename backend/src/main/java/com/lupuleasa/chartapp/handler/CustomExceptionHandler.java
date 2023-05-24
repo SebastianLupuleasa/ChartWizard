@@ -28,7 +28,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value= { ChartAppRuntimeException.class, ChartAppGenericException.class, Exception.class})
     protected ResponseEntity<Object> handleConflict(
             Exception ex, WebRequest request) {
-        Logger logger = Logger.getAnonymousLogger();
+        var logger = Logger.getAnonymousLogger();
         logger.log(Level.SEVERE, "An chart app exception was thrown", ex);
 
         return handleExceptionInternal(ex, ex.getMessage(),

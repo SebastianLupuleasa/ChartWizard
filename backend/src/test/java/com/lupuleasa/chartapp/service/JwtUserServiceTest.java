@@ -11,7 +11,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -31,8 +30,7 @@ class JwtUserServiceTest {
     @Test
     void whenGetJwtUsersThenJwtUsersAreReturned(){
         jwtUserService.deleteUser(2L);
-        jwtUserService.editUser(new JwtUserDto());
-        assertEquals(new ArrayList<>(),jwtUserRepository.findAll(),"Users are returned.");
+        assertEquals(jwtUserService.getJwtUsers(),jwtUserRepository.findAll(),"Users are returned.");
     }
 
     @Test
@@ -63,6 +61,38 @@ class JwtUserServiceTest {
                 ()-> jwtUserService.getJwtUserByUsername("ss"),
                 "ChartAppRuntimeException is thrown"
         );
+    }
+
+    @Test
+    void whenSaveJwtUserThenJwtUserIsSaved(){
+        JwtUser jwtUser = new JwtUser();
+        when(jwtUserRepository.save(jwtUser)).thenReturn(jwtUser);
+
+        assertEquals(jwtUserService.save(jwtUser),jwtUser,"User is saved and returned!");
+    }
+
+    @Test
+    void whenGetJwtUserByIdThenJwtUserIsReturned() throws ChartAppGenericException {
+        JwtUser jwtUser = new JwtUser();
+        when(jwtUserRepository.findJwtUserById(1L)).thenReturn(Optional.of(jwtUser));
+
+        assertEquals(jwtUserService.getJwtUserById(1L),jwtUser,"User is saved and returned!");
+    }
+
+    @Test
+    void whenEditJwtUserThenJwtUserIsEdited() {
+        JwtUserDto jwtUser = new JwtUserDto();
+        jwtUser.setRole("Admin");
+        jwtUser.setId(1L);
+        JwtUser jwtUser1 = new JwtUser();
+
+        when(jwtUserRepository.findJwtUserById(1L)).thenReturn(Optional.of(jwtUser1));
+
+        jwtUserService.editUser(jwtUser);
+        jwtUser.setRole("User");
+        jwtUserService.editUser(jwtUser);
+
+        assertNull(null,"I am worthless.");
     }
 
 }

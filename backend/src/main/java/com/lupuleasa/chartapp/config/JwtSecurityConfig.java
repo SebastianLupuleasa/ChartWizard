@@ -67,7 +67,7 @@ public class JwtSecurityConfig {
         http
                 .cors()
                 .and()
-                .csrf()
+               .csrf()
                 .disable()
                  .authorizeHttpRequests(auth -> {
                     try {

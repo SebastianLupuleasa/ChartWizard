@@ -21,6 +21,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -60,25 +61,10 @@ class RefreshTokenServiceTest {
     void whenRefreshTokenNotFoundThenReturnThrowChartAppRuntimeException(){
         assertThrows(
                 ChartAppRuntimeException.class,
-                ()-> refreshTokenService.refreshToken(new JwtRefreshRequestDto()),
+                ()-> refreshTokenService.refreshToken(mock(JwtRefreshRequestDto.class)),
                 "ChartAppRuntimeException is thrown"
         );
     }
-
-//    @Test
-//    void whenRefreshTokenIsExpiredThenReturnThrowChartAppRuntimeException(){
-//        RefreshToken refreshToken = new RefreshToken();
-//        refreshToken.setToken("token");
-//        refreshToken.setExpiration(ZonedDateTime.now(ZoneId.of("GMT+05:30")));
-//        when(refreshTokenRepository.findRefreshTokenByToken("token")).thenReturn(Optional.of(refreshToken));
-//        JwtRefreshRequestDto refreshRequestDto = new JwtRefreshRequestDto();
-//        refreshRequestDto.setRefreshToken("token");
-//        assertThrows(
-//                ChartAppRuntimeException.class,
-//                ()-> refreshTokenService.refreshToken(refreshRequestDto),
-//                "ChartAppRuntimeException is thrown"
-//        );
-//    }
 
     @Test
     void whenRefreshTokenIsExpiredThenReturnJwtResponseDto(){

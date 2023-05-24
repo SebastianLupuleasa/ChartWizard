@@ -1,9 +1,9 @@
 package com.lupuleasa.chartapp.service;
 
 import com.lupuleasa.chartapp.dto.JwtUserDto;
+import com.lupuleasa.chartapp.entity.JwtUser;
 import com.lupuleasa.chartapp.enums.Role;
 import com.lupuleasa.chartapp.exception.ChartAppGenericException;
-import com.lupuleasa.chartapp.entity.JwtUser;
 import com.lupuleasa.chartapp.exception.ChartAppRuntimeException;
 import com.lupuleasa.chartapp.repository.JwtUserRepository;
 import lombok.RequiredArgsConstructor;

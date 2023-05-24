@@ -2,7 +2,6 @@ package com.lupuleasa.chartapp.service;
 
 import com.lupuleasa.chartapp.dto.UserChartDto;
 import com.lupuleasa.chartapp.entity.Chart;
-import com.lupuleasa.chartapp.entity.JwtUser;
 import com.lupuleasa.chartapp.exception.ChartAppGenericException;
 import com.lupuleasa.chartapp.repository.ChartDatasetRepository;
 import com.lupuleasa.chartapp.repository.ChartRepository;
@@ -10,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * The service responsible for all the CRUD operations performed on a chart
@@ -59,14 +59,17 @@ public class ChartService {
      * @throws ChartAppGenericException the generic exception
      */
     public void shareChart(Integer chartId, String email) throws ChartAppGenericException {
-        JwtUser jwtUser = jwtUserService.getJwtUserByEmail(email);
-        List<Chart> sharedCharts = jwtUser.getSharedCharts();
-        if(repository.findById(chartId).isPresent() && !sharedCharts.contains(repository.findById(chartId).get())) {
-            sharedCharts.add(repository.findById(chartId).get());
-        }
+        var jwtUser = jwtUserService.getJwtUserByEmail(email);
+        if(jwtUser != null){
+         List<Chart> sharedCharts = jwtUser.getSharedCharts();
+
+        Optional<Chart> optionalChart = repository.findById(chartId);
+
+        optionalChart.ifPresent(sharedCharts::add);
+
         jwtUser.setSharedCharts(sharedCharts);
         jwtUserService.save(jwtUser);
-    }
+    }}
 
     /**
      * The method responsible for deleting a chart by the id
@@ -83,7 +86,7 @@ public class ChartService {
      * @throws ChartAppGenericException the generic exception
      */
     public List<Chart> getSharedChartsById(long userId) throws ChartAppGenericException {
-        JwtUser jwtUser = jwtUserService.getJwtUserById(userId);
+        var jwtUser = jwtUserService.getJwtUserById(userId);
         return jwtUser.getSharedCharts();
     }
 
@@ -93,14 +96,16 @@ public class ChartService {
      * @throws ChartAppGenericException the generic exception
      */
     public void deleteSharedChart(UserChartDto userChartDto) throws ChartAppGenericException {
-        JwtUser jwtUser = jwtUserService.getJwtUserById(userChartDto.getUserId());
+        var jwtUser = jwtUserService.getJwtUserById(userChartDto.getUserId());
+        if(jwtUser != null){
         List<Chart> sharedCharts = jwtUser.getSharedCharts();
-        if(repository.findById(userChartDto.getChartId()).isPresent()) {
-            sharedCharts.remove(repository.findById(userChartDto.getChartId()).get());
-        }
+
+       Optional<Chart> optionalChart = repository.findById(userChartDto.getChartId());
+
+        optionalChart.ifPresent(sharedCharts::remove);
         jwtUser.setSharedCharts(sharedCharts);
         jwtUserService.save(jwtUser);
-    }
+    }}
 }
 
 

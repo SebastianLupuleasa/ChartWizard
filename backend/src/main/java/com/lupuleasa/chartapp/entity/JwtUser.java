@@ -5,7 +5,6 @@ import com.lupuleasa.chartapp.enums.Role;
 import com.lupuleasa.chartapp.security.domain.RefreshToken;
 import jakarta.persistence.*;
 import lombok.*;
-
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
