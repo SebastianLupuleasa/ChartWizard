@@ -23,7 +23,7 @@
     "@angular/router": "^15.0.0",
     "@fortawesome/angular-fontawesome": "^0.12.0",
     "@ng-bootstrap/ng-bootstrap": "^14.0.0",
-    "@types/xlsx": "^0.0.36",
+    "@types/xlsx": "^0.0.35",
     "angular-font-awesome": "^3.1.2",
     "bootstrap": "^5.2.3",
     "chart.js": "^4.1.1",
@@ -40,10 +40,13 @@
     "zone.js": "~0.12.0"
   },
   "devDependencies": {
+    "@angular-builders/custom-webpack": "^16.0.0",
     "@angular-devkit/build-angular": "^15.0.4",
     "@angular/cli": "~15.0.4",
     "@angular/compiler-cli": "^15.0.0",
     "@types/jasmine": "~4.3.0",
+    "brotli-webpack-plugin": "^1.1.0",
+    "compression-webpack-plugin": "^10.0.0",
     "jasmine-core": "~4.5.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.1.0",

@@ -80,9 +80,9 @@ public class ChartController {
      * @return the edited chart
      */
     @PutMapping("/charts/edit")
-    public ResponseEntity<String> editChart(@RequestBody Chart chart){
+    public ResponseEntity<Chart> editChart(@RequestBody Chart chart){
         service.addChart(chart);
-        return new ResponseEntity<>("Chart was successfully edited!",HttpStatus.OK);
+        return new ResponseEntity<>(chart,HttpStatus.OK);
     }
 
     /**

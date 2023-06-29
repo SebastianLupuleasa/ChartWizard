@@ -76,7 +76,6 @@ export class CustomComponent implements OnInit, AfterViewChecked {
 
   createChart(): void {
     if (!this.chart && this.customCharts.length > 0) {
-      console.log(this.customCharts);
       this.chartsFound="";
       this.customCharts.forEach(element => {
       let horizontalFlag = false;

@@ -232,12 +232,20 @@ export class EditChartComponent {
     })
     
     let chart = {id: this.editedChart.id,chartTitle:this.chartForm.getRawValue()["chartTitle"],chartSubtitle:this.chartForm.getRawValue()["chartSubtitle"],chartBackgroundColor:this.chartForm.getRawValue()["chartBackgroundColor"], chartType:this.chartForm.getRawValue()["chartType"], chartAnimation:this.chartForm.getRawValue()["chartAnimation"], chartLabels:chartLabelArray,chartDatasets:chartDatasetArray,userId:this.userAuthService.getUserId()};
-   this.httpclient.put(this.PATH_OF_API + "/charts/edit",chart,{'headers':this.headers}).subscribe((res) => {
+   this.httpclient.put(this.PATH_OF_API + "/charts/edit",chart,{'headers':this.headers}).subscribe(() => {
 
     this.dialog.open(ChatEditedSuccessComponent);
     this.router.navigate(['custom']);
 
- });
+ }),(err: any) => {
+  if(err.status === 200)
+   {
+    console.log(err);
+    this.dialog.open(ChatEditedSuccessComponent);
+    this.router.navigate(['custom']);
+   }
+ };
+ 
 
   }
 
