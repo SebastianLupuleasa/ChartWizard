@@ -42,6 +42,8 @@ import { UserEditedSuccessComponent } from './user-edited-success/user-edited-su
 import { AuthGuard } from './_auth/auth.guard';
 import { AuthInterceptor } from './_auth/auth.interceptor';
 import { UserService } from './_services/user.service';
+import { LoginErrorComponent } from './login-error/login-error.component';
+import { RegisterErrorComponent } from './register-error/register-error.component';
 
 @NgModule({
   declarations: [
@@ -69,6 +71,8 @@ import { UserService } from './_services/user.service';
     ErrorDialogComponentComponent,
     OpenApiComponent,
     ChartSavedSuccessfullyComponent,
+    LoginErrorComponent,
+    RegisterErrorComponent,
     ],
   imports: [
     BrowserModule,

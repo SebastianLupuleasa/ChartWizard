@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { UserAuthService } from '../_services/user-auth.service';
+import { Router } from '@angular/router';
 
 export interface JwtUser {
   id: number;
@@ -23,7 +24,7 @@ export class ManageUsersComponent {
   PATH_URL: string = "http://localhost:9001/";
   userId: number = Number(this.userAuthService.getUserId());
 
-  constructor(private httpClient: HttpClient, private userAuthService: UserAuthService) {}
+  constructor(private router:Router,private httpClient: HttpClient, private userAuthService: UserAuthService) {}
 
   ngOnInit(): void {
     this.getUsers();
@@ -48,7 +49,12 @@ export class ManageUsersComponent {
     }})
     .subscribe((response) => {
       this.getUsers();
-    });
+      this.router.navigate(['/manage']);
+    },
+    (error) => {
+      this.router.navigate(['/manage']);
+    }
+  );
 
   }
 }

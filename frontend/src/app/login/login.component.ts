@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 import { UserAuthService } from '../_services/user-auth.service';
 import { UserService } from '../_services/user.service';
+import { LoginErrorComponent } from '../login-error/login-error.component';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +13,7 @@ import { UserService } from '../_services/user.service';
 })
 export class LoginComponent implements OnInit{
 
-constructor (private userService: UserService, private userAuthService:UserAuthService, private router:Router) {
+constructor (private userService: UserService, private dialog: MatDialog,private userAuthService:UserAuthService, private router:Router) {
 }
 
 ngOnInit(): void {
@@ -31,7 +33,7 @@ login(loginForm: NgForm) {
 
     },
     (error) => {
-      console.log(error);
+      this.dialog.open(LoginErrorComponent);
     }
   );
 }
